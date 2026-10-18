@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "name": "Exemple de projet",
+  "brief": "Le problème à résoudre, les utilisateurs et le bénéfice attendu.",
+  "owner": "Responsable du projet",
+  "timezone": "UTC",
+  "communication_language": "Français",
+  "document_language": "English",
+  "github_url": "https://github.com/organisation/projet",
+  "linear_url": "https://linear.app/organisation/team/EQUIPE/all",
+  "repositories": [{"path": ".", "role": "Produit et orchestration", "url": "https://github.com/organisation/projet"}],
+  "linear": {"team_id": null, "team_key": null, "states": {}, "verified_at": null},
+  "verification": {"checks": [], "acceptance": []},
+  "delivery": {"target": null, "procedure": null},
+  "permissions": {
+    "development": "explicit_go",
+    "commits": "within_authorized_scope",
+    "working_branch_pushes": "within_authorized_scope",
+    "draft_pull_requests": "within_authorized_scope",
+    "main_merge": "explicit_go",
+    "delivery": "explicit_go"
+  }
+}

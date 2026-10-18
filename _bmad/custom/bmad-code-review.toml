@@ -1,0 +1,2 @@
+[workflow]
+persistent_facts = ["file:{project-root}/AGENTS.md", "file:{project-root}/docs/bmad.md"]

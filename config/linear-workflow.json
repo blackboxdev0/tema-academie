@@ -1,0 +1,9 @@
+{
+  "states": [
+    {"key": "backlog", "name": "Backlog", "type": "backlog", "color": "#bec2c8", "aliases": ["À cadrer"]},
+    {"key": "ready", "name": "Todo", "type": "unstarted", "color": "#e2e2e2", "aliases": ["To do", "À faire", "Prêt"]},
+    {"key": "in_progress", "name": "In Progress", "type": "started", "color": "#f2c94c", "aliases": ["En cours"]},
+    {"key": "review", "name": "Review", "type": "started", "color": "#a78bfa", "aliases": ["In Review", "À valider", "En validation"]},
+    {"key": "done", "name": "Done", "type": "completed", "color": "#5e6ad2", "aliases": ["Terminé", "Livré"]}
+  ]
+}

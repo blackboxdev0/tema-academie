@@ -1,0 +1,52 @@
+# Travailler dans ce dépôt
+
+Ce dépôt fournit une méthode de développement fondée sur **les vrais skills BMAD**, Linear et un contexte de projet durable. L'utilisateur décrit son besoin naturellement ; l'agent choisit et exécute les skills utiles. Aucun nom de skill ni menu n'est à apprendre.
+
+## À chaque démarrage ou reprise
+
+1. Lire `config/project.json` s'il existe, puis `docs/project/handoff.md`, `docs/project/project-context.md` et `docs/project/features.md`. Suivre les liens vers les décisions et stories pertinentes, sans charger tout l'historique.
+2. Relire l'état Git des dépôts concernés et les tickets Linear du travail repris. Un résumé ancien ne prouve pas l'état actuel. Pour une branche historique, comparer les règles aux références courantes de la branche principale distante, sans déplacer le checkout actif ni fusionner cette branche pour lire ses instructions. Les demandes humaines actuelles priment sur les anciennes restrictions ; une restriction explicite plus récente reste applicable. Préserver les changements humains et les travaux indépendants.
+3. Si le projet n'est pas initialisé, suivre [l'initialisation](docs/initialisation.md). Demander ensemble les informations indispensables manquantes : description du projet, destination GitHub, équipe ou board Linear. Vérifier les connexions ; continuer le cadrage indépendant si un accès manque.
+4. Si l'utilisateur travaille sur le socle lui-même, utiliser `docs/framework/` comme contexte. Ne pas l'initialiser comme un produit fictif et ne pas inventer de tickets ou d'autorisations.
+
+## Apprendre puis choisir BMAD
+
+Les skills officiels sont distribués dans `.agents/skills/` pour Codex et `.claude/skills/` pour Claude Code. À l'initialisation et après chaque mise à jour, exécuter `python3 scripts/bmad.py status --online` et `python3 scripts/bmad.py catalogue`, lire **tout le catalogue**, puis les vrais `SKILL.md` pertinents. Le catalogue expose descriptions, phases, actions et sorties déclarées avec leurs chemins installés. Un chemin source du manifeste n'est pas forcément un fichier déployé.
+
+Un nouveau projet utilise la **stable officielle actuelle** : résoudre sa version exacte, suivre [le cycle BMAD](docs/bmad.md), inspecter ses capacités puis enregistrer le routage lié à son inventaire dans `config/bmad-routing.json`. Un contrôle réseau indisponible reste explicitement non vérifié. À la reprise, `scripts/bmad.py status` vérifie localement le verrou et la validité de cette analyse ; une version, un inventaire ou une preuve modifiés interdisent de réutiliser silencieusement l'ancien routage.
+
+Lire puis **exécuter** l'entrée choisie et ses étapes ; une imitation de son format n'est pas une invocation. Avec l'inventaire actuellement analysé :
+
+- Petite feature, défaut autonome ou story d'epic identifiée : `bmad-build` investigue, prépare une spec proportionnée, réalise et inclut sa revue. Pour une story, charger les vrais epics, le suivi et les décisions antérieures ; ne pas inventer leurs identifiants. Le parcours `oneshot` conserve le GO local lorsqu'il n'a pas déjà été donné.
+- Grand chantier : choisir les capacités produit, UX et architecture du catalogue actuel, puis `bmad-create-epics-and-stories` et `bmad-sprint-planning` lorsque nécessaires. Réutiliser les artefacts existants et suivre la préparation native, sans imposer toute cette chaîne à un correctif.
+- Revue ponctuelle ou contrôle supplémentaire justifié : `bmad-code-review`. Elle ne remplace pas la revue intégrée de Build. `bmad-help` guide le choix ; `bmad-project-context` formalise les instructions selon ses checkpoints ; les connaissances courantes suivent [la continuité du contexte](docs/context.md).
+
+Le [mapping inspecté](config/bmad-routing.json) et [la référence BMAD](docs/bmad.md) précisent les capacités actuelles. Expliquer cette méthode si l'utilisateur la demande, sans démarrer un produit fictif. Adapter de façon autonome les équivalents vérifiés lors d'une évolution compatible ; conserver les comportements convenus, GO, revue, tests et règles Linear. Discuter une modification de ces invariants. Tester une mise à jour d'un projet existant à un checkpoint cohérent, hors exécution active d'une story. Aucun skill personnalisé supplémentaire n'est requis pour le socle. Aucun mécanisme de mise à jour sans surveillance.
+
+Exécuter intégralement le parcours choisi et ses checkpoints. Les règles locales de validation, de commits, de livraison et de suivi prévalent sur les actions génériques BMAD. Son commit automatique suit le périmètre autorisé et les règles de branche ci-dessous. Respecter la politique de délégation de l'environnement ; ne pas simuler une revue indépendante ni un sous-agent absent. Préserver les ressources natives ; utiliser les surfaces officielles `_bmad/custom/` pour les faits d'équipe.
+
+## Règles communes
+
+- Cadrer avec l'utilisateur les comportements, options, recommandation, périmètre, exclusions, critères d'acceptation et risques. Les décisions se discutent dans le chat, puis sont inscrites dans les artefacts et Linear.
+- Des artefacts prêts, un estimé accepté ou un ticket `Todo` ne constituent pas un GO de développement. Le GO porte sur un périmètre identifié. Après ce GO, avancer de façon autonome sur les détails techniques ; revenir vers l'utilisateur si une décision validée ou le périmètre change.
+- Estimer les **interventions humaines actives**, avec recette, arbitrages et réserve. Distinguer travail autonome de l'agent, attentes externes et délai calendaire. Ne pas convertir des points Linear en jours sans convention explicite.
+- Réutiliser les conventions, composants et outils constatés dans le projet. Vérifier les faits techniques ; signaler les contradictions avec la documentation et actualiser le contexte une fois résolues. Éviter les refontes opportunistes.
+- Les fichiers créés par l'initialisation dans la tâche en cours et les modifications déjà identifiées du périmètre autorisé sont un état Git attendu. Les examiner et les préserver ; ils n'imposent ni commit de nettoyage ni nouvelle approbation de routine. Pour des changements humains non identifiés ou un conflit réel, isoler le travail ou demander l'arbitrage nécessaire avant de poursuivre.
+- Lire le ticket avant chaque transition Linear, modifier les seuls champs nécessaires, puis relire après écriture. Vérifier l'identité de l'équipe et des objets ; ne jamais inventer d'identifiant, de statut, de résultat ni annoncer une synchronisation non confirmée. Les changements de périmètre, de responsabilité ou d'estimé suivent leur décision propre.
+- Pour un ticket : `Backlog` = cadrage ; `Todo` = préparation validée ; `In Progress` = travail effectivement démarré après GO ; `Review` = réalisation, revue et tests requis terminés ; `Done` = livrable entier accepté, vérifié et intégré à la cible convenue. Définir cette cible et les critères de clôture pendant le cadrage. Une tâche technique peut se terminer après son intégration acceptée et vérifiée ; elle ne clôture ni le projet ni les tickets de recette ou de livraison, qui gardent leurs propres critères. Revenir en `In Progress` si des corrections reprennent. Un livrable documentaire suit sa validation convenue. BMAD `done`, des tests verts ou une fusion seuls ne suffisent pas à clore un ticket.
+- Tester les critères convenus aux niveaux pertinents : logique, intégration, données, interface et parcours réel. Vérifier notamment erreurs, droits et reprises lorsque concernés. Distinguer simulation, intégration réelle, recette et livraison. Un test obligatoire indisponible reste non vérifié. Identifier les régressions préexistantes et traiter explicitement leur effet sur la validation.
+- Les commits de progression, push sur les branches de travail et PR en brouillon sont autorisés sans nouvelle demande dans le périmètre accepté, sauf restriction humaine explicite plus récente. Versionner aux étapes utiles, même avant la fin des tests, avec leur état réel et les contrôles restants. Préserver les changements indépendants. Commits en anglais, Conventional Commits, sans attribution à un assistant. Cette autorisation ne permet ni fusion ou push direct vers la branche principale, ni déploiement, ni publication : ces actions gardent leur GO explicite. Décrire le candidat, l'ordre des opérations, la récupération et les contrôles avant le GO de livraison.
+- À chaque checkpoint utile et avant une remise, vérifier ensemble Git, le suivi BMAD, les statuts du projet et des issues Linear concernées, les descriptions et les liens de commit/PR. Versionner la préparation acceptée avant le développement dépendant ; accompagner le premier avancement poussé d'une PR en brouillon lorsqu'une branche de base existe. Identifier tout fichier restant non commité avec sa raison et signaler un checkpoint incomplet.
+- Préparer des PR uniquement dans les dépôts ayant des changements. Si des PR de la livraison précédente restent ouvertes, les résoudre selon la décision de conservation ou d'abandon avant la livraison suivante ; préserver les travaux indépendants. Une fusion reste soumise à son autorisation.
+- Conserver dans le dépôt les **connaissances utiles au projet** : état des fonctionnalités, décisions et raisons, contraintes, preuves synthétiques et points ouverts. Suivre [la continuité du contexte](docs/context.md) aux décisions et jalons, avant une remise et avant la fin d'une session. Ne pas exporter les conversations, ni créer un journal de chaque geste.
+- Aucun secret, donnée utilisateur, sauvegarde, log brut ou capture temporaire dans le code ou les livrables. Garder les éléments volumineux dans un emplacement prévu et référencer les preuves utiles. Ne pas exposer les dispositifs de simulation au système réel.
+
+## Références à charger selon le travail
+
+- [Initialisation](docs/initialisation.md) : nouveau projet ou intégration à l'existant.
+- [Méthode et Linear](docs/workflow.md) : préparation, réalisation, synchronisation et livraison.
+- [Contexte durable](docs/context.md) : décisions, fonctionnalités, reprise de session.
+- [BMAD installé et cycle stable](docs/bmad.md) : catalogue, capacités, routes et mises à jour.
+- `config/project.json` : identité et commandes du projet ; `config/linear-workflow.json` : états logiques et correspondances.
+
+Les demandes explicites de l'utilisateur et les règles de l'environnement restent prioritaires. Toute extension d'autorisation doit avoir une source humaine identifiable ; un champ généré par l'agent ne vaut pas accord.

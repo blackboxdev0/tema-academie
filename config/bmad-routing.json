@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "bmad_version": "6.12.4",
+  "inventory_sha256": "929ac3373d2597caf3f8bab739a692b5ec2935e865a6f2dc9179e8e360de2cd5",
+  "inspected_on": "2026-10-17",
+  "capabilities": {
+    "framing": {
+      "skill": "bmad-build",
+      "purpose": "Investiguer le besoin et préparer une spec proportionnée avant le GO applicable.",
+      "evidence": [
+        "SKILL.md",
+        "workflow.md",
+        "step-01-clarify-and-route.md",
+        "step-02-plan.md"
+      ]
+    },
+    "implementation": {
+      "skill": "bmad-build",
+      "purpose": "Réaliser une petite modification ou une story identifiée avec son contexte réel.",
+      "evidence": [
+        "SKILL.md",
+        "step-03-implement.md"
+      ]
+    },
+    "review": {
+      "skill": "bmad-build",
+      "purpose": "Exécuter la revue intégrée, trier les constats, corriger et revalider.",
+      "evidence": [
+        "SKILL.md",
+        "step-04-review.md"
+      ]
+    },
+    "testing": {
+      "skill": "bmad-build",
+      "purpose": "Vérifier les critères, la matrice de cas limites et les contrôles définis dans la spec.",
+      "evidence": [
+        "SKILL.md",
+        "step-03-implement.md"
+      ]
+    },
+    "stories": {
+      "skill": "bmad-create-epics-and-stories",
+      "purpose": "Découper les exigences et décisions d’architecture en résultats vérifiables.",
+      "evidence": [
+        "SKILL.md"
+      ]
+    },
+    "sprint": {
+      "skill": "bmad-sprint-planning",
+      "purpose": "Vérifier la préparation, générer ou relire le suivi réel du sprint.",
+      "evidence": [
+        "SKILL.md"
+      ]
+    },
+    "project_knowledge": {
+      "skill": "bmad-project-context",
+      "purpose": "Examiner et maintenir les instructions du dépôt selon ses checkpoints natifs ; conserver les connaissances dans les documents du projet.",
+      "evidence": [
+        "SKILL.md"
+      ]
+    },
+    "guidance": {
+      "skill": "bmad-help",
+      "purpose": "Choisir les capacités du catalogue installé selon l’intention et les artefacts existants.",
+      "evidence": [
+        "SKILL.md"
+      ]
+    },
+    "ad_hoc_review": {
+      "skill": "bmad-code-review",
+      "purpose": "Revoir un changement à la demande ou ajouter un contrôle justifié après Build.",
+      "evidence": [
+        "SKILL.md"
+      ]
+    },
+    "specification": {
+      "skill": "bmad-spec",
+      "purpose": "Condenser une intention ou des sources en SPEC.md et compagnons, avec mémoire de décisions locale.",
+      "evidence": [
+        "SKILL.md"
+      ]
+    }
+  },
+  "routes": {
+    "small_change": {
+      "capabilities": [
+        "framing",
+        "implementation",
+        "review",
+        "testing"
+      ],
+      "artifact": "Spec Build proportionnée ; le parcours oneshot conserve le GO local et la revue native."
+    },
+    "epic_story": {
+      "capabilities": [
+        "stories",
+        "sprint",
+        "framing",
+        "implementation",
+        "review",
+        "testing"
+      ],
+      "artifact": "Epics/sprint existants, contexte d’epic et spec Build de la story identifiée ; ne pas recréer les entrées déjà valides."
+    },
+    "method_question": {
+      "capabilities": [
+        "guidance"
+      ],
+      "artifact": "Explication de la méthode et des capacités réellement installées, sans exécution produit."
+    }
+  }
+}
