@@ -50,6 +50,12 @@ Dans Linear, une tâche technique se clôture seulement lorsque son livrable ent
 
 Les preuves et limites sont consignées dans [la validation](validation.md). Cette maintenance n'initialise pas le socle, ne modifie pas les fichiers BMAD natifs, ne crée aucun objet externe et ne publie aucun dépôt.
 
+## 2026-10-18 — Publication initiale autorisée et vérifiée
+
+Sofiane a donné le GO « Publie » pour le candidat local déjà validé. Le dépôt GitHub désigné était vide et privé ; la publication initiale porte sur `main`. Le commit `7a888af` et la branche par défaut ont été confirmés sur GitHub, puis un clone neuf a passé le contrôle de méthode et le diagnostic en état `template`, avec ses 490 fichiers. La visibilité privée est conservée. Cette autorisation porte sur la publication du socle ; les futurs projets gardent leurs GO et vérifications propres.
+
+La trace de publication est documentaire et ne modifie ni le code validé, ni les ressources BMAD, ni le projet source. Les résultats et limites sont conservés dans [la validation](validation.md).
+
 ## Initialisation externe
 
 Les connecteurs assurent le travail courant. Le helper Linear couvre uniquement la création des statuts non exposée par le connecteur disponible ; il utilise l'API GraphQL officielle, avec plan en lecture seule, configuration additive et relecture. Il n'installe pas une synchronisation permanente ni une intégration GitHub globale.

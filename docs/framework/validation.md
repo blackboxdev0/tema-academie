@@ -1,6 +1,14 @@
 # Vérification du socle
 
-État au 17 octobre 2026 : **réalisation locale vérifiée, publication du dépôt non effectuée**. Le socle n'est initialisé pour aucun produit et ne contient aucun mapping vers une équipe Linear réelle. Les critères sont définis dans [le périmètre accepté](spec.md).
+État au 18 octobre 2026 : **socle publié et clone GitHub vérifié**. Le socle n'est initialisé pour aucun produit et ne contient aucun mapping vers une équipe Linear réelle. Les critères sont définis dans [le périmètre accepté](spec.md).
+
+## Première publication GitHub — 18 octobre 2026
+
+Sofiane a autorisé la publication avec « Publie ». Le candidat validé `7a888af` a été publié sur la branche `main` du [dépôt GitHub](https://github.com/blackboxdev0/bkbx-agentic), qui est privé. GitHub et les références Git distantes confirment cette révision et `main` comme branche par défaut.
+
+Un clone neuf depuis GitHub contient les **490 fichiers versionnés**. `python3 scripts/check.py` et `python3 scripts/project.py doctor` y réussissent, avec les ressources BMAD intactes et l'état `template`. Aucun profil produit ni réglage personnel n'est nécessaire. Les **89 tests du candidat** restent ceux exécutés et décrits ci-dessous ; la publication ajoute une vérification du clone réel, sans modification du code.
+
+La connexion et le cycle réels avec Linear restent à constater lors du premier projet, comme décrit dans les limites ci-dessous.
 
 ## Réutilisabilité après initialisation — 17 octobre 2026
 
@@ -92,7 +100,7 @@ Un pilote séparé a également activé le vrai `bmad-quick-dev` dans une copie 
 - Intégration GitHub native de Linear et éventuels automatismes de fermeture ; ils ne sont pas installés par le profil local.
 - Tests, recette et livraison du futur produit, selon ses technologies et environnements.
 
-Les instructions et outils préparent et guident ces opérations ; ils n'accordent ni accès externe ni fonctionnement en arrière-plan. Le checkpoint final du candidat est enregistré dans Git sur une branche de travail locale. Aucun push, déploiement ou publication n'a été réalisé. La mise à disposition par clone GitHub demande la publication autorisée de ces fichiers.
+Les instructions et outils préparent et guident ces opérations ; ils n'accordent ni accès externe ni fonctionnement en arrière-plan. Le checkpoint initial du candidat a été enregistré sur une branche de travail locale, puis publié sur `main` après le GO du 18 octobre. La publication du socle ne constitue pas un déploiement de produit ni une vérification du futur workspace Linear.
 
 ## Rejouer les contrôles
 
