@@ -1,0 +1,412 @@
+{
+  "schema_version": 1,
+  "name": "Tema Académie",
+  "brief": "Plateforme française de présentation et d’inscription aux formations de Tema Solutions : catalogue et calendrier sur un site léger, données administrées dans Google Sheets, inscription avec capacité limitée, confirmation agenda et avis à Tema. Cadrage fondé sur le brief du 19 octobre 2026 et les pièces fournies ; proposition présentée, GO client et développement en attente.",
+  "owner": "Sofiane Korbi",
+  "timezone": "America/Toronto",
+  "communication_language": "Français",
+  "document_language": "Français",
+  "github_url": "https://github.com/blackboxdev0/tema-academie",
+  "linear_url": "https://linear.app/tema-academie/team/TEM/overview",
+  "repositories": [
+    {
+      "path": ".",
+      "role": "Produit et orchestration",
+      "url": "https://github.com/blackboxdev0/tema-academie",
+      "visibility": "PUBLIC",
+      "viewer_permission": "ADMIN",
+      "verified_on": "2026-10-26"
+    }
+  ],
+  "linear": {
+    "team_id": "b6fe00a9-ac52-42c1-a3ef-d08b3dbd2f8f",
+    "team_key": "TEM",
+    "states": {
+      "backlog": {
+        "id": "d822c9c3-931b-4e36-a06f-25b54181ff9b",
+        "name": "Backlog",
+        "type": "backlog"
+      },
+      "ready": {
+        "id": "fcd9fc4e-9762-459b-a78c-a06099810cc9",
+        "name": "Todo",
+        "type": "unstarted"
+      },
+      "in_progress": {
+        "id": "64a7eb89-01f7-4f02-b47d-a642810c2881",
+        "name": "In Progress",
+        "type": "started"
+      },
+      "review": {
+        "id": "8c09dcc2-bf3c-4c8c-a004-f555c23f3bab",
+        "name": "Review",
+        "type": "started"
+      },
+      "done": {
+        "id": "da795c0d-300a-4ec3-bfeb-c4621debdc50",
+        "name": "Done",
+        "type": "completed"
+      }
+    },
+    "verified_at": "2026-10-19T17:21:16+00:00",
+    "project_id": "e6d24474-be36-4ae8-a735-5d002be86579",
+    "project_identifier": "P-TEM-1",
+    "project_url": "https://linear.app/tema-academie/project/tema-academie-inscriptions-aux-formations-f999035f7e4f",
+    "verified_on": "2026-10-26",
+    "definition_issue": {
+      "id": "c3ddc0b5-13c0-49a5-b34b-a713dd8eb016",
+      "identifier": "TEM-5",
+      "url": "https://linear.app/tema-academie/issue/TEM-5/valider-le-dossier-de-definition-v1-avant-lessai-technique",
+      "verified_status": "Review",
+      "verified_on": "2026-10-26"
+    },
+    "technical_trial_issue": {
+      "id": "aeceeb2e-a7d6-48ec-a56d-7f0ac45a10a5",
+      "identifier": "TEM-6",
+      "url": "https://linear.app/tema-academie/issue/TEM-6/eprouver-le-parcours-dinscription-google-sur-lenvironnement-test",
+      "verified_status": "In Progress",
+      "verified_on": "2026-10-26"
+    }
+  },
+  "verification": {
+    "checks": [
+      "cd app && npm run verify"
+    ],
+    "acceptance": [],
+    "planned_strategy": {
+      "status": "trial_baseline_verified_live_partial_pending_decisions",
+      "local_gate": "before_application_push",
+      "ci_gate": "push_and_pull_request_then_before_integration_or_release",
+      "levels": [
+        "unit",
+        "api_integration",
+        "browser_e2e",
+        "computer_use_acceptance"
+      ],
+      "real_google_tests": "isolated_fictitious_resources",
+      "mail_tests": "simulated_by_default_bounded_real_receipt_checks",
+      "trial_command": "cd app && npm run verify",
+      "node_tests_passed": 61,
+      "browser_tests_passed": 28,
+      "ci_status": "not_implemented"
+    }
+  },
+  "delivery": {
+    "target": null,
+    "procedure": null,
+    "demo_and_client_testing": {
+      "target": "Vercel",
+      "status": "technical_trial_only_not_client_delivery",
+      "approved_on": "2026-10-25",
+      "blocks_on_final_ftp_details": false
+    },
+    "public_hosting": {
+      "target": "Tema server",
+      "owner": "Sofiane",
+      "access": "FTP_declared_not_verified",
+      "details": "deferred_by_owner",
+      "google_backend": "durable_tema_resources"
+    }
+  },
+  "permissions": {
+    "development": "explicit_go",
+    "commits": "owner_authorized_milestone_commits",
+    "working_branch_pushes": "within_authorized_scope",
+    "draft_pull_requests": "within_authorized_scope",
+    "main_merge": "explicit_go",
+    "delivery": "explicit_go",
+    "commit_authorization": {
+      "approved_on": "2026-10-26",
+      "source": "Sofiane, demande explicite de commits au fur et à mesure et par jalon, avec rattrapage des fichiers existants",
+      "scope": "existing_framing_and_TEM-6_then_authorized_future_work",
+      "principal_development_authorized": false
+    }
+  },
+  "initialized_at": "2026-10-19T17:20:58+00:00",
+  "google": {
+    "account_email": "temaacademie@gmail.com",
+    "access_status": "authenticated_ui_resource_creation_verified",
+    "operational_sheet_status": "private_structure_created_no_catalogue_or_business_logic",
+    "resource_creation": {
+      "status": "structure_created",
+      "requested_on": "2026-10-25",
+      "method": "computer_use",
+      "scope": [
+        "google_sheet",
+        "apps_script_project"
+      ],
+      "source": "Sofiane, demande puis confirmation orale ; compte Google existant, pas de Sheet opérationnel",
+      "executed": true,
+      "prepared_on": "2026-10-26",
+      "business_code_started": false
+    },
+    "resource_intent": "durable_operational_account_and_workbook",
+    "resources": {
+      "verified_on": "2026-10-26",
+      "folder": {
+        "id": "1x9AdxaiqeF40Jpok8xqTusd5w7YwP2C7",
+        "url": "https://drive.google.com/drive/u/0/folders/1x9AdxaiqeF40Jpok8xqTusd5w7YwP2C7"
+      },
+      "environments": {
+        "PROD": {
+          "title": "Tema Académie — Métier",
+          "spreadsheet_id": "1j8k2FKt5J_Tyx4vNCIY4_dgV4ZYmTO-UOMaTc5-6ji4",
+          "spreadsheet_url": "https://docs.google.com/spreadsheets/d/1j8k2FKt5J_Tyx4vNCIY4_dgV4ZYmTO-UOMaTc5-6ji4/edit",
+          "script_id": "1Wu_Bfys_yPnvvSLA5wKljmI5mA5WDreVXmkXLdOYCPLpgs35CjlduhBc",
+          "script_url": "https://script.google.com/u/0/home/projects/1Wu_Bfys_yPnvvSLA5wKljmI5mA5WDreVXmkXLdOYCPLpgs35CjlduhBc/edit",
+          "script_properties": {
+            "ENVIRONMENT": "PROD",
+            "SPREADSHEET_ID": "1j8k2FKt5J_Tyx4vNCIY4_dgV4ZYmTO-UOMaTc5-6ji4"
+          },
+          "spreadsheet_access": "private_owner_only",
+          "script_runtime": "V8",
+          "script_timezone": "America/Toronto",
+          "script_content": "google_generated_myFunction_skeleton_only",
+          "deployment_status": "not_deployed"
+        },
+        "TEST": {
+          "title": "Tema Académie — TEST",
+          "spreadsheet_id": "1Zq8s1Jwd4NgpbMIed35W0LJIsUpJ-JPt19BZK89yM3c",
+          "spreadsheet_url": "https://docs.google.com/spreadsheets/d/1Zq8s1Jwd4NgpbMIed35W0LJIsUpJ-JPt19BZK89yM3c/edit",
+          "script_id": "1cQXjhw60iKv9n3P4EcLcgsbWBgWmlj47EFUGM5wqJgXDAQqajC5M0k_x",
+          "script_url": "https://script.google.com/u/0/home/projects/1cQXjhw60iKv9n3P4EcLcgsbWBgWmlj47EFUGM5wqJgXDAQqajC5M0k_x/edit",
+          "script_properties": {
+            "ENVIRONMENT": "TEST",
+            "SPREADSHEET_ID": "1Zq8s1Jwd4NgpbMIed35W0LJIsUpJ-JPt19BZK89yM3c"
+          },
+          "spreadsheet_access": "private_owner_only",
+          "script_runtime": "V8",
+          "script_timezone": "America/Toronto",
+          "script_content": "reviewed_trial_candidate_v3",
+          "deployment_status": "test_web_app_deployed",
+          "fixtures_status": "one_active_formation_two_closed_sessions_five_registrations",
+          "deployment_id": "AKfycbwgMy2rGhfUFgL5kA-nJdHbRek2fmB0eDeVu63UFh16nP5G8xoYcUZDFCi363a_qxCOkw",
+          "deployment_version": 3,
+          "web_app_url": "https://script.google.com/macros/s/AKfycbwgMy2rGhfUFgL5kA-nJdHbRek2fmB0eDeVu63UFh16nP5G8xoYcUZDFCi363a_qxCOkw/exec",
+          "execution_identity": "owner",
+          "web_app_access": "anyone_owner_confirmed_2026-10-26",
+          "candidate_sha256": "34e7ab30766995dd62e7bb593042f2b514364a79ea673721c4e33049c0c4364c",
+          "controls_repair": "12_numeric_text_columns_38_warning_protections_0_formation_diagnostics",
+          "trigger_count": 2,
+          "periodic_trigger_rest_hours": 12,
+          "mail_failure_injection": "removed",
+          "confirmed_registrations": 4,
+          "cancelled_registrations": 1,
+          "mail_budget_registrations": 5,
+          "mail_budget_recipients": 10,
+          "remaining_daily_mail_quota": 92,
+          "last_inspected_at": "2026-10-26T17:17:39-04:00"
+        }
+      }
+    },
+    "runtime_authorization_status": "test_read_and_editor_execution_verified",
+    "mail_quota_status": "92_remaining_observed_after_trial_shared_account"
+  },
+  "organization": {
+    "status": "approved",
+    "approved_on": "2026-10-20",
+    "source": "Sofiane, validation explicite dans le chat",
+    "repository_model": "single_repository",
+    "foundation_root": ".",
+    "application_paths": [
+      "app/web",
+      "app/apps-script",
+      "app/tests"
+    ],
+    "application_created": true
+  },
+  "definition": {
+    "status": "limited_trial_results_pending_owner_review",
+    "prepared_on": "2026-10-20",
+    "spec": "_bmad-output/specs/spec-tema-academie-v1/SPEC.md",
+    "ux_design": "_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/DESIGN.md",
+    "ux_experience": "_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/EXPERIENCE.md",
+    "architecture": "_bmad-output/planning-artifacts/architecture/architecture-tema-academie-2026-10-20/ARCHITECTURE-SPINE.md",
+    "technical_trial_plan": "_bmad-output/specs/spec-tema-academie-v1/plan-essai-technique.md",
+    "technical_trial_status": "executed_partial_pending_decisions",
+    "scope_approval": {
+      "status": "approved",
+      "approved_on": "2026-10-21",
+      "source": "Sofiane, confirmation du périmètre dans le chat",
+      "remaining": "clarifications_one_at_a_time"
+    },
+    "functional_spec_approval": {
+      "status": "approved",
+      "approved_on": "2026-10-24",
+      "scope": "functional-v1",
+      "source": "Sofiane, confirmation explicite après relecture consolidée dans le chat"
+    },
+    "current_review": "v1_development_breakdown_preparation",
+    "visual_direction_approval": {
+      "status": "approved",
+      "approved_on": "2026-10-24",
+      "scope": "visual-direction-v2",
+      "source": "Sofiane, confirmation explicite après proposition V2 et revue Sally dans le chat",
+      "refinement_status": "pending_visual_rework",
+      "refinement_reason": "Traitement jugé trop générique par Sofiane ; finition différée, priorité à la fonctionnalité et à la disposition."
+    },
+    "ux_approval": {
+      "status": "approved_with_visual_reservation",
+      "scope": "functional_flows_and_layout",
+      "remaining": "visual_rework_and_native_surface_details_before_delivery",
+      "form_layout_approval": {
+        "status": "approved_with_visual_reservation",
+        "approved_on": "2026-10-24",
+        "scope": "registration_form_functional_flow_and_layout",
+        "source": "Sofiane, réponse explicite dans le chat ; finition graphique à retravailler plus tard"
+      },
+      "confirmation_layout_approval": {
+        "status": "approved_with_visual_reservation",
+        "approved_on": "2026-10-24",
+        "scope": "confirmation_screen_information_hierarchy",
+        "source": "Sofiane, Yes après présentation de la hiérarchie de confirmation dans le chat ; finition graphique différée"
+      },
+      "approved_on": "2026-10-25",
+      "source": "Sofiane, confirmations orales du classement et des notifications puis clôture du flux UX le 25 octobre",
+      "native_surface_coverage": "documented_without_dedicated_mockups; retained_as_non_blocking_assumption"
+    },
+    "technical_trial_order_approval": {
+      "status": "approved",
+      "approved_on": "2026-10-25",
+      "scope": "order_only",
+      "order": [
+        "google_connection",
+        "complete_registration",
+        "closing",
+        "capacity",
+        "errors"
+      ],
+      "source": "Sofiane, accord oral sur la progression ; plan complet et lancement restent distincts"
+    },
+    "non_regression_requirement": {
+      "status": "owner_required",
+      "required_on": "2026-10-25",
+      "scope": "repeatable_checks_before_application_push_and_future_releases",
+      "strategy": "_bmad-output/specs/spec-tema-academie-v1/strategie-tests.md",
+      "implementation_status": "trial_baseline_61_node_28_browser_passed",
+      "source": "Sofiane, demande explicite orale de tests reproductibles, moyens delegues sans complexifier"
+    },
+    "architecture_review": {
+      "status": "authoring_complete_owner_approved_overview",
+      "consolidated_on": "2026-10-26",
+      "input_reconciliation": "spec_ux_human_decisions",
+      "reviewer_gate": "passed_after_fixes",
+      "technical_evidence": "trial_partial_4_pass_8_not_verified"
+    },
+    "maintenance_principle": {
+      "status": "approved",
+      "approved_on": "2026-10-26",
+      "scope": "versions_tests_and_short_compatible_code_recovery_note",
+      "source": "Sofiane, accord oral sur le recentrage au minimum utile",
+      "executed": true
+    },
+    "architecture_approval": {
+      "status": "approved",
+      "approved_on": "2026-10-26",
+      "scope": "architecture_overview_and_boundaries",
+      "source": "Sofiane, oui à la validation de l’architecture d’ensemble pour passer au plan d’essai",
+      "technical_evidence": "trial_partial_4_pass_8_not_verified"
+    },
+    "technical_trial_plan_approval": {
+      "status": "approved",
+      "approved_on": "2026-10-26",
+      "scope": "limited_trial_plan_and_automatic_mail_ceiling",
+      "fictitious_formations": 1,
+      "fictitious_sessions": 2,
+      "max_real_mail_registrations": 10,
+      "max_automatic_recipient_deliveries": 20,
+      "launch_status": "authorized_started",
+      "source": "Sofiane, validation explicite du plan et demande de préparer les accès Google/Vercel"
+    },
+    "technical_trial_go": {
+      "status": "approved",
+      "approved_on": "2026-10-26",
+      "scope": "TEM-6 isolated trial and prototype, real TEST checks within approved ceilings",
+      "source": "Sofiane, demande explicite : préparer le ticket et la fiche puis lancer l’essai ; Tu as mon GO pour cet essai",
+      "principal_development_authorized": false,
+      "commits_authorized": false,
+      "google_permission_confirmation": {
+        "confirmed_on": "2026-10-26",
+        "scope": [
+          "spreadsheets",
+          "script.send_mail",
+          "script.scriptapp"
+        ],
+        "environment": "TEST",
+        "source": "Sofiane, réponse explicite à la confirmation au moment des droits Google"
+      },
+      "anonymous_deployment_confirmation": {
+        "confirmed_on": "2026-10-26",
+        "access": "anyone",
+        "identity": "owner",
+        "scope": "TEST only",
+        "source": "Sofiane, réponse explicite avant Deploy"
+      },
+      "results": {
+        "report": "docs/project/technical-trial/TEM-6-results.md",
+        "pass": 4,
+        "not_verified": 8,
+        "fail": 0,
+        "principal_go_required": true
+      }
+    },
+    "cadence_approval": {
+      "status": "owner_approved",
+      "approved_on": "2026-10-26",
+      "normal_publication_target_seconds": 120,
+      "normal_target_comparison": "less_than",
+      "recovery_interval_minutes": 5,
+      "recovery_delay_exception": true,
+      "implementation_status": "not_implemented_or_measured",
+      "documentation_status": "canonical_logs_recorded_spine_spec_consolidation_pending",
+      "source": "Sofiane, validation explicite dans le chat : moins de deux minutes en fonctionnement normal et un contrôle de secours toutes les cinq minutes"
+    },
+    "calendar_compatibility_acceptance": {
+      "status": "deferred_to_complete_solution_acceptance",
+      "owner": "Sofiane",
+      "scope": [
+        "Outlook",
+        "Apple Calendar"
+      ],
+      "source": "Sofiane, report explicite aux tests de bout en bout de la solution entière",
+      "verified": false
+    }
+  },
+  "access_preparation": {
+    "status": "trial_resources_executed_limited",
+    "authorized_on": "2026-10-26",
+    "google": "authenticated_two_private_sheets_and_two_bound_script_projects_prepared",
+    "vercel": "test_static_prototype_deployed_not_git_linked",
+    "github": "public_tema_repository_admin_main_verified_visible_for_vercel_import",
+    "test_recipients": {
+      "status": "received",
+      "participant_count": 3,
+      "storage": "private_local_configuration_outside_repository",
+      "emails_in_repository": false
+    },
+    "resources_created": true,
+    "verified_on": "2026-10-26",
+    "registry": "_bmad-output/specs/spec-tema-academie-v1/ressources-services.md"
+  },
+  "vercel": {
+    "workspace_slug": "blackboxsaas-projects",
+    "plan": "Hobby",
+    "plan_choice": "current_account_requested_by_owner_2026-10-26",
+    "project_name": "tema-academie",
+    "project_id": "prj_mUzZpB1WZnx2FNg0G23lYFpnWUqw",
+    "project_url": "https://vercel.com/blackboxsaas-projects/tema-academie",
+    "repository_visible_for_import": true,
+    "git_connection_status": "not_connected",
+    "build_configuration_status": "static_drop_trial_only",
+    "deployment_status": "test_static_prototype_deployed",
+    "commercial_plan_compatibility": "unresolved_before_client_deployment",
+    "verified_on": "2026-10-26",
+    "deployment_id": "5zNTif7SBSon5aEMm3RMoeEPb8Gf",
+    "deployment_url": "https://tema-academie-r2kx88gqs-blackboxsaas-projects.vercel.app",
+    "site_url": "https://project-w1j1x.vercel.app/",
+    "source": "Vercel Drop static4files",
+    "deployment_environment_label": "production_label_on_empty_project_used_only_for_authorized_TEST",
+    "frontend_app_sha256": "1a03fd30e453f29f1008672918d1fdddf4f30488062cd7ecb1ff2a6a1b5a18e5",
+    "rollback_and_restore": "test_verified"
+  }
+}

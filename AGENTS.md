@@ -1,5 +1,12 @@
 # Travailler dans ce dépôt
 
+## Consignes humaines propres à Tema Académie
+
+- Le 26 octobre 2026, Sofiane autorise explicitement les commits par jalon au fil du travail, y compris le rattrapage du cadrage et de l’essai existants. Cette demande remplace la restriction antérieure imposant une demande pour chaque commit. Les messages sont en anglais, au format Conventional Commits, sans attribution à un assistant. Ce choix ne vaut ni GO de développement principal, ni autorisation de fusion ou de livraison.
+- Le cadrage et l'initialisation sont autorisés. Sofiane a validé le 20 octobre 2026 le dépôt unique avec socle à la racine et futur code dans `app/web`, `app/apps-script`, `app/tests`, puis demandé la spécification, les parcours UX, l'architecture et le plan d'essai. Spécification, UX fonctionnelle, architecture et plan d’essai ont ensuite été approuvés. Le 26 octobre 2026, Sofiane donne explicitement le GO de l’essai technique isolé TEM-6, prototype et tests TEST dans les limites du plan. Commits par jalon désormais autorisés par Sofiane ; aucun GO de développement principal, fusion ou livraison produit ; voir config/project.json et la fiche TEM-6 pour l’état courant.
+- Lire le profil et les documents de Tema dans `docs/project/`. Les artefacts historiques du socle présents ailleurs dans `_bmad-output/` ne constituent pas des fonctionnalités de Tema.
+- La connexion locale `linear_tema` utilise le Trousseau macOS. Le connecteur Linear général peut pointer sur Pink Gossip : vérifier le workspace `tema-academie` et l'équipe `TEM` avant toute écriture. Ne conserver aucun secret dans les fichiers du projet.
+
 Ce dépôt fournit une méthode de développement fondée sur **les vrais skills BMAD**, Linear et un contexte de projet durable. L'utilisateur décrit son besoin naturellement ; l'agent choisit et exécute les skills utiles. Aucun nom de skill ni menu n'est à apprendre.
 
 ## À chaque démarrage ou reprise
