@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Tema Académie — Essai technique</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="config.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Aller au contenu</a>
+  <header><a href="./" class="brand">Tema <span>Académie</span></a><span class="badge">TEST — données fictives</span></header>
+  <main id="main">
+    <section id="catalogue" aria-labelledby="catalogue-title">
+      <p class="eyebrow">Essai technique TEM-6</p>
+      <h1 id="catalogue-title">Les formations</h1>
+      <p>Une formation et deux dates fictives pour vérifier le parcours d’inscription.</p>
+      <div id="catalogue-status" role="status" aria-live="polite">Chargement des dates…</div>
+      <div id="formations"></div>
+      <button id="reload" type="button" class="secondary">Actualiser les dates</button>
+    </section>
+    <section id="registration" hidden aria-labelledby="form-title">
+      <button id="change-date" type="button" class="secondary">Changer de date</button>
+      <h1 id="form-title" tabindex="-1">Votre inscription</h1>
+      <div id="summary" class="summary"></div>
+      <p>La place est réservée après confirmation de l’enregistrement. Le courriel est envoyé séparément.</p>
+      <div id="form-status" role="alert" tabindex="-1"></div>
+      <div id="changed" class="notice" hidden>
+        <p>Les conditions ont changé. Relisez le récapitulatif et la politique avant de confirmer à nouveau.</p>
+        <button id="accept-change" type="button">J’ai relu les nouvelles conditions</button>
+      </div>
+      <form id="form">
+        <fieldset id="personal-fields">
+          <legend>Vos coordonnées</legend>
+          <div class="fields">
+            <div><label for="prenom">Prénom (obligatoire)</label><input id="prenom" name="prenom" autocomplete="given-name" required maxlength="100"><span id="prenom-error" class="error"></span></div>
+            <div><label for="nom">Nom (obligatoire)</label><input id="nom" name="nom" autocomplete="family-name" required maxlength="100"><span id="nom-error" class="error"></span></div>
+            <div><label for="entreprise">Entreprise (obligatoire)</label><input id="entreprise" name="entreprise" autocomplete="organization" required maxlength="200"><span id="entreprise-error" class="error"></span></div>
+            <div><label for="courriel">Courriel (obligatoire)</label><input id="courriel" name="courriel" type="email" autocomplete="email" required maxlength="254"><span id="courriel-error" class="error"></span></div>
+            <div><label for="telephone">Téléphone (facultatif)</label><input id="telephone" name="telephone" type="tel" autocomplete="tel" maxlength="30"><span id="telephone-error" class="error"></span></div>
+          </div>
+          <div class="trap" aria-hidden="true"><label for="website">Laissez ce champ vide</label><input id="website" tabindex="-1" autocomplete="off"></div>
+          <p class="consent"><input id="consentement" name="consentement" type="checkbox" required><label for="consentement">J’accepte le traitement de mes coordonnées pour cet essai fictif uniquement (obligatoire). <a id="policy" href="https://example.invalid" target="_blank" rel="noopener noreferrer">Politique d’essai</a></label></p>
+          <span id="consentement-error" class="error"></span>
+        </fieldset>
+        <button id="submit" type="submit">Confirmer mon inscription</button>
+      </form>
+      <button id="retry" type="button" hidden>Reprendre mon inscription</button>
+    </section>
+    <section id="result" hidden aria-labelledby="result-title">
+      <h1 id="result-title" tabindex="-1"></h1>
+      <p id="reservation-message"></p>
+      <div id="result-summary" class="summary"></div>
+      <h2>Courriel et invitation agenda</h2>
+      <p id="mail-message"></p>
+      <button id="back" type="button">Retour au catalogue</button>
+    </section>
+    <footer><p>Essai limité — aucune formation commerciale ouverte par ce prototype.</p><a id="contact" hidden>Contacter Tema</a></footer>
+  </main>
+</body>
+</html>

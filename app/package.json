@@ -1,0 +1,17 @@
+{
+  "name": "tema-academie-technical-trial",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TEM-6 — prototype isolé, sans serveur applicatif produit",
+  "engines": { "node": ">=22.9.0" },
+  "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "build": "node scripts/build.cjs",
+    "serve": "node scripts/serve.cjs",
+    "test:e2e": "playwright test",
+    "verify": "npm test && npm run build && npm run test:e2e",
+    "fingerprint": "node scripts/fingerprint.cjs",
+    "test:real": "node scripts/real-read.cjs"
+  },
+  "devDependencies": { "@playwright/test": "1.64.1" }
+}
