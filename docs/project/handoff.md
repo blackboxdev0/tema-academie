@@ -4,18 +4,19 @@
 
 **Essai limité TEM-6 exécuté, bilan à examiner avec Sofiane.** Le transport A fonctionne dans le navigateur intégré ; quatre ET entièrement vérifiés et huit incomplets. [Bilan détaillé](technical-trial/TEM-6-results.md) · [fiche BMAD](../../_bmad-output/implementation-artifacts/spec-tem-6-essai-technique.md) · [TEM-6](https://linear.app/tema-academie/issue/TEM-6/eprouver-le-parcours-dinscription-google-sur-lenvironnement-test).
 
-Spécification fonctionnelle approuvée24 octobre, UX fonctionnelle/dispositions25 octobre avec finition graphique différée, architecture d’ensemble et plan d’essai approuvés26 octobre. GO explicite du 26 octobre pour le prototype/essai isolé ; **aucun GO principal, push, fusion, achat ou livraison** ; commits par jalon désormais autorisés. La préparation non commitée préexistante est conservée.
+Spécification fonctionnelle approuvée24 octobre, UX fonctionnelle/dispositions25 octobre avec finition graphique différée, architecture d’ensemble et plan d’essai approuvés26 octobre. GO explicite du 26 octobre pour le prototype/essai isolé ; **aucun GO principal, push, fusion, achat ou livraison** ; commits par jalon désormais autorisés. La préparation et le prototype ont été versionnés par jalon ; aucun push.
 
 ## Prochaine conversation
 
-**Découpage préparé jusqu’à la revue finale**, sans validations intermédiaires selon la délégation explicite de Sofiane : [plan lisible et estimation](planning/plan-developpement-v1.md), [5epics/17stories BMAD](../../_bmad-output/planning-artifacts/epics.md), [couverture](planning/validation-decoupage-v1.md), [registre Linear](planning/linear-v1.json). 5parents TEM-7 à TEM-11 et17enfants TEM-12 à TEM-28, tous Backlog, relations et champs relus. Aucun GO principal ou code produit ajouté.
+**Revue globale du plan demandée et exécutée.** [Bilan à présenter](planning/reviews/revue-globale-plan-v1.md) : périmètre5blocs/17stories conservé, mais précisions internes nécessaires (contrats avant1.1, dépendances réelles, import rejouable, promotion TEST/Métier, anti-abus, export et candidat de recette avant5.3). Aucun code ni correctif du plan source appliqué par la revue, aucune autorisation de développement déduite.
 
-1. Présenter à Sofiane le découpage complet et l’estimation restante proposée :2,5j humains actifs +0,5j de réserve, hors temps autonome et attentes externes. Validation globale en attente ; l’ancien estimé du mandat entier n’est pas un temps passé mesuré.
-2. Contrôle natif de préparation : **CONCERNS**, pas de sprint activé. Sources canoniques à consolider par leurs writers avant code dépendant ; ET incomplets affectés aux stories sans déduire leur acceptation ni report global. [Readiness](../../_bmad-output/planning-artifacts/implementation-readiness.md).
-3. Cadence normale<2min/secours5min approuvée mais non mise en œuvre/mesurée. Outlook/Apple reportés à la recette E2E complète de Sofiane, toujours non vérifiés avant mise en service. Autres preuves, données finales/politique/prix/identité/offre compatible restent à leur gate.
-4. Après revue globale : GO explicite sur le lot de développement identifié et les prérequis qui le concernent. Ne pas demander de confirmation à chaque étape de préparation et ne pas transformer cette autonomie en GO de code.
+Deux informations à discuter avec Sofiane : pic d’inscriptions attendu pour dimensionner les courriels du compte gratuit ; comportement d’une formation nouvelle sans tarif (proposition fiche visible/Tarif à confirmer, inscriptions désactivées). Cette proposition n’est pas approuvée. Le catalogue initial24prix n’a pas cette absence.
 
-TEM-6 reste In Progress, TEM-5 Review et projet P-TEM-1 Backlog ; aucun ticket clos. Les commits par jalon sont autorisés. Tous les changements de cette préparation sont documentaires et de suivi, aucun test réel, envoi, déploiement ou push.
+La prochaine proposition de GO doit nommer le lot1.1–1.3 sur ressources isolées et les prérequis qui le concernent, sans waiver général des8ET incomplets. Cadence normale<2min/secours5min déjà approuvée ; Outlook/Apple reportés à recette complète, ne pas les remettre au choix. Estimation3jours humains restante toujours proposée, répartition Sofiane/Tema à clarifier en jours-personnes cumulés ; pas une promesse de délai de code.
+
+[Plan et estimation](planning/plan-developpement-v1.md), [epics BMAD](../../_bmad-output/planning-artifacts/epics.md), [couverture](planning/validation-decoupage-v1.md), [registre Linear](planning/linear-v1.json). Native readiness CONCERNS, document draft jusqu’à validation globale. TEM-7–11 parents etTEM-12–28 enfants en Backlog ; TEM-5 Review, TEM-6 In Progress, P-TEM-1 Backlog inchangés.
+
+Sofiane délègue la préparation sans micro-confirmations et autorise les commits par jalon. Aucun GO principal, push, fusion ou déploiement nouveau. La présente revue est documentaire, pas une nouvelle recette produit.
 
 ## Preuves acquises
 
@@ -45,7 +46,7 @@ Vercel démo/recette puis bascule FTP sous responsabilité Sofiane, sans bloquer
 
 ## Reprise technique
 
-Branche `tem-6-technical-trial`, HEAD `8217e5253055e6c669e0a154beee17ef3c4f814b`. Rattrapage local par jalon du 26 octobre : `58cee54` configuration, `d816d9c` spécification, `261aeb5` UX/architecture, `276c5fe` prototype TEM-6 ; suivi courant dans un commit documentaire séparé. Aucun push/PR. Ne pas effacer la préparation indépendante. Node 22.9.0/npm 11.7.0 constatés, Playwright 1.64.1 verrouillé ; Vite/clasp non installés. Build Node statique minimal pour l’essai, pas de changement global du runtime. [Commandes](../../app/README.md).
+Branche `tem-6-technical-trial`, base historique `8217e5253055e6c669e0a154beee17ef3c4f814b` ; candidat de plan relu `7f429da`. Rattrapage local par jalon du 26 octobre : `58cee54` configuration, `d816d9c` spécification, `261aeb5` UX/architecture, `276c5fe` prototype TEM-6 ; suivi courant dans un commit documentaire séparé. Aucun push/PR. Ne pas effacer la préparation indépendante. Node 22.9.0/npm 11.7.0 constatés, Playwright 1.64.1 verrouillé ; Vite/clasp non installés. Build Node statique minimal pour l’essai, pas de changement global du runtime. [Commandes](../../app/README.md).
 
 BMAD 6.12.4/29skills et routage local valides ; stable réseau non recontrôlée depuis19 octobre. Connecteur dédié `linear_tema`, équipe TEM UUID `b6fe00a9-ac52-42c1-a3ef-d08b3dbd2f8f` ; vérifier équipe/ticket avant chaque écriture. Le connecteur général peut pointer sur Pink Gossip.
 

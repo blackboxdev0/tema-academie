@@ -236,7 +236,7 @@
       "scope": "functional-v1",
       "source": "Sofiane, confirmation explicite après relecture consolidée dans le chat"
     },
-    "current_review": "v1_breakdown_and_remaining_effort_final_review",
+    "current_review": "global_plan_review_volume_and_missing_price",
     "visual_direction_approval": {
       "status": "approved",
       "approved_on": "2026-10-24",
@@ -388,7 +388,20 @@
       "reserve_days": 0.5,
       "estimate_approved": false,
       "principal_development_authorized": false,
-      "preparation_autonomy": "Sofiane delegates preparation through final review without intermediate step confirmations; ask only for genuine blockers"
+      "preparation_autonomy": "Sofiane delegates preparation through final review without intermediate step confirmations; ask only for genuine blockers",
+      "global_review": {
+        "status": "performed_findings_and_two_clarifications_pending",
+        "reviewed_on": "2026-10-26",
+        "reviewed_commit": "7f429dafca2ce54690d46f12d0cfbb8304b6ea7e",
+        "report": "docs/project/planning/reviews/revue-globale-plan-v1.md",
+        "findings": "docs/project/planning/reviews/revue-globale-plan-v1-findings.json",
+        "independent_lenses": [
+          "adversarial",
+          "edge-case-hunter",
+          "structure"
+        ],
+        "principal_development_authorized": false
+      }
     }
   },
   "access_preparation": {
