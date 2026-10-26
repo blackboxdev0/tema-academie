@@ -8,13 +8,14 @@ Spécification fonctionnelle approuvée24 octobre, UX fonctionnelle/dispositions
 
 ## Prochaine conversation
 
-1. Préparer le découpage V1 dans l’ordre accepté : données/moteur, catalogue/calendriers, inscription/notifications, gestion Tema, tests/démonstration. Le parcours natif `bmad-create-epics-and-stories` est activé, étape 1 (sources/prérequis), aucune epic ou story générée. Sources prévues : SPEC et compagnons, contrats UX, architecture et bilan TEM-6, avec les décisions actuelles qui remplacent les passages anciens. Dépendances, critères et estimation humaine à présenter avant GO principal.
-2. Cadence approuvée : <2 min en fonctionnement normal, secours toutes les cinq minutes ; consolidation AD-8/SPEC puis mise en œuvre/mesures à prévoir. TEST inchangé au repos12 h. Les circonstances du secours ont été expliquées.
-3. Outlook/Apple reportés par Sofiane à sa recette E2E de la solution complète, toujours non vérifiés et requis avant mise en service. Les autres compléments des huit ET restent à répartir explicitement dans le plan de tests ; pas de réussite ou de report global déduits.
+**Découpage préparé jusqu’à la revue finale**, sans validations intermédiaires selon la délégation explicite de Sofiane : [plan lisible et estimation](planning/plan-developpement-v1.md), [5epics/17stories BMAD](../../_bmad-output/planning-artifacts/epics.md), [couverture](planning/validation-decoupage-v1.md), [registre Linear](planning/linear-v1.json). 5parents TEM-7 à TEM-11 et17enfants TEM-12 à TEM-28, tous Backlog, relations et champs relus. Aucun GO principal ou code produit ajouté.
 
-[Décisions actuelles et autorisation de commits par jalon](decisions/2026-10-26-jalons-et-recette.md). Rattrapage Git des documents et du prototype autorisé ; aucun push demandé.
+1. Présenter à Sofiane le découpage complet et l’estimation restante proposée :2,5j humains actifs +0,5j de réserve, hors temps autonome et attentes externes. Validation globale en attente ; l’ancien estimé du mandat entier n’est pas un temps passé mesuré.
+2. Contrôle natif de préparation : **CONCERNS**, pas de sprint activé. Sources canoniques à consolider par leurs writers avant code dépendant ; ET incomplets affectés aux stories sans déduire leur acceptation ni report global. [Readiness](../../_bmad-output/planning-artifacts/implementation-readiness.md).
+3. Cadence normale<2min/secours5min approuvée mais non mise en œuvre/mesurée. Outlook/Apple reportés à la recette E2E complète de Sofiane, toujours non vérifiés avant mise en service. Autres preuves, données finales/politique/prix/identité/offre compatible restent à leur gate.
+4. Après revue globale : GO explicite sur le lot de développement identifié et les prérequis qui le concernent. Ne pas demander de confirmation à chaque étape de préparation et ne pas transformer cette autonomie en GO de code.
 
-TEM-6 reste In Progress pendant ces vérifications/arbitrages ; TEM-5 Review et projet P-TEM-1 Backlog conservent leurs jalons propres. Aucun passage automatique en Done.
+TEM-6 reste In Progress, TEM-5 Review et projet P-TEM-1 Backlog ; aucun ticket clos. Les commits par jalon sont autorisés. Tous les changements de cette préparation sont documentaires et de suivi, aucun test réel, envoi, déploiement ou push.
 
 ## Preuves acquises
 

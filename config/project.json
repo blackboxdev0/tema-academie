@@ -236,7 +236,7 @@
       "scope": "functional-v1",
       "source": "Sofiane, confirmation explicite après relecture consolidée dans le chat"
     },
-    "current_review": "v1_development_breakdown_preparation",
+    "current_review": "v1_breakdown_and_remaining_effort_final_review",
     "visual_direction_approval": {
       "status": "approved",
       "approved_on": "2026-10-24",
@@ -370,6 +370,25 @@
       ],
       "source": "Sofiane, report explicite aux tests de bout en bout de la solution entière",
       "verified": false
+    },
+    "development_breakdown": {
+      "status": "draft_prepared_pending_owner_review",
+      "prepared_on": "2026-10-26",
+      "skill": "bmad-create-epics-and-stories",
+      "artifact": "_bmad-output/planning-artifacts/epics.md",
+      "plan": "docs/project/planning/plan-developpement-v1.md",
+      "readiness": "_bmad-output/planning-artifacts/implementation-readiness.md",
+      "readiness_verdict": "CONCERNS",
+      "epic_count": 5,
+      "story_count": 17,
+      "linear_registry": "docs/project/planning/linear-v1.json",
+      "linear_status": "Backlog",
+      "active_human_effort_remaining_proposal_days": 3,
+      "base_days": 2.5,
+      "reserve_days": 0.5,
+      "estimate_approved": false,
+      "principal_development_authorized": false,
+      "preparation_autonomy": "Sofiane delegates preparation through final review without intermediate step confirmations; ask only for genuine blockers"
     }
   },
   "access_preparation": {
