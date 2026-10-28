@@ -1,6 +1,16 @@
 # Reprise du projet
 
-## Situation au 26octobre2026
+## Publication GitHub du 28 octobre 2026
+
+Sur demande explicite de Sofiane, les sept commits jusqu’à `1046c0c` sont publiés sur `origin/tem-6-technical-trial`. [PR nº1 en brouillon](https://github.com/blackboxdev0/tema-academie/pull/1), base `main`, ouverte et attachée au chat. Aucun merge, push direct sur main ou déploiement effectué. `main` distante vérifiée inchangée à `8217e5253055e6c669e0a154beee17ef3c4f814b`.
+
+Avant push : `cd app && npm run verify`,61tests Node et28Playwright réussis, build réussi ; Google simulé, aucun email réel. Contrôle ciblé des112fichiers différents de main sans clé API ni adresse des participants de test détectée. Branche propre avant publication. Ce checkpoint documentaire est versionné et poussé à son tour ; il ne change pas le prototype testé.
+
+Les validations métier ouvertes de la revue restent les mêmes : volume de lancement et tarif absent. Aucun GO principal ou acceptation des huit ET incomplets déduit du push. TEM-5 Review, TEM-6 In Progress ; les tickets V1 restent préparés en Backlog. La PR reste volontairement en brouillon, non prête pour fusion.
+
+Les mentions « aucun push/PR » dans les constats du26octobre ci-dessous décrivent l’état historique de ce jour et sont remplacées par ce checkpoint pour l’état actuel.
+
+## Situation historique au 26octobre2026
 
 **Essai limité TEM-6 exécuté, bilan à examiner avec Sofiane.** Le transport A fonctionne dans le navigateur intégré ; quatre ET entièrement vérifiés et huit incomplets. [Bilan détaillé](technical-trial/TEM-6-results.md) · [fiche BMAD](../../_bmad-output/implementation-artifacts/spec-tem-6-essai-technique.md) · [TEM-6](https://linear.app/tema-academie/issue/TEM-6/eprouver-le-parcours-dinscription-google-sur-lenvironnement-test).
 
@@ -16,7 +26,7 @@ La prochaine proposition de GO doit nommer le lot1.1–1.3 sur ressources isolé
 
 [Plan et estimation](planning/plan-developpement-v1.md), [epics BMAD](../../_bmad-output/planning-artifacts/epics.md), [couverture](planning/validation-decoupage-v1.md), [registre Linear](planning/linear-v1.json). Native readiness CONCERNS, document draft jusqu’à validation globale. TEM-7–11 parents etTEM-12–28 enfants en Backlog ; TEM-5 Review, TEM-6 In Progress, P-TEM-1 Backlog inchangés.
 
-Sofiane délègue la préparation sans micro-confirmations et autorise les commits par jalon. Aucun GO principal, push, fusion ou déploiement nouveau. La présente revue est documentaire, pas une nouvelle recette produit.
+Sofiane délègue la préparation sans micro-confirmations et autorise les commits par jalon. Aucun GO principal, fusion ou déploiement nouveau. La revue est documentaire, pas une nouvelle recette produit ; publication GitHub autorisée et vérifiée au checkpoint du28octobre.
 
 ## Preuves acquises
 
