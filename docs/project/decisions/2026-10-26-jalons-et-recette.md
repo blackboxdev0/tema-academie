@@ -10,3 +10,10 @@ Source : décisions explicites de Sofiane dans le chat du 26 octobre 2026.
 Le rattrapage Git capture les documents dans leur état actuel, avec leurs limites et réserves ; il ne reconstruit pas artificiellement des versions historiques. Les sources UX conservées dans `.working` sont des références des contrats et revues, pas des captures temporaires ou logs bruts.
 
 **Autonomie de préparation confirmée ensuite le 26 octobre :** Sofiane demande d’avancer au maximum sans sollicitation à chaque étape et de regrouper la validation à la fin. Décisions techniques cohérentes déléguées, question seulement en cas de blocage réel. Les tâches détaillées et l’estimation sont des propositions préparées, pas une acceptation inventée ; aucun GO principal ou livraison. [Découpage préparé](../../../_bmad-output/planning-artifacts/epics.md).
+
+## Arbitrages du 28 octobre 2026
+
+- **Tarif à confirmer :** Sofiane confirme le maintien de la fiche avec ce libellé et la désactivation des inscriptions ; aucun montant absent converti en zéro. Aucun nouveau champ d’approbation tarifaire n’est décidé ici.
+- **Capacité du compte Google :** Sofiane accepte de fonctionner dans les limites gratuites, sans ajout payant automatique. Le calcul100destinataires/2notifications donne environ50inscriptions complètes au maximum théorique avant autres usages ; il ne garantit ni le quota disponible ni la réception. Aucun plafond métier fixe50 ni nouvelle fermeture automatique fondée sur ce chiffre n’est ajouté à ce stade.
+- **Corrections internes :** à traiter au moment où elles deviennent nécessaires, sans les exécuter maintenant ; leurs prérequis restent à respecter.
+- **UX/UI :** Sofiane envisage une phase de revue avant développement et demande comment valider les maquettes et la réalisation. La méthode en trois temps proposée dans le chat reste une recommandation, pas une validation graphique finale ni un GO de code.

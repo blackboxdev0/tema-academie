@@ -20,7 +20,9 @@ Spécification fonctionnelle approuvée24 octobre, UX fonctionnelle/dispositions
 
 **Revue globale du plan demandée et exécutée.** [Bilan à présenter](planning/reviews/revue-globale-plan-v1.md) : périmètre5blocs/17stories conservé, mais précisions internes nécessaires (contrats avant1.1, dépendances réelles, import rejouable, promotion TEST/Métier, anti-abus, export et candidat de recette avant5.3). Aucun code ni correctif du plan source appliqué par la revue, aucune autorisation de développement déduite.
 
-Deux informations à discuter avec Sofiane : pic d’inscriptions attendu pour dimensionner les courriels du compte gratuit ; comportement d’une formation nouvelle sans tarif (proposition fiche visible/Tarif à confirmer, inscriptions désactivées). Cette proposition n’est pas approuvée. Le catalogue initial24prix n’a pas cette absence.
+Les deux arbitrages ont reçu réponse le28octobre : « Tarif à confirmer » et inscription désactivée confirmés ; fonctionner dans les limites Google sans ajout payant automatique accepté. Cinquante inscriptions avec deux messages reste un maximum théorique partagé, pas une garantie ou nouveau plafond métier codé. Source canonique Spec complétée ; rendu des contrats à consolider au jalon approprié.
+
+Sofiane souhaite comprendre comment valider UX/UI et envisage une revue avant développement. Proposition : affiner les quatre écrans existants ordinateur/mobile, valider visuel et navigation avant implémentation, contrôler chaque écran réalisé puis recette E2E complète. Aucune nouvelle direction visuelle, maquette ou GO principal approuvé. Les corrections internes du plan sont reportées à leur moment utile, sans déroger aux prérequis.
 
 La prochaine proposition de GO doit nommer le lot1.1–1.3 sur ressources isolées et les prérequis qui le concernent, sans waiver général des8ET incomplets. Cadence normale<2min/secours5min déjà approuvée ; Outlook/Apple reportés à recette complète, ne pas les remettre au choix. Estimation3jours humains restante toujours proposée, répartition Sofiane/Tema à clarifier en jours-personnes cumulés ; pas une promesse de délai de code.
 
