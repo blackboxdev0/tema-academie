@@ -174,3 +174,7 @@ Le rattachement vérifie une affectation documentaire ; il ne certifie pas une i
 Vérification structurelle terminée ; document **draft** en attente de la revue finale demandée par Sofiane. Les continuations intermédiaires ont été déléguées par sa demande explicite d’avancer sans question à chaque étape. Cette délégation ne fabrique pas une approbation détaillée, une acceptation des tests incomplets ou un GO principal.
 
 Aucun test applicatif n’a été relancé pour ces seuls documents. La dernière relance connue du checkpoint précédent reste61Node/28Playwright/build réussis, réseau Google simulé.
+
+## Actualisation d’architecture du28octobre
+
+Contrats réconciliés, G0PASS et revueUXprochaine, sansGOprincipal. Le graphe des17stories sépare désormais dépendances réelles et ordre conseillé, avec mêmesIDs et dépendances toujours antérieures. Les52scénarios existants ont reçu les précisions partagées (tarif absent, import rejoué, anti-abus, export/promotion et preview avant recette), sanspreuveproduitnouvelle. Les matrices de rattachement restent celles du découpage initial ; le contrôle de couverture porte la présence des exigences, pas leur succès empirique.

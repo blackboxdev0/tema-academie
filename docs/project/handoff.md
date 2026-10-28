@@ -6,7 +6,7 @@ Sur demande explicite de Sofiane, les sept commits jusqu’à `1046c0c` sont pub
 
 Avant push : `cd app && npm run verify`,61tests Node et28Playwright réussis, build réussi ; Google simulé, aucun email réel. Contrôle ciblé des112fichiers différents de main sans clé API ni adresse des participants de test détectée. Branche propre avant publication. Ce checkpoint documentaire est versionné et poussé à son tour ; il ne change pas le prototype testé.
 
-Les validations métier ouvertes de la revue restent les mêmes : volume de lancement et tarif absent. Aucun GO principal ou acceptation des huit ET incomplets déduit du push. TEM-5 Review, TEM-6 In Progress ; les tickets V1 restent préparés en Backlog. La PR reste volontairement en brouillon, non prête pour fusion.
+À ce checkpoint de publication initial, volume de lancement et tarif absent restaient ouverts ; ils ont ensuite reçu réponse et sont intégrés à la clôture ci-dessous. Aucun GO principal ou acceptation des huit ET incomplets déduit du push. TEM-5 Review, TEM-6 In Progress ; les tickets V1 restent préparés en Backlog. La PR reste volontairement en brouillon, non prête pour fusion.
 
 Les mentions « aucun push/PR » dans les constats du26octobre ci-dessous décrivent l’état historique de ce jour et sont remplacées par ce checkpoint pour l’état actuel.
 
@@ -16,19 +16,21 @@ Les mentions « aucun push/PR » dans les constats du26octobre ci-dessous décri
 
 Spécification fonctionnelle approuvée24 octobre, UX fonctionnelle/dispositions25 octobre avec finition graphique différée, architecture d’ensemble et plan d’essai approuvés26 octobre. GO explicite du 26 octobre pour le prototype/essai isolé ; **aucun GO principal, push, fusion, achat ou livraison** ; commits par jalon désormais autorisés. La préparation et le prototype ont été versionnés par jalon ; aucun push.
 
-## Prochaine conversation
+## Prochaine conversation — après clôture d’architecture du 28 octobre
 
-**Revue globale du plan demandée et exécutée.** [Bilan à présenter](planning/reviews/revue-globale-plan-v1.md) : périmètre5blocs/17stories conservé, mais précisions internes nécessaires (contrats avant1.1, dépendances réelles, import rejouable, promotion TEST/Métier, anti-abus, export et candidat de recette avant5.3). Aucun code ni correctif du plan source appliqué par la revue, aucune autorisation de développement déduite.
+**Architecture de conception clôturée pour passer à l’UX/UI.** La [spine](../../_bmad-output/planning-artifacts/architecture/architecture-tema-academie-2026-10-20/ARCHITECTURE-SPINE.md) et la [Spec](../../_bmad-output/specs/spec-tema-academie-v1/SPEC.md) sont réconciliées. Les 11 AD, 8 CAP, 21 AC et 12 ET conservent leurs identifiants. Le [contrôle commun](architecture/controle-technique-v1.md) définit le tarif absent, l’anti-abus, les mesures de charge/cadence, l’import/export, la promotion et les étapes G0–G4. [Résolution du gate](../../_bmad-output/planning-artifacts/architecture/architecture-tema-academie-2026-10-20/reviews/resolution-2026-10-28.md) : lint sans constat, réconciliations Spec/UX et trois reviewers indépendants PASS pour G0. Aucun nouvel arbitrage humain avant la phase UX.
 
-Les deux arbitrages ont reçu réponse le28octobre : « Tarif à confirmer » et inscription désactivée confirmés ; fonctionner dans les limites Google sans ajout payant automatique accepté. Cinquante inscriptions avec deux messages reste un maximum théorique partagé, pas une garantie ou nouveau plafond métier codé. Source canonique Spec complétée ; rendu des contrats à consolider au jalon approprié.
+Les décisions « Tarif à confirmer / inscription désactivée » et limites Google gratuites sont intégrées. Une date sans tarif garde sa visibilité et reste consultable, avec action d’inscription désactivée. Les champs d’éligibilité publics sont dérivés ; aucune nouvelle case d’approbation gestionnaire. Les paramètres techniques de protection (3/30 commandes par fenêtres fixes de 60 s) et de charge (budget cible de 45 min/jour) restent à implémenter et éprouver. Aucun plafond métier de 50 inscriptions ou nouveau PASS produit. Aucun code, service Google, trigger ou envoi modifié.
 
-Sofiane souhaite comprendre comment valider UX/UI et envisage une revue avant développement. Proposition : affiner les quatre écrans existants ordinateur/mobile, valider visuel et navigation avant implémentation, contrôler chaque écran réalisé puis recette E2E complète. Aucune nouvelle direction visuelle, maquette ou GO principal approuvé. Les corrections internes du plan sont reportées à leur moment utile, sans déroger aux prérequis.
+**Ordre demandé par Sofiane :** revoir les maquettes UX/UI existantes, dont les fonctions/dispositions sont approuvées et la finition reste ouverte ; valider ensuite le plan global et l’estimation ; puis donner un GO principal identifié. Ne pas redemander les choix d’architecture consolidés ni démarrer le code maintenant. L’autorisation actuelle porte sur la clôture documentaire ; les acceptations et publications restent séparées.
 
-La prochaine proposition de GO doit nommer le lot1.1–1.3 sur ressources isolées et les prérequis qui le concernent, sans waiver général des8ET incomplets. Cadence normale<2min/secours5min déjà approuvée ; Outlook/Apple reportés à recette complète, ne pas les remettre au choix. Estimation3jours humains restante toujours proposée, répartition Sofiane/Tema à clarifier en jours-personnes cumulés ; pas une promesse de délai de code.
+Le [plan](planning/plan-developpement-v1.md), les [epics](../../_bmad-output/planning-artifacts/epics.md) et le [registre Linear](planning/linear-v1.json) suivent les contrats. Les dépendances techniques ont été distinguées de l’ordre conseillé, avec relations relues ; cinq parents et 17 stories conservés, 52 scénarios précisés sans nouveaux IDs. G0 est PASS ; la préparation du développement reste CONCERNS car la finition UX, le plan, l’estimation et le GO ne sont pas acceptés. Aucun sprint activé.
 
-[Plan et estimation](planning/plan-developpement-v1.md), [epics BMAD](../../_bmad-output/planning-artifacts/epics.md), [couverture](planning/validation-decoupage-v1.md), [registre Linear](planning/linear-v1.json). Native readiness CONCERNS, document draft jusqu’à validation globale. TEM-7–11 parents etTEM-12–28 enfants en Backlog ; TEM-5 Review, TEM-6 In Progress, P-TEM-1 Backlog inchangés.
+Restent pour la réalisation et la recette : nouvelle cadence, limiteur, tarif absent, import/export et promotion ; compléments ET requis avant acceptation du composant ; Outlook/Apple à la recette complète convenue. Le bilan historique TEM-6 reste 4 PASS / 8 NON VÉRIFIÉ. Un contrôle requis indisponible maintient son acceptation ouverte sauf dérogation humaine précise. Valeurs client, récupération, offre et cible sont contrôlées à leur jalon. Aucune nouvelle campagne réelle pour fermer G0.
 
-Sofiane délègue la préparation sans micro-confirmations et autorise les commits par jalon. Aucun GO principal, fusion ou déploiement nouveau. La revue est documentaire, pas une nouvelle recette produit ; publication GitHub autorisée et vérifiée au checkpoint du28octobre.
+Les conditions commerciales et paiements courants relèvent du contrat commercial distinct, pas des valeurs historiques de proposition. Cette consolidation ne modifie aucune condition commerciale.
+
+TEM-5 reste Review, TEM-6 In Progress, le projet et les stories V1 Backlog : aucun Done déduit. Commits par jalon et push de branche de travail autorisés ; PR 1 en brouillon, aucune fusion de main ni livraison.
 
 ## Preuves acquises
 

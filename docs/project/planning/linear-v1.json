@@ -1,6 +1,6 @@
 {
   "prepared_on": "2026-10-26",
-  "status": "draft_pending_owner_review",
+  "status": "draft_pending_global_plan_and_ux_review",
   "team_id": "b6fe00a9-ac52-42c1-a3ef-d08b3dbd2f8f",
   "project_id": "e6d24474-be36-4ae8-a735-5d002be86579",
   "branch": "tem-6-technical-trial",
@@ -90,7 +90,7 @@
       "status": "Backlog",
       "parent": "TEM-8",
       "depends_on": [
-        "TEM-14"
+        "TEM-12"
       ]
     },
     {
@@ -102,7 +102,8 @@
       "status": "Backlog",
       "parent": "TEM-8",
       "depends_on": [
-        "TEM-15"
+        "TEM-15",
+        "TEM-13"
       ]
     },
     {
@@ -126,7 +127,8 @@
       "status": "Backlog",
       "parent": "TEM-9",
       "depends_on": [
-        "TEM-17"
+        "TEM-17",
+        "TEM-14"
       ]
     },
     {
@@ -150,7 +152,7 @@
       "status": "Backlog",
       "parent": "TEM-9",
       "depends_on": [
-        "TEM-19"
+        "TEM-18"
       ]
     },
     {
@@ -162,6 +164,7 @@
       "status": "Backlog",
       "parent": "TEM-9",
       "depends_on": [
+        "TEM-19",
         "TEM-20"
       ]
     },
@@ -174,7 +177,7 @@
       "status": "Backlog",
       "parent": "TEM-10",
       "depends_on": [
-        "TEM-21"
+        "TEM-18"
       ]
     },
     {
@@ -186,7 +189,9 @@
       "status": "Backlog",
       "parent": "TEM-10",
       "depends_on": [
-        "TEM-22"
+        "TEM-22",
+        "TEM-19",
+        "TEM-21"
       ]
     },
     {
@@ -198,7 +203,8 @@
       "status": "Backlog",
       "parent": "TEM-10",
       "depends_on": [
-        "TEM-23"
+        "TEM-22",
+        "TEM-21"
       ]
     },
     {
@@ -210,7 +216,8 @@
       "status": "Backlog",
       "parent": "TEM-11",
       "depends_on": [
-        "TEM-24"
+        "TEM-17",
+        "TEM-21"
       ]
     },
     {
@@ -222,6 +229,8 @@
       "status": "Backlog",
       "parent": "TEM-11",
       "depends_on": [
+        "TEM-23",
+        "TEM-24",
         "TEM-25"
       ]
     },
@@ -249,5 +258,6 @@
         "TEM-27"
       ]
     }
-  ]
+  ],
+  "architecture_alignment_on": "2026-10-28"
 }

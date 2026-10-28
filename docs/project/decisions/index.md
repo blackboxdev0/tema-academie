@@ -81,3 +81,7 @@ Les autres orientations du brief fourni restent en discussion ; leur présence d
 ## Suite du 26 octobre 2026
 
 [Commits par jalon, cadence approuvée et recette des invitations](2026-10-26-jalons-et-recette.md) : décision humaine actuelle, remplaçant la restriction antérieure de commits ; préparation du découpage autorisée, aucun GO principal.
+
+## Clôture de conception du 28 octobre
+
+Sofiane demande puis donne le GO à la clôture d’architecture avant UX/UI. Les contrats sont réconciliés et la revue native est PASS pour G0 : [contrôle commun](../architecture/controle-technique-v1.md), [résolution](../../../_bmad-output/planning-artifacts/architecture/architecture-tema-academie-2026-10-20/reviews/resolution-2026-10-28.md). Les contrôles d’implémentation futurs et le GO principal restent distincts.

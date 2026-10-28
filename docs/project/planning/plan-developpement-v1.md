@@ -12,7 +12,7 @@
 | 4 | Tema gère les changements avec historique | 4.1 Annulation ; 4.2 Reprogrammation ; 4.3 Export/nettoyage | Statuts/instantanés/capacité ; gestion et guide complets à terminer |
 | 5 | Tema reçoit une solution vérifiée et transmissible | 5.1 Finition/accessibilité ; 5.2 Non-régression/CI ; 5.3 Recette complète ; 5.4 Remise/publication autorisée | Suite locale et retour de code compatibles ; CI, supports et recette V1 restent à réaliser |
 
-Chaque story comprend ses tests et sa revue au fil du développement. Le socle CI existant est câblé dès1.1 pour le premier push applicatif autorisé. La story5.2 achève la couverture V1 et son intégration, elle n’autorise pas à différer tous les tests jusqu’à la fin. Les cinq blocs sont des résultats métier, pas cinq implémentations séparées du même moteur.
+Chaque story comprend ses tests et sa revue au fil du développement. Le socle local existe ; la CI est à câbler dès1.1 pour le premier push applicatif autorisé. La story5.2 achève la couverture V1 et son intégration, elle n’autorise pas à différer tous les tests jusqu’à la fin. Les cinq blocs sont des résultats métier, pas cinq implémentations séparées du même moteur.
 
 ## Décisions de préparation déléguées
 
@@ -22,11 +22,13 @@ Chaque story comprend ses tests et sa revue au fil du développement. Le socle C
 - Les17 stories restent Backlog tant que leur préparation détaillée n’est pas acceptée ; aucun point Linear n’est converti en jour. Les issues parents regroupent les résultats et les liens, sans créer cinq projets séparés.
 - Modifications progressives dans le même dépôt, commits par jalon ; aucun push effectué dans cette préparation. Les règles d’autorisation de déploiement/fusion restent applicables.
 
-## Consolidation des contrats avant le code dépendant
+## Contrats consolidés et séquence de validation
 
-Les journaux architecture/Spec et les décisions humaines sont à jour pour la cadence, mais les spines et plusieurs compagnons contiennent encore des états historiques : réparation minute, cible uniforme<2min, aucun prototype/test/commit, versions proposées non installées et prérequis agendas avant développement. Ces textes ne doivent pas être interprétés comme état actuel.
+La spine et la Spec sont réconciliées le28octobre : cadence normale<2min/secours5min, tarif absent non réservable, quotas gratuits, anti-abus, import/export et promotion. Les états historiques des bilans restent datés ; les obligations futures ne sont pas des preuves acquises. Le [contrôle commun](../architecture/controle-technique-v1.md) fixe les scénarios et paramètres techniques partagés.
 
-Avant le code dépendant, faire la mise à jour des artefacts par leurs writers natifs, depuis les journaux canoniques et les preuves datées, sans changer les CAP/AC/ET ni faire disparaître les observations historiques. La préparation présente les nouvelles décisions par référence ; elle n’édite pas silencieusement les spines d’un autre writer. Les critères de1.3 portent explicitement ce préalable.
+G0 clôture le dossier pour passer à la revue UX/UI ; G1 exige le GO principal d’un lot identifié ; G2 vérifie les garanties concernées avant l’ouverture hors test contrôlé ; G3 publie après autorisation un candidat de recette puis exécute la recette complète, dont Outlook/Apple ; G4 accepte la remise/ouverture après tous contrôles requis ou dérogation humaine identifiée. Une preview TEST autorisée peut précéder les essais dont elle est le support. Aucun test réel nouveau n’est exécuté pour cette consolidation.
+
+Les dépendances techniques ont été distinguées de l’ordre conseillé des cinq blocs, en conservant17stories. La finition peut avancer indépendamment d’une attente de validation client sur la conservation ; les critères de publication gardent leurs prérequis.
 
 ## Compléments d’essai : affectation et effet sur le GO
 
@@ -41,11 +43,11 @@ Avant le code dépendant, faire la mise à jour des artefacts par leurs writers 
 | ET-09 Publication/secours/quotas | Édition/collage/import/événement manqué,1.3 et4.1 | Cadence acceptée mais non mesurée ; marge à démontrer avant déploiement dépendant |
 | ET-11 Supports | Navigation/envoi/erreurs et contexte conservé sur supports prévus,2.2/3.1/5.3 | Autres navigateurs non vérifiés ; transport ne doit pas être accepté sur une seule simulation |
 
-**Proposition de séquencement, pas report général validé :** intégrer les contrôles au plus tôt à leur story et rejouer le parcours complet en5.3. Le plan initial comportait des prérequis avant développement ; seul Outlook/Apple a été explicitement déplacé par Sofiane. À la validation finale, confirmer le GO et son périmètre avec ces limites : il ne peut pas être interprété comme acceptation des huit ET incomplets. Si un préalable requis reste manquant, autoriser au besoin un lot préparatoire borné plutôt que déclarer le projet prêt sans réserve.
+**Séquence désormais documentée :** intégrer les contrôles au plus tôt à la story qui réalise la fonctionnalité, avant l’exposition/acceptation concernée, puis recette complète enG3. Les mesures impossibles sur une fonctionnalité non encore construite ne sont pas prétendues acquises àG0. Les preuves historiques4PASS/8NON VÉRIFIÉ restent inchangées. Le premier lot proposé est1.1–1.3 sur ressources isolées, après revue UX et validation du plan ; son GO n’est pas donné par la consolidation.
 
 ## Estimation du reste : interventions humaines actives
 
-**Proposition à valider : 2,5 jours humains actifs de base +0,5 jour de réserve =3 jours.** Fourchette de préparation2,5–3,5 jours selon les résultats de recette. Il s’agit du reste estimé à partir de maintenant, sans reconstituer un temps passé non mesuré ni soustraire mécaniquement les anciens trois jours proposés pour le mandat entier. Aucun supplément commercial ou prix modifié n’en découle.
+**Proposition à valider : 2,5 jours-personnes humains actifs cumulés de base +0,5 jour-personne de réserve =3 jours-personnes.** Fourchette de préparation2,5–3,5 jours selon les résultats de recette. Il s’agit du reste estimé à partir de maintenant, sans reconstituer un temps passé non mesuré ni soustraire mécaniquement les anciens trois jours proposés pour le mandat entier. Aucun supplément commercial ou prix modifié n’en découle.
 
 | Intervention humaine restante | Base | Qui intervient |
 |---|---:|---|
@@ -55,7 +57,7 @@ Avant le code dépendant, faire la mise à jour des artefacts par leurs writers 
 | Validation de remise, passation30min et coordination bascule gérée par Sofiane | 0,5 j | Sofiane/Tema |
 | Réserve pour reprise de recette ou accès | 0,5 j | Affectation au besoin, non consommée par défaut |
 
-Le code, les tests et les revues exécutés en autonomie sont du travail distinct : leur durée d’exécution n’est ni un jour humain continu ni une promesse calendaire. Le temps de lecture et d’arbitrage réel est inclus dans les postes humains ; l’agent ne s’attribue pas du temps humain fictif. La bascule FTP technique reste sous responsabilité Sofiane et son effort ne peut être chiffré sans information serveur ; le poste ci-dessus couvre la coordination/validation, pas un chantier d’hébergement inconnu.
+Les postes ci-dessus cumulent les interventions des personnes concernées ; ils ne réservent pas automatiquement trois journées personnelles à Sofiane. La répartition précise Sofiane/Tema est à confirmer lors de la validation globale, pas pendant la clôture d’architecture. Le code, les tests et les revues exécutés en autonomie sont du travail distinct : leur durée d’exécution n’est ni un jour humain continu ni une promesse calendaire. Le temps de lecture et d’arbitrage réel est inclus dans les postes humains ; l’agent ne s’attribue pas du temps humain fictif. La bascule FTP technique reste sous responsabilité Sofiane et son effort ne peut être chiffré sans information serveur ; le poste ci-dessus couvre la coordination/validation, pas un chantier d’hébergement inconnu.
 
 Attentes externes séparées : réponses Tema, validation des textes/prix/identité, récupération du compte, disponibilité Outlook/Apple et appareils, offre Vercel compatible. Aucun délai de calendrier ou date de livraison promis. Réviser l’estimation si le transport échoue hors navigateur intégré, si les quotas imposent une autre solution ou si le périmètre change.
 
@@ -79,3 +81,5 @@ Critères de clôture : une story est Review après réalisation/revue/tests req
 | 5 | [TEM-11](https://linear.app/tema-academie/issue/TEM-11/v1-5-tema-recoit-une-solution-verifiee-presentable-et-transmissible) | [TEM-25](https://linear.app/tema-academie/issue/TEM-25/51-finaliser-une-interface-tema-lisible-et-accessible) (5.1), [TEM-26](https://linear.app/tema-academie/issue/TEM-26/52-rejouer-les-controles-avant-chaque-mise-a-jour) (5.2), [TEM-27](https://linear.app/tema-academie/issue/TEM-27/53-recetter-la-solution-complete-et-ses-invitations-de-bout-en-bout) (5.3), [TEM-28](https://linear.app/tema-academie/issue/TEM-28/54-remettre-le-candidat-le-guide-et-les-elements-de-publication) (5.4) |
 
 [Vérification de couverture](validation-decoupage-v1.md) · [Préparation à l’implémentation](../../../_bmad-output/planning-artifacts/implementation-readiness.md) · [Registre](linear-v1.json).
+
+La revue globale du26octobre reste un constat historique ; ses corrections techniques sont consolidées dans le [dossier d’architecture](../architecture/controle-technique-v1.md). Les deux arbitrages tarif/limites Google ont reçu réponse le28octobre ; aucun achat automatique, plafond métier50 ou nouvelle approbation graphique.

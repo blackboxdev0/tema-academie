@@ -19,11 +19,11 @@ Node fournit son propre test runner ; Playwright fournit les parcours navigateur
 
 | Domaine critique | Critères reliés | Couverture minimale |
 |---|---|---|
-| Import, colonnes, identifiants, saisie administrable | AC-01, AC-04, AC-05 | Cas nominal et données absentes/dupliquées ; code unique et stable ; défauts inactive/fermée |
-| Catalogue et disponibilités | AC-02, AC-03, AC-13, AC-16 | Tous les états de visibilité et capacité, indépendance des dates, fuseau, affichage des informations pratiques |
+| Import, colonnes, identifiants, saisie administrable | AC-01, AC-04, AC-05 | Cas nominal et données absentes/dupliquées ; code unique/stable ; défauts inactive/fermée ; import interrompu/repris sans doublon ni écrasement |
+| Catalogue et disponibilités | AC-02, AC-03, AC-13, AC-16 | Tous les états de visibilité/capacité/éligibilité, tarif absent, indépendance des dates, fuseau, informations pratiques et champ registration_enabled |
 | Inscription et intégrité | AC-06 à AC-09, AC-17 | Réservation unique, dernière place concurrente, doublon, consentement, conditions modifiées, reprise et rejeu après annulation |
 | Courriels et invitation | AC-10 à AC-12 | Contenu/ICS et états testés automatiquement ; réception et import réellement observés, échec participant et alerte elle-même indisponible |
-| Confidentialité et entrées | AC-14, AC-15, AC-18 | Liste blanche publique, lien visio privé, textes inertes, labels/focus/erreurs ; complément clavier et appareils réels |
+| Confidentialité et entrées | AC-14, AC-15, AC-18 | Liste blanche publique, lien visio privé, textes inertes y compris exportExcel =,+,-,@, rafales/replay, labels/focus/erreurs ; complément clavier et appareils réels |
 | Exploitation et remise | AC-19 à AC-21 | Scénarios de gestion documentés, batterie rejouable, résultat associé au candidat, récupération ; politique et remise gardent leur validation humaine |
 
 Chaque invariant critique possède une assertion automatisée et un lien vers son critère. La matrice distingue les compléments humains ou externes ; aucun pourcentage arbitraire de lignes n’est imposé. Les cinq parcours navigateur initiaux, enrichis à quatorze scénarios pour chaque profil après revue/correctifs, sont inscription réussie, date devenue complète, reprise d’une réponse perdue, conditions modifiées et visibilité après fermeture/inactivation.
@@ -31,7 +31,7 @@ Chaque invariant critique possède une assertion automatisée et un lien vers so
 ## Rejouer avant de pousser et de livrer
 
 1. **Avant chaque push applicatif :** une commande locale unique exécute la logique, les contrats locaux, le build et les parcours navigateur déterministes pertinents. Commande du prototype `cd app && npm run verify`, déjà exécutée ; à conserver et enrichir pour la V1. Un échec empêche le push ; une vérification requise non exécutée est signalée.
-2. **Sur GitHub :** les mêmes contrôles sont rejoués sur push et pull request, avec un rapport associé à la révision. GitHub Actions intervient après le push et complète donc le contrôle local. Un résultat en échec bloque l’intégration ou la promotion de la version selon le processus convenu.
+2. **Sur GitHub, à câbler au premier jalon applicatif autorisé :** les mêmes contrôles seront rejoués sur push et pull request, avec un rapport associé à la révision. GitHub Actions intervient après le push et complète donc le contrôle local. Un résultat en échec bloque l’intégration ou la promotion de la version selon le processus convenu.
 3. **Avant une livraison affectant Google ou le parcours réel :** rejouer les intégrations réelles pertinentes et la recette Computer Use sur le candidat Vercel. Contrôler l’état du Sheet, la réception et l’invitation, puis demander le GO de livraison applicable. Une prévisualisation Vercel peut exister avant cette recette, sans être déclarée acceptée.
 
 Le premier essai technique construit une preuve limitée du transport et des invariants ; la batterie s’enrichit ensuite avec chaque fonctionnalité et chaque correction. Un défaut corrigé reçoit un cas de non-régression lorsqu’il concerne une règle ou un parcours durable. Commande/prérequis dans [app/README.md](../../../app/README.md). La suite rapide recrée seulement ses fixtures locales ; le service Google n’expose aucun reset et ne supprime pas ses inscriptions pour rejouer les contrôles.
@@ -42,14 +42,23 @@ Le premier essai technique construit une preuve limitée du transport et des inv
 - Les jeux de données et horloges sont contrôlés, les versions verrouillées et les attentes explicites. Un retour de code conserve les inscriptions fictives créées après la version précédente ; leur éventuel nettoyage est une opération distincte, jamais une restauration implicite de données. Le reset est limité aux ressources d’essai ; aucune donnée d’exploitation n’est supprimée ou réécrite pour lancer la batterie.
 - Les envois sont simulés dans la suite rapide. Quelques envois réels bornés partent de `temaacademie@gmail.com` vers les trois boîtes contrôlées de Sofiane et l’avis interne prévu ; adresses reçues dans la configuration locale privée hors dépôt, quotas disponibles à constater. Les quotas restent partagés si les projets utilisent le même compte.
 - Les tests API côté serveur prouvent leur contrat HTTP ; le navigateur réel vérifie séparément les redirections, droits et réponses exploitables. Un appel opaque ne vaut pas confirmation.
-- Une simulation de mail ne prouve pas MailApp ou la réception. Trois Gmail ne prouvent pas trois logiciels d’agenda. Deux imports Google hiver/été ont été observés ; Outlook/Apple restent à vérifier. WebKit automatisé ne vaut pas Safari réel.
+- Une simulation de mail ne prouve pas MailApp ou la réception. Trois Gmail ne prouvent pas trois logiciels d’agenda. Deux imports Google hiver/été ont été observés ; Outlook/Apple restent à vérifier par Sofiane pendant sa recette complète, conformément au report accepté. WebKit automatisé ne vaut pas Safari réel.
 - Computer Use sert à jouer et observer les parcours. La suite déterministe versionnée est exécutée par le runner de tests ; une intervention Computer Use n’est pas annoncée comme un workflow GitHub autonome.
 - Résultat par contrôle : `PASS`, `FAIL` ou `NON VÉRIFIÉ`, avec candidat, environnement, type de preuve et limite. Un test en échec ou indisponible ne devient pas vert après répétitions aveugles. Rapports synthétiques sans secret ou donnée réelle ; captures et pièces d’essai hors du code livré.
 
 ## État et points à préciser
 
-TEM-6 :61 tests Node et28 E2E réussis, build statique et même moteur Google, cinq inscriptions fictives et contrôles réels documentés dans le [bilan](../../../docs/project/technical-trial/TEM-6-results.md). Restent les jobs CI, supports manquants et cas incomplets ; cadence de réparation à arbitrer devant le quota des déclencheurs. TEST fermé et périodique12 h au repos après mesures, aucune cadence V1 choisie. L’effet sur l’estimation doit être évalué avant engagement ; aucun prix ou délai supplémentaire n’est déduit de cette exigence.
+TEM-6 :61 tests Node et28 E2E réussis, build statique et même moteur Google, cinq inscriptions fictives et contrôles réels documentés dans le [bilan](../../../docs/project/technical-trial/TEM-6-results.md). Restent les jobs CI, supports manquants et cas incomplets. La cadence normale<2min/secours5min est acceptée, son implémentation et sa mesure restent à faire ; TEST fermé et périodique12h au repos selon le constat26octobre. Les règles de tarif, les deux champs d’éligibilité et les seuils de rafale du contrat ne sont pas encore implémentés par TEM-6. L’effet sur l’estimation doit être évalué avant engagement ; aucun prix ou délai supplémentaire n’est déduit de cette exigence.
 
-Le [plan d’essai technique](plan-essai-technique.md) conserve ses douze scénarios et ses autorisations. Cette stratégie ne donne aucun GO de développement, de commit, de push ou de publication.
+Le [plan d’essai technique](plan-essai-technique.md) conserve ses douze scénarios et ses autorisations. Cette stratégie ne donne aucun GO principal, fusion ou publication. Les commits par jalon et la branche de préparation poussée ont leurs autorisations humaines distinctes, déjà enregistrées.
 
 Sources officielles consultées le 25 octobre 2026 : [test runner Node](https://nodejs.org/api/test.html), [Playwright dans GitHub Actions](https://playwright.dev/docs/ci-intro), [environnement Apps Script V8](https://developers.google.com/apps-script/guides/v8-runtime), [quotas Google](https://developers.google.com/apps-script/guides/services/quotas).
+
+
+## Critères d’exécution des compléments
+
+Rejouer le même moteur et les mêmes contrats ; distinguer une assertion locale de l’écriture Google ou d’une réception observée. Les étapes G0–G4 du [plan](plan-essai-technique.md) et le [contrôle technique partagé](../../../docs/project/architecture/controle-technique-v1.md) définissent le moment des preuves. La clôture documentaire/UX ne nécessite pas de prétendre l’ancien bilan complet ; avant acceptation/ouverture réelle hors test contrôlé, un contrôle requis indisponible maintient le jalon ouvert, sauf dérogation humaine spécifique.
+
+Ajouter à la couverture : import partiel puis relance complète ; tarif absent avec date visible et CTA bloqué, classement et admission cohérents ; champs d’éligibilité manquants/incohérents refusés prudemment ; rafales3/min par hash courriel et30/min global avec replay prioritaire, indisponibilité du compteur et0ligne/0mail au refus ; promotion de configuration et garde TEST conservée ; liens directs/actualisation du site sur hébergement statique ; textes libres inertes dans le format Excel effectivement exporté. Le quota Google partagé est une limite technique à observer, pas un nouveau plafond métier fixe50. Aucune panne ou séquence de charge ici n’est annoncée exécutée.
+
+Un déploiement TEST ou une preview de recette autorisée précède les tests qui nécessitent ce candidat ; la gate ne l’interdit pas et ne le confond pas avec une livraison ou une ouverture aux utilisateurs réels.

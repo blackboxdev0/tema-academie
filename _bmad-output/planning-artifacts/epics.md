@@ -82,7 +82,7 @@ NFR14: GO de développement, fusion, déploiement/achat restent distincts ; comm
 ### Additional Requirements
 
 - AR-1: Réutiliser app/web, app/apps-script et app/tests de TEM-6 : moteur commun, adaptateurs et89 tests existants ; ne pas créer un second moteur ni un starter parallèle. **Source :** bilan et code existant
-- AR-2: Le starter Vite vanilla de la spine est une proposition historique non installée ; choisir le minimum compatible au GO, sans réinitialiser les sources existantes. **Source :** spine Structural Seed
+- AR-2: Seed brownfield consolidé : reprendre build Node/statique et moteur existants ; Vite/clasp ne sont pas liés ni installés par la préparation, sans réinitialiser les sources. **Source :** spine Structural Seed
 - AR-3: Génération des IDs, diagnostics et choix par un service commun édition/import/secours ; scripts contrôlés l’appellent explicitement. **Source :** AD-3/8 + décision cadence
 - AR-4: Lecture publique fraîche non mutante ; actualisation visible toutes les30s au plus et au focus, sans cache serveur initial ; inscription autoritaire. **Source :** AD-8
 - AR-5: Transport A réutilisé comme base prouvée sur navigateur intégré, autres supports à vérifier ; repli B/C modifiant UX/coût soumis à arbitrage. **Source :** AD-6 + bilan
@@ -90,7 +90,7 @@ NFR14: GO de développement, fusion, déploiement/achat restent distincts ; comm
 - AR-7: Source du catalogue référencée par manifeste ; aucun exemple du PDF ou mockup converti en vraie cohorte ; validation des formations actives par Tema. **Source :** AC-01/02
 - AR-8: Node/test runner et Playwright existants ; CI déterministe à ajouter sans envoi réel, sans déploiement automatiquement autorisé par un push. **Source :** AD-11
 - AR-9: Conserver récupérabilité du couple site/script/HEAD et données entre versions ; note courte, aucun système de maintenance supplémentaire. **Source :** AD-9; ET-12
-- AR-10: Inventorier la dette de cohérence des spines : minute/uniforme<2min, absence de prototype/commits et anciennes préconditions agendas remplacées par décisions et preuves datées ; mise à jour par writers natifs avant code dépendant. **Source :** décisions actuelles + sources historiques
+- AR-10: Consommer les contrats architecture/Spec consolidés le28octobre depuis leurs journaux et preuves ; décisions actuelles et G0–G4 dans docs/project/architecture/controle-technique-v1.md, sans réutiliser les contraintes historiques remplacées. **Source :** décisions actuelles + sources historiques
 - AR-11: Niveaux de preuve conservés :4ET PASS/8NON VÉRIFIÉ ; redistribution explicite des compléments par story, aucune clôture TEM-6 automatique. **Source :** bilan
 - AR-12: Avant démo client : compte/forfait Vercel compatible et accès/récupération ; avant ouverture : politique/accord, prix/identité et informations pratiques validés par Tema. **Source :** AC-19/20; AD-10
 - AR-13: La bascule FTP reste Sofiane ; livrer build portable et points de contrôle, pas une intégration David ou automatisation FTP sans mandat. **Source :** décision hébergement
@@ -249,7 +249,7 @@ afin de préparer les formations sans ressaisie ni perte de contenu.
 
 **Given** le classeur source identifié et une destination isolée autorisée,
 **When** le catalogue est importé,
-**Then** 24 formations18/4/2 conservent les neuf informations utiles et les tarifs qualifiés ; aucune date ni entrée inscriptible issue des neuf présentations n’est inventée.
+**Then** 24 formations18/4/2 conservent les neuf informations utiles et les tarifs qualifiés ; aucune date ni entrée inscriptible issue des neuf présentations n’est inventée ; une relance après import partiel/complet conserve correspondances et codes, sans doublon ni écrasement silencieux des modifications Tema.
 
 **AC story 1.1-2**
 
@@ -341,7 +341,7 @@ afin de publier une offre cohérente même après une erreur de traitement.
 
 **Réutilisé :** Même moteur de réconciliation, empreinte privée et tests de stabilité existants.
 
-**Reste à réaliser :** Traitement ciblé onEdit/import, secours5min, mesures bornées runtime/quota/charge ; consolidation préalable des passages de contrats remplacés par la décision datée.
+**Reste à réaliser :** Traitement ciblé onEdit/import, secours5min, mesures bornées runtime/quota/charge ; contrats consolidés à respecter et profil de mesure défini dans controle-technique-v1.md.
 
 **Vérification :** Chronométrer édition→projection→site du prototype, collage/script/événement manqué ; observer absence de mail et exactitude admission.
 
@@ -389,7 +389,7 @@ afin de comprendre l’offre même avant programmation de nouvelles dates.
 
 **ET- :** ET-01, ET-10, ET-11
 
-**Dépendances antérieures :** 1.3
+**Dépendances antérieures :** 1.1
 
 **Réutilisé :** Projection publique et références UX ; prototype limité ne contient pas le vrai catalogue.
 
@@ -409,7 +409,7 @@ afin de comprendre l’offre même avant programmation de nouvelles dates.
 
 **Given** Tous ou un logiciel est choisi,
 **When** le filtre change,
-**Then** les cartes utilisent le filtre et son état partagé est disponible au calendrier ; chaque carte présente titre/logiciel/durée/tarif À partir de en CAD par participant taxes en sus et disponibilité ; le filtre vide offre Voir toutes les formations.
+**Then** les cartes utilisent le filtre et son état partagé est disponible au calendrier ; chaque carte présente titre/logiciel/durée/tarif À partir de en CAD par participant taxes en sus et disponibilité ; le filtre vide offre Voir toutes les formations ; tarif absent affiche Tarif à confirmer et aucune inscription, le tri des réservables utilise registration_enabled.
 
 **AC story 2.1-3**
 
@@ -437,7 +437,7 @@ afin de trouver une formation compatible avec mon agenda.
 
 **ET- :** ET-01, ET-09, ET-11
 
-**Dépendances antérieures :** 2.1
+**Dépendances antérieures :** 2.1, 1.2
 
 **Réutilisé :** Horaires UTC/Toronto et statuts publics ; contrat UX du calendrier.
 
@@ -537,7 +537,7 @@ afin de obtenir une réservation fiable sans compte Google.
 
 **ET- :** ET-01, ET-02, ET-04, ET-05, ET-10, ET-11
 
-**Dépendances antérieures :** 2.3
+**Dépendances antérieures :** 2.3, 1.3
 
 **Réutilisé :** Moteur/admission/flush, normalisation et transport A déjà éprouvés, formulaire minimal et tests.
 
@@ -563,7 +563,7 @@ afin de obtenir une réservation fiable sans compte Google.
 
 **Given** les champs/consentement sont invalides ou un doublon actif existe,
 **When** la demande est soumise,
-**Then** refus certain seulement après contrôles établis, pas de ligne indue ; messages liés aux champs et pas de reçu/coordonnée tiers ; anti-abus et limites de divulgation DUPLICATE documentés.
+**Then** refus certain seulement après contrôles établis, pas de ligne indue ; messages liés aux champs et pas de reçu/coordonnée tiers ; anti-abus mesuré selon le compteur privé partagé et les scénarios du contrôle technique (refus sans ligne/mail, replay intact) ; limites de divulgation DUPLICATE documentées. Un tarif absent refuse toute nouvelle admission avec CLOSED/price_unconfirmed/PRICE_UNCONFIRMED, après recherche d’un replay existant.
 
 ### Story 3.2: Reprendre un résultat incertain et reconfirmer des conditions modifiées
 
@@ -633,7 +633,7 @@ afin de préparer ma participation avec des horaires exacts.
 
 **ET- :** ET-06, ET-07, ET-10
 
-**Dépendances antérieures :** 3.2
+**Dépendances antérieures :** 3.1
 
 **Réutilisé :** MailApp, instantanés communs et ICS déjà produits ; réception présentielle attestée et imports Google hiver/été.
 
@@ -681,7 +681,7 @@ afin de faire le suivi depuis Gmail avec l’état réel.
 
 **ET- :** ET-03, ET-08
 
-**Dépendances antérieures :** 3.3
+**Dépendances antérieures :** 3.2, 3.3
 
 **Réutilisé :** Claims et états séparés, injections privées TEST et garde sans renvoi déjà testés.
 
@@ -733,7 +733,7 @@ afin de libérer la place en conservant une trace compréhensible.
 
 **ET- :** ET-03, ET-09
 
-**Dépendances antérieures :** 3.4
+**Dépendances antérieures :** 3.1
 
 **Réutilisé :** Annulation manuelle et nouvelle ligne déjà prouvées ; calcul à partir des seules confirmées.
 
@@ -781,7 +781,7 @@ afin de conserver les places et communiquer les bonnes informations.
 
 **ET- :** ET-05, ET-08, ET-09
 
-**Dépendances antérieures :** 4.1
+**Dépendances antérieures :** 4.1, 3.2, 3.4
 
 **Réutilisé :** Révision/instantanés, refus SESSION_CHANGED et garde d’envoi.
 
@@ -829,7 +829,7 @@ afin de exploiter les données sans dépendance technique ni fuite.
 
 **ET- :** ET-09, ET-10
 
-**Dépendances antérieures :** 4.2
+**Dépendances antérieures :** 4.1, 3.4
 
 **Réutilisé :** Tableaux privés, types et historique du prototype ; conservation12 mois retenue, contenu politique non validé.
 
@@ -843,7 +843,7 @@ afin de exploiter les données sans dépendance technique ni fuite.
 
 **Given** Tema consulte ou exporte des inscriptions de test,
 **When** un export tabulaire est ouvert hors Google,
-**Then** champs exploitables sans QUERY/ARRAYFORMULA/IMPORTRANGE, identités et places cohérentes, aucune publication de l’export privé.
+**Then** champs exploitables sans QUERY/ARRAYFORMULA/IMPORTRANGE, textes =,+,-,@ inertes après ouverture Excel, identités et places cohérentes, aucune publication de l’export privé.
 
 **AC story 4.3-2**
 
@@ -881,7 +881,7 @@ afin de comprendre et terminer mon parcours sans obstacle.
 
 **ET- :** ET-10, ET-11
 
-**Dépendances antérieures :** 4.3
+**Dépendances antérieures :** 2.3, 3.4
 
 **Réutilisé :** Dispositions approuvées et base rose/logo/Manrope/Inter, sans finition finale approuvée.
 
@@ -929,7 +929,7 @@ afin de détecter les régressions avant intégration ou livraison.
 
 **ET- :** ET-01, ET-02, ET-03, ET-04, ET-05, ET-06, ET-07, ET-08, ET-09, ET-10, ET-11, ET-12
 
-**Dépendances antérieures :** 5.1
+**Dépendances antérieures :** 4.2, 4.3, 5.1
 
 **Réutilisé :** Commande npm run verify,61 Node/28Playwright et lockfile déjà versionnés.
 
@@ -990,7 +990,7 @@ afin de accepter la solution sur des preuves observables.
 **AC story 5.3-1**
 
 **Given** le candidat complet et ses ressources de test sont identifiés,
-**When** les scénarios convenus sont rejoués en vrai,
+**When** le candidat de recette a été publié après son GO précis puis les scénarios sont rejoués en vrai,
 **Then** lecture sans compte en contexte privé, transport/réponse fiable, Sheet et réceptions vérifiés sur supports Chrome/Firefox/Safari et téléphone prévu ; limites des supports indisponibles conservées.
 
 **AC story 5.3-2**
@@ -1003,7 +1003,7 @@ afin de accepter la solution sur des preuves observables.
 
 **Given** les compléments TEM-6 sont examinés,
 **When** chaque observation est classée,
-**Then** ET01/03/05/06/07/08/09/11 reçoivent preuve ou limite explicite, sans réécrire un résultat historique ; aucune injection métier, plafond d’envoi réévalué avant dépassement et aucune ouverture avec défaut critique connu.
+**Then** ET01/03/05/06/07/08/09/11 reçoivent preuve ou limite explicite, sans réécrire un résultat historique ; aucune injection métier, plafond d’envoi réévalué avant dépassement ; un contrôle requis non vérifié laisse l’acceptation ouverte sauf dérogation humaine précise, et aucune ouverture avec défaut critique connu.
 
 ### Story 5.4: Remettre le candidat, le guide et les éléments de publication
 
@@ -1039,7 +1039,7 @@ afin de gérer les formations après la remise sans dépendre de bkbx pour chaqu
 
 **Given** la recette est conclue et les prérequis client réunis,
 **When** un GO de publication précis est donné,
-**Then** cible/versions/ordre site-script-HEAD sont identifiés, prérequis compte/forfait et droits vérifiés ; contrôle postpublication et courte récupération compatible conservent les inscriptions.
+**Then** cible/versions/ordre site-script-HEAD sont identifiés, prérequis compte/forfait et droits vérifiés ; promotion de configuration vérifiée (destination fixe, un écrivain, destinataires, absence de panne/reset publics et garde TEST conservée) ; contrôle postpublication et courte récupération compatible conservent les inscriptions.
 
 **AC story 5.4-2**
 
@@ -1052,3 +1052,11 @@ afin de gérer les formations après la remise sans dépendre de bkbx pour chaqu
 **Given** la démo/recette est sur Vercel puis Sofiane prévoit son serveur,
 **When** les fichiers et accès sont transmis,
 **Then** Google métier reste pérenne, build statique portable et contrôles de bascule fournis ; FTP et intégration David non réalisés par cette story ; mise en service publique et démo restent des jalons distincts.
+
+## Alignement d’architecture du 28 octobre 2026
+
+Les contraintes partagées sont désormais consolidées dans la spine et la Spec. [Contrôle commun](../../docs/project/architecture/controle-technique-v1.md) : G0dossier→UX ; G1GOlot/code ; G2preuves avant ouverture hors test contrôlé ; G3candidat autorisé puis recette complète ; G4remise/ouverture. Les seuils de rafales et de charge sont des paramètres techniques à tester, pas des PASS existants ni une limite quotidienne de50réservations.
+
+Le graphe indique des dépendances réelles, distinctes de l’ordre conseillé des cinq blocs : catalogue et préparation de dates peuvent avancer sans attendre une correction indépendante, finition ne dépend plus du nettoyage/politique. Chaque dépendance reste antérieure ; les tâches gardent leurs IDs et statut Backlog.
+
+La clôture de conception ne valide ni le graphisme final, ni l’estimation, ni le plan global. Aucun GO principal ; prochaine étape documentaire souhaitée : revue UX/UI, puis validation du plan et GO. Les nouveaux critères partagés restent à implémenter/vérifier après autorisation.

@@ -216,7 +216,7 @@
     "application_created": true
   },
   "definition": {
-    "status": "limited_trial_results_pending_owner_review",
+    "status": "architecture_documentation_closed_pending_ux_review",
     "prepared_on": "2026-10-20",
     "spec": "_bmad-output/specs/spec-tema-academie-v1/SPEC.md",
     "ux_design": "_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/DESIGN.md",
@@ -236,7 +236,7 @@
       "scope": "functional-v1",
       "source": "Sofiane, confirmation explicite après relecture consolidée dans le chat"
     },
-    "current_review": "global_plan_review_volume_and_missing_price",
+    "current_review": "ux_ui_refinement_before_global_plan_approval",
     "visual_direction_approval": {
       "status": "approved",
       "approved_on": "2026-10-24",
@@ -287,11 +287,13 @@
       "source": "Sofiane, demande explicite orale de tests reproductibles, moyens delegues sans complexifier"
     },
     "architecture_review": {
-      "status": "authoring_complete_owner_approved_overview",
-      "consolidated_on": "2026-10-26",
+      "status": "authoring_complete_g0_passed",
+      "consolidated_on": "2026-10-28",
       "input_reconciliation": "spec_ux_human_decisions",
-      "reviewer_gate": "passed_after_fixes",
-      "technical_evidence": "trial_partial_4_pass_8_not_verified"
+      "reviewer_gate": "passed_lint_rubric_technology_adversarial",
+      "technical_evidence": "trial_partial_4_pass_8_not_verified_unchanged",
+      "closure_scope": "documentary_before_ux_not_implementation_acceptance",
+      "resolution": "_bmad-output/planning-artifacts/architecture/architecture-tema-academie-2026-10-20/reviews/resolution-2026-10-28.md"
     },
     "maintenance_principle": {
       "status": "approved",
@@ -358,7 +360,7 @@
       "recovery_interval_minutes": 5,
       "recovery_delay_exception": true,
       "implementation_status": "not_implemented_or_measured",
-      "documentation_status": "canonical_logs_recorded_spine_spec_consolidation_pending",
+      "documentation_status": "architecture_spec_consolidated_2026-10-28",
       "source": "Sofiane, validation explicite dans le chat : moins de deux minutes en fonctionnement normal et un contrôle de secours toutes les cinq minutes"
     },
     "calendar_compatibility_acceptance": {
@@ -378,7 +380,7 @@
       "artifact": "_bmad-output/planning-artifacts/epics.md",
       "plan": "docs/project/planning/plan-developpement-v1.md",
       "readiness": "_bmad-output/planning-artifacts/implementation-readiness.md",
-      "readiness_verdict": "CONCERNS",
+      "readiness_verdict": "CONCERNS_pending_ux_plan_and_explicit_go",
       "epic_count": 5,
       "story_count": 17,
       "linear_registry": "docs/project/planning/linear-v1.json",
@@ -390,7 +392,7 @@
       "principal_development_authorized": false,
       "preparation_autonomy": "Sofiane delegates preparation through final review without intermediate step confirmations; ask only for genuine blockers",
       "global_review": {
-        "status": "performed_findings_and_two_clarifications_pending",
+        "status": "architecture_findings_consolidated_pending_ux_and_global_plan_approval",
         "reviewed_on": "2026-10-26",
         "reviewed_commit": "7f429dafca2ce54690d46f12d0cfbb8304b6ea7e",
         "report": "docs/project/planning/reviews/revue-globale-plan-v1.md",
@@ -401,7 +403,30 @@
           "structure"
         ],
         "principal_development_authorized": false
-      }
+      },
+      "architecture_gate": "G0_PASS"
+    },
+    "architecture_closure": {
+      "status": "g0_documentary_complete",
+      "completed_on": "2026-10-28",
+      "source": "Sofiane, GO pour clôturer architecture avant UX/UI, sans développement principal",
+      "next_step": "ux_ui_review",
+      "principal_development_authorized": false,
+      "new_live_evidence": false,
+      "control_companion": "docs/project/architecture/controle-technique-v1.md"
+    },
+    "missing_price_approval": {
+      "status": "owner_approved",
+      "approved_on": "2026-10-28",
+      "behavior": "formation_visible_tariff_to_confirm_registration_disabled",
+      "implementation_status": "not_implemented_or_verified"
+    },
+    "google_limit_choice": {
+      "status": "owner_accepts_provider_free_account_limits",
+      "approved_on": "2026-10-28",
+      "paid_service_added": false,
+      "fixed_daily_booking_cap_added": false,
+      "fifty_two_notification_bookings": "theoretical_max_before_other_account_use_not_guaranteed"
     }
   },
   "access_preparation": {

@@ -13,3 +13,7 @@ Spécification fonctionnelle V1 approuvée24octobre2026 ; parcours/dispositions 
 [Découpage BMAD](../../_bmad-output/planning-artifacts/epics.md) préparé, validation finale attendue :17stories/52scénarios, estimation restante3j humains actifs proposée (2,5base +0,5réserve). [Readiness](../../_bmad-output/planning-artifacts/implementation-readiness.md) : CONCERNS, aucun GO principal ni suivi de sprint activé. Autonomie de préparation confirmée, sans questions à chaque étape.
 
 [Revue globale du plan](planning/reviews/revue-globale-plan-v1.md) exécutée sur7f429da : précisions de préparation et deux points à discuter (volume, tarif absent), aucune décision métier nouvelle acceptée ni GO principal.
+
+## Clôture d’architecture du28octobre
+
+[Spine etgate](../../_bmad-output/planning-artifacts/architecture/architecture-tema-academie-2026-10-20/reviews/resolution-2026-10-28.md) : G0PASS, Spec/contrats alignés et11AD/8CAP/21AC/12ETstables. [Contrôles](architecture/controle-technique-v1.md) etplan/17stories àjour, dépendancesréelles reluesdansLinear. ProchaineétapeUX/UI, puisvalidationglobale/GOprincipal ; aucun code ajouté,mesure réelle ou acceptationproduit nouvelle. Lesétats historiques précédents deconsolidationenattente sont remplacés par cecheckpoint documentaire.

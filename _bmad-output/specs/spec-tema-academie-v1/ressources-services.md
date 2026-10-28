@@ -1,6 +1,6 @@
 # Ressources Google et Vercel — Tema Académie
 
-Créées et vérifiées par Computer Use le 26 octobre 2026, après connexion de Sofiane. Registre machine correspondant : `config/project.json`. Création initiale suivie du GO explicite d’essai limité TEM-6 le 26 octobre. Prototype TEST exécuté et bilan disponible ; vérifications et arbitrages restants, développement principal non autorisé. Les paragraphes Métier décrivent sa structure inchangée, ceux de TEST son état courant.
+Créées et vérifiées par Computer Use le 26 octobre 2026, après connexion de Sofiane. Registre machine correspondant : `config/project.json`. Création initiale suivie du GO explicite d’essai limité TEM-6 le 26 octobre. Prototype TEST exécuté et bilan disponible ; vérifications et arbitrages restants, développement principal non autorisé. Les paragraphes Métier/TEST décrivent les constats du26octobre, non une reconnexion au28octobre ; décisions et publication GitHub actualisées ci-dessous.
 
 ## Google
 
@@ -19,7 +19,7 @@ Le catalogue Excel original est intact et non importé. Métier conserve en-têt
 
 Toronto/V8 et locale Canada français constatés. Web app TEST **version 3** exécutée par propriétaire, Anyone confirmé par Sofiane ; HEAD sauvegardé identique au bundle SHA-256 `34e7ab30766995dd62e7bb593042f2b514364a79ea673721c4e33049c0c4364c`. URL/ID dans config/project.json. Retour version 2/HEAD précédent puis rétablissement version 3 effectués sans restauration Sheet ; cinq métadonnées de lignes et compteurs conservés.
 
-Deux déclencheurs de données : onEdit et périodique, testé minute puis ramené **toutes les12 heures au repos**, réglage relu. Ni courriel depuis ces déclencheurs ni choix de cadence V1 déduit. Mesures minute à réévaluer face au quota90 min/jour du compte gratuit ; cible fonctionnelle<2 min conservée. Propriété de panne retirée. Propriétés privées ALLOWED_RECIPIENTS_JSON/TEMA_EMAIL/CONTACT_EMAIL ; ne pas copier les participants ou effacer TRIAL_MAIL_BUDGET_JSON/FORMATION_COUNTER/SOFTWARE_RESERVED_IDS_JSON/TRIAL_ADMIN_DIGEST.
+Deux déclencheurs de données : onEdit et périodique, testé minute puis ramené **toutes les12 heures au repos**, réglage relu. Aucun courriel depuis ces déclencheurs. Sofiane a ensuite choisi normal<2min/secours5min, sans modifier ce réglage TEST de repos ; mise en œuvre et mesure de la cadence V1 restent à faire devant le quota partagé du compte gratuit. Propriété de panne retirée. Propriétés privées ALLOWED_RECIPIENTS_JSON/TEMA_EMAIL/CONTACT_EMAIL ; ne pas copier les participants ou effacer TRIAL_MAIL_BUDGET_JSON/FORMATION_COUNTER/SOFTWARE_RESERVED_IDS_JSON/TRIAL_ADMIN_DIGEST.
 
 Inspection finale26octobre17:17:39 Toronto : budget **5/10 inscriptions avec tentatives**, **10/20 destinataires réservés**, quota **92 restants** (initial100, quota partagé). Sept états SENT/trois FAILED ; acceptation distincte de réception. Confirmation présentielle reçue attestée par Sofiane avec capture, avis Tema reçu, variantes en ligne inspectées côté Envoyés et deux ICS importés dans Google Agenda aux bonnes heures hiver/été. Outlook/Apple et autres supports non vérifiés ; carte Gmail Envoyés Unable to load event malgré imports manuels réussis.
 
@@ -32,4 +32,7 @@ Inspection finale26octobre17:17:39 Toronto : budget **5/10 inscriptions avec ten
 
 ## Limites et suite
 
-Trois boîtes participantes restent en configuration privée hors dépôt. [Bilan TEM-6](../../../docs/project/technical-trial/TEM-6-results.md) : quatre PASS, huit NON VÉRIFIÉ ; contrôles locaux61 Node/28 E2E, Google réel et limites distingués. TEM-6 In Progress pendant les compléments/arbitrages ; TEM-5 Review et projet Backlog gardent leurs jalons. Aucun commit, push, GO principal ou livraison client.
+Trois boîtes participantes restent en configuration privée hors dépôt. [Bilan TEM-6](../../../docs/project/technical-trial/TEM-6-results.md) : quatre PASS, huit NON VÉRIFIÉ ; contrôles locaux61 Node/28 E2E, Google réel et limites distingués. TEM-6 In Progress pendant les compléments/arbitrages ; TEM-5 Review et projet Backlog gardent leurs jalons. Commits par jalon autorisés le26octobre ; branche `tem-6-technical-trial` poussée le28octobre avec [PR1 en brouillon](https://github.com/blackboxdev0/tema-academie/pull/1), main non fusionnée. Dernier checkpoint de publication6c61cd1, puis décision documentaire1845dec locale ; vérifier Git pour la révision de reprise. Aucun GO principal ou livraison client.
+
+
+Les décisions tarif et quota du28octobre sont contractuelles, pas une mise à jour des services : aucune formation métier importée, nouveau code/trigger, autorisation ou déploiement créé par la consolidation. La promotion métier devra vérifier les éléments du [contrat](contrat-donnees.md#environnements-quota-et-promotion) avant activation autorisée ; les adresses participantes et jetons restent hors dépôt.
