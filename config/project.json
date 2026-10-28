@@ -236,7 +236,7 @@
       "scope": "functional-v1",
       "source": "Sofiane, confirmation explicite après relecture consolidée dans le chat"
     },
-    "current_review": "ux_ui_refinement_before_global_plan_approval",
+    "current_review": "ux_ui_home_catalogue_calendar",
     "visual_direction_approval": {
       "status": "approved",
       "approved_on": "2026-10-24",
@@ -263,7 +263,15 @@
       },
       "approved_on": "2026-10-25",
       "source": "Sofiane, confirmations orales du classement et des notifications puis clôture du flux UX le 25 octobre",
-      "native_surface_coverage": "documented_without_dedicated_mockups; retained_as_non_blocking_assumption"
+      "native_surface_coverage": "documented_without_dedicated_mockups; retained_as_non_blocking_assumption",
+      "current_visual_review": {
+        "status": "in_progress",
+        "started_on": "2026-10-28",
+        "scope": "existing_home_mockup_catalogue_and_calendar",
+        "source": "Sofiane demande explicitement de reprendre les maquettes en commençant par accueil/catalogue/calendrier",
+        "mockup": "_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/direction-tema-academie-v2.html",
+        "new_visual_approval": false
+      }
     },
     "technical_trial_order_approval": {
       "status": "approved",

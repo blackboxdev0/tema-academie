@@ -16,6 +16,14 @@ Les mentions « aucun push/PR » dans les constats du26octobre ci-dessous décri
 
 Spécification fonctionnelle approuvée24 octobre, UX fonctionnelle/dispositions25 octobre avec finition graphique différée, architecture d’ensemble et plan d’essai approuvés26 octobre. GO explicite du 26 octobre pour le prototype/essai isolé ; **aucun GO principal, push, fusion, achat ou livraison** ; commits par jalon désormais autorisés. La préparation et le prototype ont été versionnés par jalon ; aucun push.
 
+## Revue UX/UI en cours — accueil du 28 octobre
+
+Sofiane demande de reprendre les maquettes existantes, en commençant par l’accueil catalogue/calendrier. La V2 promue est ouverte dans un onglet visible du navigateur intégré : **Tema Académie — Proposition visuelle V2**, URL locale `http://127.0.0.1:8741/direction-tema-academie-v2.html`. Le serveur de fichiers est lié à127.0.0.1 et au seul dossier mockups, pas au moteur Google. Si arrêté, le relancer sur ce dossier. L’onglet est conservé pour la revue.
+
+Maquette inchangée : six formations, dates et places fictives. Les contrats fonctionnels gouvernent le comportement ; finition visuelle encore ouverte. Premières pistes de discussion : espace de l’introduction et des cartes, hiérarchie prix/date/places, lisibilité des événements du calendrier. Le nouveau cas Tarif à confirmer et plusieurs sessions sur un même jour seront à illustrer ; aucune proposition nouvelle acceptée. Captures hors Git dans `/tmp/tema-ux-review-2026-10-28`.
+
+Continuer cette revue humaine à partir des retours de Sofiane, sans relancer l’architecture, le cadrage complet ou un développement principal. Le run natif UX est repris en Update/Discovery ; pas de finalisation ou nouvelle approbation graphique déduite de l’ouverture de la page.
+
 ## Prochaine conversation — après clôture d’architecture du 28 octobre
 
 **Architecture de conception clôturée pour passer à l’UX/UI.** La [spine](../../_bmad-output/planning-artifacts/architecture/architecture-tema-academie-2026-10-20/ARCHITECTURE-SPINE.md) et la [Spec](../../_bmad-output/specs/spec-tema-academie-v1/SPEC.md) sont réconciliées. Les 11 AD, 8 CAP, 21 AC et 12 ET conservent leurs identifiants. Le [contrôle commun](architecture/controle-technique-v1.md) définit le tarif absent, l’anti-abus, les mesures de charge/cadence, l’import/export, la promotion et les étapes G0–G4. [Résolution du gate](../../_bmad-output/planning-artifacts/architecture/architecture-tema-academie-2026-10-20/reviews/resolution-2026-10-28.md) : lint sans constat, réconciliations Spec/UX et trois reviewers indépendants PASS pour G0. Aucun nouvel arbitrage humain avant la phase UX.
