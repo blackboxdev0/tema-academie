@@ -61,3 +61,7 @@ Ce contrôle valide ce parcours de lecture du frontend corrigé contre le servic
 - Les trois options UX restent à arbitrer dans le rapport visuel ; aucune nouvelle direction produit n’est déduite de cette passe.
 
 BMAD garde la cible globale en revue, avec les neuf cases locales cochées et les contrôles réels ouverts. Linear distingue les corrections frontend prêtes en Review des stories encore en In Progress pour Google réel/recette. Aucun Done humain, fusion dans main ou déploiement/publication effectué. Git et la CI du commit de remise ont leur preuve propre dans la PR ; le résultat local ci-dessus n’en déduit pas un succès distant.
+
+## Checkpoint Git et CI
+
+Code et tests : [`096772d03772012752dcc1b7948004318b3e3ad8`](https://github.com/blackboxdev0/tema-academie/commit/096772d03772012752dcc1b7948004318b3e3ad8), poussé sur `tem-6-technical-trial`. Les deux CI de ce commit sont réussies : [push 41146931408](https://github.com/blackboxdev0/tema-academie/actions/runs/41146931408) et [PR 41146938573](https://github.com/blackboxdev0/tema-academie/actions/runs/41146938573). La PR 1 reste en brouillon. Le checkpoint documentaire suivant ne change pas le code testé.
