@@ -2,9 +2,9 @@
 
 Statut : proposition à valider par Sofiane. La V1 reste disponible ; aucun changement des règles fonctionnelles confirmées.
 
-- [Accueil V2](direction-tema-academie-v2.html).
-- [Fiche formation V2](direction-tema-fiche-v2.html).
-- [Palette et typographies V2](direction-tema-style-v2.html).
+- [Accueil V2](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/direction-tema-academie-v2.html).
+- [Fiche formation V2](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/direction-tema-fiche-v2.html).
+- [Palette et typographies V2](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/direction-tema-style-v2.html).
 - [Revue indépendante de Sally et contrôle ciblé V2](../reviews/review-sally-visuel-2026-10-24.md).
 - [Suivi des corrections](suivi-revue-sally-2026-10-24.md).
 - [Proposition initiale V1](proposition-visuelle-tema-2026-10-24.md).

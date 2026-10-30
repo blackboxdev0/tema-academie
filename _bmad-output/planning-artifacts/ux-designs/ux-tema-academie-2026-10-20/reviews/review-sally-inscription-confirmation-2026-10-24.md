@@ -4,7 +4,7 @@
 
 ## Éléments examinés
 
-[DESIGN.md](../DESIGN.md), [EXPERIENCE.md](../EXPERIENCE.md), [synthèse des deux maquettes](../.working/maquettes-inscription-confirmation-2026-10-24.md), sources du [formulaire](../.working/key-inscription-v2.html) et de la [confirmation](../.working/key-confirmation-v2.html).
+[DESIGN.md](../DESIGN.md), [EXPERIENCE.md](../EXPERIENCE.md), [synthèse des deux maquettes](../.working/maquettes-inscription-confirmation-2026-10-24.md), sources du [formulaire](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/key-inscription-v2.html) et de la [confirmation](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/key-confirmation-v2.html).
 
 Les six captures fournies ont effectivement été ouvertes et regardées dans `/Users/sofiane/.codex/visualizations/2026/10/19/01a1551a-3732-7bb3-b932-f618697f98c4/tema-inscription-confirmation-2026-10-24/` :
 

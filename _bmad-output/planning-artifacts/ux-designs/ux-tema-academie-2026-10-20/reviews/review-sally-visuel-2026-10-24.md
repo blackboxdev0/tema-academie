@@ -15,7 +15,7 @@ uv run /Users/sofiane/Software/tema/_bmad/scripts/resolve_config.py --project-ro
 
 Les deux commandes ont réussi. Les listes de hooks prepend/append et de faits persistants étaient vides ; aucune étape supplémentaire n’était à exécuter. Persona Sally et configuration française adoptées. La demande de critique ciblée est traitée comme une continuation d’expertise prévue à l’étape 8 du skill ; ce rapport ne prétend pas être une validation globale du workflow `bmad-ux`.
 
-Sources relues : `AGENTS.md`, configuration et contexte courant du projet, handoff, les 50 entrées du journal UX, la [synthèse de proposition](../.working/proposition-visuelle-tema-2026-10-24.md), le [relevé du site Tema](../.working/observations-site-tema-2026-10-24.md), ainsi que les sources HTML de [l’accueil](../.working/direction-tema-academie.html), de [la fiche](../.working/direction-tema-fiche.html) et de [la palette](../.working/direction-tema-style.html). Les décisions récentes du journal gouvernent le périmètre de cette revue.
+Sources relues : `AGENTS.md`, configuration et contexte courant du projet, handoff, les 50 entrées du journal UX, la [synthèse de proposition](../.working/proposition-visuelle-tema-2026-10-24.md), le [relevé du site Tema](../.working/observations-site-tema-2026-10-24.md), ainsi que les sources HTML de l’accueil (ancienne proposition retirée), de la fiche (ancienne proposition retirée) et de la palette (ancienne proposition retirée). Les décisions récentes du journal gouvernent le périmètre de cette revue.
 
 Neuf images ont effectivement été ouvertes et regardées avec l’outil de visualisation d’images :
 
@@ -104,7 +104,7 @@ La version ainsi resserrée devrait être soumise à Sofiane avec les mêmes con
 
 ## Addendum — contrôle ciblé de la V2
 
-24 octobre 2026. Contrôle limité aux quatre corrections ci-dessus. Sources examinées : [accueil V2](../.working/direction-tema-academie-v2.html), [fiche V2](../.working/direction-tema-fiche-v2.html) et [planche V2](../.working/direction-tema-style-v2.html). Les six nouvelles captures du dossier `tema-proposition-2026-10-24/revue-sally-v2/` ont effectivement été ouvertes et regardées : `accueil-desktop.jpg`, `accueil-complet-desktop.jpg`, `accueil-mobile.jpg`, `accueil-complet-mobile.jpg`, `fiche-complete-desktop.jpg` et `fiche-complete-mobile.jpg`, aux largeurs de 1280 et 390 px.
+24 octobre 2026. Contrôle limité aux quatre corrections ci-dessus. Sources examinées : [accueil V2](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/direction-tema-academie-v2.html), [fiche V2](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/direction-tema-fiche-v2.html) et [planche V2](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/direction-tema-style-v2.html). Les six nouvelles captures du dossier `tema-proposition-2026-10-24/revue-sally-v2/` ont effectivement été ouvertes et regardées : `accueil-desktop.jpg`, `accueil-complet-desktop.jpg`, `accueil-mobile.jpg`, `accueil-complet-mobile.jpg`, `fiche-complete-desktop.jpg` et `fiche-complete-mobile.jpg`, aux largeurs de 1280 et 390 px.
 
 | Correction | Statut | Constat sur la V2 |
 |---|---|---|

@@ -2,8 +2,8 @@
 
 Références proposées pour les surfaces S4/S5, à la demande de Sofiane après la direction graphique V2 retenue. Les contrats DESIGN.md et EXPERIENCE.md restent la référence ; ces fichiers illustrent leur traduction graphique et attendent leur validation humaine.
 
-- [Formulaire](key-inscription-v2.html) : récapitulatif avant les champs, coordonnées fictives, téléphone facultatif, accord décoché, lien de politique provisoire, action Confirmer mon inscription et Changer de date.
-- [Confirmation](key-confirmation-v2.html) : place réservée avec certitude, récapitulatif, état d’envoi distinct, contact Tema et retour au catalogue.
+- [Formulaire](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/key-inscription-v2.html) : récapitulatif avant les champs, coordonnées fictives, téléphone facultatif, accord décoché, lien de politique provisoire, action Confirmer mon inscription et Changer de date.
+- [Confirmation](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/key-confirmation-v2.html) : place réservée avec certitude, récapitulatif, état d’envoi distinct, contact Tema et retour au catalogue.
 
 ## Retour de Sofiane
 
@@ -13,15 +13,15 @@ Le formulaire est accepté le 24 octobre pour son fonctionnement et sa dispositi
 
 | Surface | État | Référence |
 |---|---|---|
-| Formulaire | Initial, accord décoché | [Formulaire](key-inscription-v2.html#normal) |
-| Formulaire | Adresse courriel invalide | [Champ à corriger](key-inscription-v2.html#erreur) |
-| Formulaire | Dernière place prise, refus certain | [Session complète](key-inscription-v2.html#complet) |
-| Formulaire | Résultat inconnu et reprise de la même demande | [Résultat inconnu](key-inscription-v2.html#inconnu) |
-| Formulaire | Récapitulatif modifié à reconfirmer, champs conservés | [Conditions modifiées](key-inscription-v2.html#conditions-modifiees) |
-| Confirmation | Courriel accepté par le service, invitation jointe | [Confirmation](key-confirmation-v2.html#confirmee) |
-| Confirmation | Courriel non envoyé, place maintenue | [Échec d’envoi](key-confirmation-v2.html#envoi-echoue) |
-| Confirmation | Envoi incertain, place maintenue | [Envoi incertain](key-confirmation-v2.html#envoi-incertain) |
-| Confirmation | Horaires fictifs reconfirmés après modification | [Horaires mis à jour](key-confirmation-v2.html#horaires-modifies) |
+| Formulaire | Initial, accord décoché | [Formulaire](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/key-inscription-v2.html#normal) |
+| Formulaire | Adresse courriel invalide | [Champ à corriger](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/key-inscription-v2.html#erreur) |
+| Formulaire | Dernière place prise, refus certain | [Session complète](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/key-inscription-v2.html#complet) |
+| Formulaire | Résultat inconnu et reprise de la même demande | [Résultat inconnu](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/key-inscription-v2.html#inconnu) |
+| Formulaire | Récapitulatif modifié à reconfirmer, champs conservés | [Conditions modifiées](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/key-inscription-v2.html#conditions-modifiees) |
+| Confirmation | Courriel accepté par le service, invitation jointe | [Confirmation](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/key-confirmation-v2.html#confirmee) |
+| Confirmation | Courriel non envoyé, place maintenue | [Échec d’envoi](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/key-confirmation-v2.html#envoi-echoue) |
+| Confirmation | Envoi incertain, place maintenue | [Envoi incertain](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/key-confirmation-v2.html#envoi-incertain) |
+| Confirmation | Horaires fictifs reconfirmés après modification | [Horaires mis à jour](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/key-confirmation-v2.html#horaires-modifies) |
 
 Les variantes se consultent depuis une barre de revue séparée du contenu produit, sans afficher tous les états à la fois. Le clic de démonstration vers la confirmation devient visible après avoir coché l’accord ; il n’effectue aucune soumission. La variante Conditions modifiées mène à la confirmation illustrant les mêmes horaires actualisés.
 
@@ -42,3 +42,7 @@ Contrôle de source : identifiants uniques, 33 liens/ancres locaux résolus, acc
 - Les sélecteurs de masquage des horaires alternatifs sont conservés avec leur spécificité renforcée ; seuls les états de modification prévus affichent ces horaires. Ces corrections de source attendent le rechargement et le contrôle navigateur ciblé du parent.
 
 La barre d’états sert uniquement à comparer les vues de démonstration ; elle ne consulte aucun stock, ne reprend aucune demande réelle et ne prouve pas une conservation de données entre fichiers.
+
+## Suite de revue du29octobre
+
+Les références courantes sont désormais [inscription](inscription.html) et [confirmation](confirmation.html). Sofiane valide cette étape du formulaire courant après la finition des inputs : bordure grise au repos, contour rose unique au focus. Sofiane valide ensuite explicitement la confirmation harmonisée le29octobre ; aucune acceptation globale ou réalisation produit déduite.

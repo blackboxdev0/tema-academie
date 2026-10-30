@@ -1,0 +1,271 @@
+{
+  "provenance": "Extraction de cellules du fichier source lors du cadrage, lecture historique retrouvée ; original absent de son chemin initial le 28 octobre.",
+  "source_sha256_recorded": "e672bfdd6a10e57f3ba9dabecd919d240930842845771b92b7e73fb28d78bce7",
+  "source_sha256_reverified_today": false,
+  "formations": [
+    {
+      "source_row": 6,
+      "software": "Divalto",
+      "title": "Ergonomie",
+      "prerequisites": "Formation destinée aux utilisateurs de Divalto souhaitant améliorer leur efficacité au quotidien.\n\nConnaissances informatiques de base; un ordinateur avec Divalto installé.",
+      "content": "Découverte des principales fonctionnalités ergonomiques de Divalto, personnalisation de l’environnement de travail, navigation, raccourcis, favoris, affichage des données et trucs et astuces pour gagner du temps.",
+      "duration": "½ jour",
+      "price_label": "À partir de 450 $",
+      "outcome": "Les participants seront en mesure de personnaliser leur environnement Divalto et d'utiliser les fonctionnalités qui leur permettent de travailler plus rapidement et efficacement.",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 7,
+      "software": "Divalto",
+      "title": "Achats/Ventes Débutant 1",
+      "prerequisites": "Avoir suivi la formation Divalto  Ergonomie. \n",
+      "content": "Découverte du module, fiches articles, tiers, paramètres de base",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Sait naviguer dans le module et d'effectuer les principales opérations de base liées aux achats et aux ventes.",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 8,
+      "software": "Divalto",
+      "title": "Achats/Ventes Débutant 2",
+      "prerequisites": "Avoir suivi Débutant 1",
+      "content": "Cycle de vente : devis, commandes, bons de livraison",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Sait traiter une vente de la commande à la livraison",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 9,
+      "software": "Divalto",
+      "title": "Achats/Ventes Débutant 3",
+      "prerequisites": "Avoir suivi Débutant 2",
+      "content": "Cycle d'achat : demandes de prix, commandes fournisseurs, réceptions",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Sait gérer un achat complet",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 10,
+      "software": "Divalto",
+      "title": "Achats/Ventes Débutant 4",
+      "prerequisites": "Avoir suivi Débutant 3",
+      "content": "Facturation, retours, avoirs, éditions et suivi des documents",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Sait facturer, corriger et suivre l'ensemble des flux",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 11,
+      "software": "Divalto",
+      "title": "Finances Débutant 1",
+      "prerequisites": "Avoir suivi la formation Divalto Ergonomie\n\nInformatique de base; notions de comptabilité",
+      "content": "Plan comptable, journaux, saisie des écritures",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Sait saisir et consulter des écritures",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 12,
+      "software": "Divalto",
+      "title": "Finances Débutant 2",
+      "prerequisites": "Avoir suivi Finances 1",
+      "content": "Lettrage, rapprochement bancaire, suivi clients/fournisseurs",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Sait effectuer les contrôles courants",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 13,
+      "software": "Divalto",
+      "title": "Finances Débutant 3",
+      "prerequisites": "Avoir suivi Finances 2",
+      "content": "Déclarations de taxes, balances, grand livre, clôtures simples",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Sait produire les rapports comptables essentiels",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 14,
+      "software": "Divalto",
+      "title": "Traiter ses fins de mois comptables",
+      "prerequisites": "Avoir suivi la formation Finances 3\n\nConnaissance de la comptabilité Divalto",
+      "content": "Checklist de fin de mois, régularisations, contrôles, clôture de période",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Réalise sa clôture mensuelle de façon autonome et fiable",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 15,
+      "software": "Divalto",
+      "title": "Définir ses états financiers",
+      "prerequisites": "Avoir suivi la formation Finances 3\n\nBases de comptabilité Divalto",
+      "content": "Paramétrage du bilan et de l'état des résultats, structures de rapports",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Produit ses états financiers paramétrés",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 16,
+      "software": "Divalto",
+      "title": "Maîtriser le flux payable",
+      "prerequisites": "Suivi la formation Ergonomie\n\nBases Finances/Achats",
+      "content": "Factures fournisseurs, approbations, échéanciers, paiements",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Maîtrise le cycle complet des comptes à payer",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 17,
+      "software": "Divalto",
+      "title": "Processus Qualité",
+      "prerequisites": "Connaissance de base de Divalto",
+      "content": "Contrôles qualité, non-conformités, traçabilité",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Met en place un suivi qualité dans Divalto",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 18,
+      "software": "Divalto",
+      "title": "Comprendre son calcul des besoins (MRP)",
+      "prerequisites": "Connaître les articles et nomenclatures",
+      "content": "Fonctionnement du MRP, paramètres, analyse des propositions",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Comprend et exploite les résultats du MRP",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 19,
+      "software": "Divalto",
+      "title": "Initiation Production",
+      "prerequisites": "Suivi la formation Ergonomie\n\nInformatique de base; notions de production",
+      "content": "Vue d'ensemble du module, articles, nomenclatures",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Comprend la structure du module Production",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 20,
+      "software": "Divalto",
+      "title": "Production Gammes",
+      "prerequisites": "Avoir suivi Initiation Production",
+      "content": "Création et gestion des gammes, postes de charge, temps",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Sait créer et maintenir des gammes de fabrication",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 21,
+      "software": "Divalto",
+      "title": "Mise en œuvre de la production 1",
+      "prerequisites": "Suivi la formation Ergonomie\n\nAvoir suivi Initiation et Gammes",
+      "content": "Ordres de fabrication, lancement, sorties de matières",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Sait lancer et suivre des ordres de fabrication",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 22,
+      "software": "Divalto",
+      "title": "Mise en œuvre de la production 2",
+      "prerequisites": "Avoir suivi Mise en œuvre de la production 1",
+      "content": "Déclarations de production, suivi des temps, clôture des OF",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Gère la production de bout en bout",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 23,
+      "software": "Divalto",
+      "title": "Paramétrer et contrôler les coûts de revient",
+      "prerequisites": "Bases Production et Finances",
+      "content": "Paramétrage des coûts, calcul, analyse des écarts",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Calcule et analyse ses coûts de revient",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 28,
+      "software": "Dimo",
+      "title": "Dimo – Nouveautés",
+      "prerequisites": "Utilisateur Dimo existant",
+      "content": "Nouvelles fonctionnalités de la dernière version",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Exploite les nouveautés dans son quotidien",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 29,
+      "software": "Dimo",
+      "title": "Dimo – Améliorez vos flux",
+      "prerequisites": "Connaissance de base de Dimo",
+      "content": "Optimisation des flux et automatisations",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Gagne du temps sur ses tâches courantes",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 30,
+      "software": "Dimo",
+      "title": "Dimo – Reporting/BI",
+      "prerequisites": "Connaissance de base de Dimo",
+      "content": "Création de tableaux de bord et rapports",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Crée ses propres indicateurs de performance",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 31,
+      "software": "Dimo",
+      "title": "Dimo – Administrez votre application",
+      "prerequisites": "Rôle d'administrateur; bases Dimo",
+      "content": "Utilisateurs, droits, paramétrage, maintenance",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Administre son application en autonomie",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 32,
+      "software": "MoovApps",
+      "title": "MoovApps – Mettre des indicateurs dans ses processus",
+      "prerequisites": "Notions de processus; accès à MoovApps",
+      "content": "Définition et intégration d'indicateurs (KPI) dans les processus",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Suit la performance de ses processus par des indicateurs",
+      "source_date": "à venir"
+    },
+    {
+      "source_row": 33,
+      "software": "MoovApps",
+      "title": "MoovApps – Administrez votre environnement",
+      "prerequisites": "Bases MoovApps; rôle d'administrateur",
+      "content": "Gestion des accès, environnements, paramétrage",
+      "duration": "1 jour",
+      "price_label": "À partir de 850 $",
+      "outcome": "Administre son environnement en autonomie",
+      "source_date": "à venir"
+    }
+  ]
+}

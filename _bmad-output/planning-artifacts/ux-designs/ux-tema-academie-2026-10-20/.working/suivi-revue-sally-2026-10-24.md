@@ -15,7 +15,7 @@ Logo, rose, sobriété, contenus réels et règles métier sont conservés. Manr
 
 ## Résultat de la passe V2
 
-- [Accueil V2](direction-tema-academie-v2.html), [fiche V2](direction-tema-fiche-v2.html), [palette V2](direction-tema-style-v2.html). La V1 est conservée dans les fichiers sans suffixe.
+- [Accueil V2](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/direction-tema-academie-v2.html), [fiche V2](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/direction-tema-fiche-v2.html), [palette V2](https://github.com/blackboxdev0/tema-academie/blob/190a881149766fd72c2411bf6e77314968bdff97/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/direction-tema-style-v2.html). La V1 sans suffixe a été retirée du dossier de travail le29octobre ; cette note décrit la revue historique du24octobre.
 - Contrôle parent : premier intitulé réel de formation à y=623 sur 1280×720, y=639 sur 390×844 ; pas de débordement horizontal. Le calendrier général et les données actives de la fiche à 900 px utilisent bien 12 px. Les 20 et 27 restent non inscriptibles ; avant choix explicite, le CTA reste désactivé.
 - L’ordre accessible de la fiche mobile #ergonomie-12 est date du 12, récapitulatif/CTA, puis dates du 20 et du 27. Il n’y a qu’un récapitulatif visible dans cet état.
 - Sally a vu les nouvelles captures et relu les HTML dans un contrôle ciblé des quatre corrections ; l’addendum au rapport marque les quatre points observés sans réserve supplémentaire dans les vues examinées.

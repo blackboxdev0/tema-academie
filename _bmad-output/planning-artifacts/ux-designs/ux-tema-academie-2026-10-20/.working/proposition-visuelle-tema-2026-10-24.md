@@ -4,9 +4,9 @@ Statut : proposition à valider par Sofiane ; aucune charte officielle de la ref
 
 ## Écrans proposés
 
-- [Accueil : catalogue puis calendrier](direction-tema-academie.html).
-- [Fiche formation : dates avant programme](direction-tema-fiche.html).
-- [Palette et typographies](direction-tema-style.html).
+- Accueil : catalogue puis calendrier (ancienne proposition retirée).
+- Fiche formation : dates avant programme (ancienne proposition retirée).
+- Palette et typographies (ancienne proposition retirée).
 
 Les trois HTML sont autonomes et lisibles hors ligne, logo et fontes embarqués. Liens de navigation, filtres communs et changement de mois illustrés sans JavaScript. La conservation du filtre, du mois et de la position entre fichiers, ainsi que la page réelle d’inscription, restent à réaliser après les validations ; ils ne sont pas prouvés par cette maquette.
 
