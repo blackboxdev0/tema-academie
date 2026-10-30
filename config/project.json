@@ -78,7 +78,7 @@
       "docs/project/acceptance/accessibility-v1.md"
     ],
     "planned_strategy": {
-      "status": "passed_local_and_real_Google_candidate_ready_for_owner_recipe",
+      "status": "historical_v1_evidence_superseded_by_independent_audit",
       "local_gate": "before_application_push",
       "ci_gate": "push_and_pull_request_then_before_integration_or_release",
       "levels": [
@@ -102,19 +102,18 @@
     },
     "independent_audit": {
       "performed_on": "2026-10-30",
-      "status": "changes_recommended_native_checks_blocked",
-      "report": "docs/project/acceptance/independent-audit-2026-10-30.md",
+      "status": "local_corrections_verified_real_google_and_native_acceptance_open",
+      "report": "docs/project/acceptance/corrections-2026-10-30.md",
       "reviewed_head": "0f3249feab56161a90f31984115683885f94e44d",
-      "product_code_changed": false,
+      "product_code_changed": true,
       "node_tests_passed": 103,
       "artifact_and_received_ics_checks_passed": 9,
-      "known_administration_regression_assertions_failed": 7,
-      "browser_tests_discovered": 176,
-      "browser_tests_executed": 0,
+      "known_administration_regression_assertions_failed": 0,
+      "browser_tests_discovered": 184,
+      "browser_tests_executed": 184,
       "safari_native": "blocked_computer_use_access",
       "apple_calendar_import": "blocked_computer_use_access",
-      "github_remote_reverified": false,
-      "linear_read_only_review_issues": 22,
+      "github_remote_reverified": true,
       "correction_authorization": {
         "date": "2026-10-30",
         "scope": [
@@ -128,9 +127,32 @@
           "R9",
           "R11"
         ],
-        "status": "approved_implementation_starting",
+        "status": "implemented_locally_reviewed_and_verified",
         "ux_ui": "deferred_visual_report_only",
         "decision": "docs/project/decisions/2026-10-30-correctifs-et-ux-differee.md"
+      },
+      "corrective_verification": {
+        "report": "docs/project/acceptance/corrections-2026-10-30.md",
+        "node_tests_passed": 103,
+        "administration_regressions_passed": 21,
+        "ui_vm_scenarios_passed": 2,
+        "bundle_and_received_ics_passed": 9,
+        "browser_tests_passed": 184,
+        "browser_tests_skipped": 0,
+        "bundle_sha256": "b0737bb59743af0216eb62a83a1143ec10570872c0e8c636343a7334df61f447",
+        "real_google_changed": false,
+        "real_google_read_only_smoke": "passed_24_formations_detail_form_privacy_return",
+        "safari_native": "blocked_computer_use_access",
+        "apple_calendar_import": "blocked_computer_use_access",
+        "ux_ui": "visual_report_only_not_implemented",
+        "optional_R2": "known_failure_outside_approved_nine"
+      },
+      "initial_audit": {
+        "report": "docs/project/acceptance/independent-audit-2026-10-30.md",
+        "known_administration_regressions_failed": 7,
+        "browser_tests_discovered": 176,
+        "browser_tests_executed": 0,
+        "linear_read_only_review_issues": 22
       }
     }
   },
@@ -151,7 +173,7 @@
       "google_backend": "durable_tema_resources"
     },
     "local_acceptance": {
-      "status": "candidate_ready_for_final_owner_recipe",
+      "status": "local_corrections_verified_google_update_and_owner_recipe_pending",
       "defined_on": "2026-10-30",
       "target": "complete_V1_local_frontend_connected_to_isolated_Google_Sheets_and_Apps_Script",
       "scope": "5_epics_17_stories_functional_scope_except_public_release",
@@ -162,7 +184,7 @@
       "local_url": "http://127.0.0.1:4173",
       "start_command": "cd app && npm run build && npm run serve",
       "test_command": "cd app && TEMA_BROWSER_MATRIX=all npm run verify",
-      "report": "docs/project/acceptance/V1-results.md"
+      "report": "docs/project/acceptance/corrections-2026-10-30.md"
     }
   },
   "permissions": {

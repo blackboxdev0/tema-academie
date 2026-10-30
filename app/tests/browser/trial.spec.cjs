@@ -36,11 +36,36 @@ test('AC-07 — date devenue complète garde les coordonnées et propose un chan
   await expect(page.locator('#form-status')).toContainText('désormais complète'); await expect(page.locator('#prenom')).toHaveValue('Anne'); await expect(page.locator('#change-date')).toBeEnabled(); expect(h.data.registrations.length).toBe(1);
 });
 test('audit R6 — retour historique après confirmation restaure le résultat certain', async ({ page }) => {
-  await setup(page); await fill(page); await page.locator('#submit').click();
+  const { h, commands } = await setup(page); await fill(page); await page.locator('#submit').click();
   await expect(page.locator('#result-title')).toHaveText('Votre place est réservée');
   await page.locator('[data-home="catalogue"]').click(); await expect(page.locator('#catalogue')).toBeVisible();
   await page.goBack(); await expect(page.locator('#result')).toBeVisible();
   await expect(page.locator('#reservation-message')).toContainText('Votre inscription est confirmée');
+  await page.locator('#footer-policy').click(); await expect(page.locator('#privacy')).toBeVisible();
+  await page.goBack(); await expect(page.locator('#result')).toBeVisible();
+  await page.locator('#back').click(); await expect(page.locator('#catalogue')).toBeVisible();
+  await page.goBack(); await expect(page.locator('#result')).toBeVisible();
+  expect(commands).toHaveLength(1); expect(h.data.registrations).toHaveLength(1); expect(h.messages).toHaveLength(2);
+});
+test('audit R6 — nouvelle sélection après confirmation revient au formulaire non soumis de B', async ({ page }) => {
+  const { h, commands } = await setup(page); await fill(page); await page.locator('#submit').click();
+  await expect(page.locator('#result')).toBeVisible();
+  const sessionA = h.data.sessions[0].id_cohorte, sessionB = h.data.sessions[1].id_cohorte;
+  await page.locator('#back').click(); await page.locator('#formations a').first().click();
+  for (let month = 0; month < 6; month++) await page.getByRole('button', { name: 'Mois suivant de la formation', exact: true }).click();
+  await page.locator('#detail .calendar-event').click();
+  await page.getByRole('button', { name: 'S’inscrire à cette date' }).filter({ visible: true }).click();
+  await expect(page.locator('#summary')).toContainText('15 juillet 2030');
+  await page.locator('#prenom').fill('B non soumis');
+  await page.locator('#policy').click(); await expect(page.locator('#privacy')).toBeVisible();
+  await page.goBack();
+  await expect(page.locator('#registration')).toBeVisible(); await expect(page.locator('#result')).toBeHidden();
+  await expect(page.locator('#summary')).toContainText('15 juillet 2030');
+  await expect(page.locator('#prenom')).toHaveValue('B non soumis'); await expect(page.locator('#prenom')).toBeEnabled();
+  await expect(page.locator('#submit')).toBeEnabled(); await expect(page.locator('#form-status')).toBeEmpty();
+  expect(new URLSearchParams(new URL(page.url()).hash.slice(1)).get('date')).toBe(sessionB);
+  expect(commands).toHaveLength(1); expect(commands[0].id_cohorte).toBe(sessionA);
+  expect(h.data.registrations).toHaveLength(1); expect(h.data.registrations[0].id_cohorte).toBe(sessionA); expect(h.messages).toHaveLength(2);
 });
 test('audit R8 — reconfirmation après renommage aligne le titre et le récapitulatif', async ({ page }) => {
   await setup(page, { beforePost(h) { h.data.formations[0].titre = 'Nouveau titre fictif'; } });
@@ -95,8 +120,8 @@ test('AC-13 — conditions modifiées demandent relecture puis nouvel accord/nou
   await fill(page); await page.getByRole('button', { name: 'Confirmer mon inscription', exact: true }).click();
   await expect(page.locator('#summary')).toContainText('850'); await expect(page.locator('#submit')).toBeDisabled();
   await page.getByRole('button', { name: 'J’ai relu les nouvelles conditions' }).click(); await expect(page.locator('#consentement')).not.toBeChecked();
-  await page.locator('#consentement').check(); await page.waitForTimeout(1100); await page.locator('#submit').click();
-  await expect(page.getByRole('heading', { name: 'Votre place est réservée' })).toBeVisible(); expect(commands[0].request_id).not.toBe(commands[1].request_id); expect(h.data.registrations.length).toBe(1);
+  await page.locator('#consentement').check(); await page.locator('#submit').click();
+  await expect(page.getByRole('heading', { name: 'Votre place est réservée' })).toBeVisible(); expect(commands[0].request_id).not.toBe(commands[1].request_id); expect(commands[1].anti_spam.form_started_at).toBe(commands[0].anti_spam.form_started_at); expect(h.data.registrations.length).toBe(1);
 });
 test('AC-02/14 — fermeture/inactivation visibles à l’actualisation, HTML inerte', async ({ page }) => {
   const { h } = await setup(page); h.data.formations[0].titre = '<img src=x onerror="window.XSS=1">'; h.data.sessions[0].inscriptions_ouvertes = false;

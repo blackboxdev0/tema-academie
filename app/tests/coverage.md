@@ -1,5 +1,7 @@
 # Traçabilité des scénarios V1
 
+**Checkpoint correctif actuel :** 103 Node +21 régressions administratives +2 transitions VM +9 contrôles bundle/ICS privés +184 parcours navigateur réussis. Voir [le rapport final](../../docs/project/acceptance/corrections-2026-10-30.md) ; les nombres plus bas décrivent leurs campagnes historiques. Les contrôles R1/R3/R4/R5/R6/R7/R8/R9/R11 et délais sont intégrés à `verify`. R2 reste séparé et rouge.
+
 Les identifiants sont ceux de `epics.md` ; cette matrice relie les52scénarios aux assertions locales et nomme les compléments réels/humains. Une assertion locale ne vaut ni recette Google, ni réception, ni acceptation Sofiane. Exécuter `npm run verify`, puis `npm run test:browsers` pour Firefox/WebKit. Les noms complets des tests portent leurs AC/ET.
 
 | Scénarios story | Assertions locales principales | Complément séparé |

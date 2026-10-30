@@ -100,7 +100,7 @@ var TemaTrial = (function () {
     if (!data || !Array.isArray(data.formations) || !Array.isArray(data.sessions) || !Array.isArray(data.registrations) || !plain(data.params)) throw fault('CONFIG');
     var p = data.params;
     if (!email(p.courriel_contact) || !email(p.courriel_avis_tema) || !url(p.politique_url) || !nonempty(p.politique_version) || !Array.isArray(p.softwares) || !p.softwares.length) throw fault('CONFIG');
-    var softwareIds = {}, labels = {};
+    var softwareIds = Object.create(null), labels = Object.create(null);
     p.softwares.forEach(function (s) {
       if (!plain(s) || !/^[A-Z0-9]+$/.test(s.id || '') || !nonempty(s.label) || softwareIds[s.id] || labels[s.label]) throw fault('CONFIG');
       softwareIds[s.id] = true; labels[s.label] = true;
@@ -349,7 +349,7 @@ var TemaTrial = (function () {
       var capacity = patch.places_max === undefined ? s.places_max : patch.places_max;
       var count = data.registrations.filter(function (r) { return r.id_cohorte === s.id_cohorte && r.statut === 'confirmee'; }).length;
       if (Number.isSafeInteger(capacity) && capacity > 0) { patch.places_restantes = Math.max(0, capacity - count); patch.etat_validation = count > capacity ? 'Capacité inférieure aux inscriptions confirmées' : ''; }
-      else patch.etat_validation = 'Capacité entière positive requise';
+      else { patch.places_restantes = ''; patch.etat_validation = 'Capacité entière positive requise'; }
       patches.push({ sheet: 'Disponibilités', index: index, values: patch });
     });
     // Reuse the public/admission validator after applying generated defaults.

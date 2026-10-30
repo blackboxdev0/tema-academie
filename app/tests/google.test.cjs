@@ -107,11 +107,11 @@ test('Performance reconcile: title changes only its dependent dropdown and label
   g.tabs.Formations.values[1][TemaTrial.HEADERS.Formations.indexOf('titre')] = 'Titre modifié pour recette';
   const flush = g.context.SpreadsheetApp.flush; g.context.SpreadsheetApp.flush = () => { throw Error('metadata flush interrupted'); };
   assert.throws(() => g.context.reconcileTrial_(), /metadata flush interrupted/);
-  assert.equal(g.properties.get('TRIAL_FORMATION_CHOICES_DIGEST'), oldFormationDigest); assert.equal(g.properties.get('TRIAL_SOFTWARE_CHOICES_DIGEST'), softwareDigest);
+  assert.equal(g.properties.get('TRIAL_FORMATION_CHOICES_DIGEST'), '', 'affected list checkpoint is invalidated before its write'); assert.equal(g.properties.get('TRIAL_SOFTWARE_CHOICES_DIGEST'), softwareDigest);
   assert.equal(g.validations.length, priorValidations + 1); assert.equal(g.validations.at(-1).name, 'Disponibilités');
   const mutations = g.mutations.slice(priorMutations); assert.equal(mutations.filter(m => m.kind === 'values').length, 2); assert.equal(mutations.filter(m => m.kind === 'notes').length, 0);
   g.context.SpreadsheetApp.flush = flush; g.context.reconcileTrial_();
-  assert.equal(g.validations.length, priorValidations + 2); assert.notEqual(g.properties.get('TRIAL_FORMATION_CHOICES_DIGEST'), oldFormationDigest); assert.equal(g.properties.get('TRIAL_SOFTWARE_CHOICES_DIGEST'), softwareDigest);
+  assert.equal(g.validations.length, priorValidations + 2); assert.notEqual(g.properties.get('TRIAL_FORMATION_CHOICES_DIGEST'), oldFormationDigest); assert.match(g.properties.get('TRIAL_FORMATION_CHOICES_DIGEST'), /^[a-f0-9]{64}$/); assert.equal(g.properties.get('TRIAL_SOFTWARE_CHOICES_DIGEST'), softwareDigest);
   assert.ok(g.tabs['Disponibilités'].values.slice(1).every(row => row[1].endsWith(' — Titre modifié pour recette'))); assert.equal(g.sent.length, 0);
 });
 
@@ -156,9 +156,9 @@ test('ET-09: manual computed count/diagnostic overwrites are repaired, then the 
   assert.equal(g.properties.get('FORMATION_COUNTER'), '1'); assert.equal(g.sent.length, 0);
 });
 test('ET-09: failed flush does not checkpoint unreconciled input and a concurrent edit is not hidden by the cache', () => {
-  const g = googleContext(); g.context.reconcileTrial_(); const prior = g.properties.get('TRIAL_ADMIN_DIGEST'), flush = g.context.SpreadsheetApp.flush;
+  const g = googleContext(); g.context.reconcileTrial_(); const flush = g.context.SpreadsheetApp.flush;
   g.tabs.Formations.values[1][2] = 'Titre modifié'; g.context.SpreadsheetApp.flush = () => { throw Error('flush unavailable'); };
-  assert.throws(() => g.context.reconcileTrial_(), /flush unavailable/); assert.equal(g.properties.get('TRIAL_ADMIN_DIGEST'), prior);
+  assert.throws(() => g.context.reconcileTrial_(), /flush unavailable/); assert.equal(g.properties.get('TRIAL_ADMIN_DIGEST'), '', 'interruption leaves no valid administration checkpoint');
   g.context.SpreadsheetApp.flush = () => { g.tabs['Disponibilités'].values[1][5] = 4; flush(); };
   g.context.reconcileTrial_(); assert.equal(g.tabs['Disponibilités'].values[1][9], 3);
   g.context.SpreadsheetApp.flush = flush; g.context.reconcileTrial_(); assert.equal(g.tabs['Disponibilités'].values[1][9], 4);

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
-  var config = window.TEMA_CONFIG || {}, catalogue = null, selected = null, pending = null, startedAt = null, sending = false, changeRequired = false, candidateChange = null, lastReadFailed = false;
+  var config = window.TEMA_CONFIG || {}, catalogue = null, selected = null, pending = null, startedAt = null, sending = false, changeRequired = false, candidateChange = null, lastReadFailed = false, knownResult = null;
   var codes = ['RECORDED', 'REPLAY', 'FULL', 'CLOSED', 'NOT_FOUND', 'SESSION_CHANGED', 'DUPLICATE', 'INVALID', 'CONSENT_REQUIRED', 'POLICY_CHANGED', 'RETRY_CONFLICT', 'BUSY', 'UNAVAILABLE'];
   var fields = ['prenom', 'nom', 'entreprise', 'courriel', 'telephone'];
   function node(tag, value, className) { var el = document.createElement(tag); if (value !== undefined) el.textContent = value; if (className) el.className = className; return el; }
@@ -145,7 +145,7 @@
     var raw = location.hash.slice(1); if (raw === 'politique') { show('privacy'); $('privacy-title').focus(); return; } if (raw === 'dates-formation') { if (detailId && $('dates-formation')) { show('detail'); $('dates-formation').focus(); $('dates-formation').scrollIntoView(); } else { show('catalogue'); renderCatalogue(); } return; }
     var p = new URLSearchParams(raw), id = p.get('formation'), cohort = p.get('date');
     if (p.get('section') === 'dates' && view === 'detail' && detailId === id && $('dates-formation')) { $('dates-formation').focus(); $('dates-formation').scrollIntoView(); return; }
-    if (id && p.get('vue') === 'inscription' && selected && selected.formation.id === id && selected.session.id_cohorte === cohort) { show('registration'); $('form-title').focus(); return; }
+    if (id && p.get('vue') === 'inscription' && selected && selected.formation.id === id && selected.session.id_cohorte === cohort) { if (knownResult) finish(knownResult); else { show('registration'); $('form-title').focus(); } return; }
     if (id) { if (view === 'catalogue') homeScroll = window.scrollY; openDetail(id, cohort, validMonth(p.get('mois')) ? p.get('mois') : null); if (p.get('vue') === 'inscription') { var s = sessionsFor(id).find(function (x) { return x.id_cohorte === cohort; }), f = catalogue.formations.find(function (x) { return x.id === id; }); if (eligible(s) && f) choose(s, f); } else if (p.get('section') === 'dates' && $('dates-formation')) { $('dates-formation').focus(); $('dates-formation').scrollIntoView(); } }
     else { show('catalogue'); renderCatalogue(); requestAnimationFrame(function () { if (raw === 'calendrier') $('calendrier').scrollIntoView(); else window.scrollTo(0, homeScroll); }); }
   }
@@ -154,8 +154,8 @@
     var active = document.activeElement, key = active && active.dataset && active.dataset.focusKey, id = active && active.id, x = window.scrollX, y = window.scrollY;
     render();
     if (active && (!active.isConnected || active.closest('[hidden]'))) {
-      var scope = $(view), next = id && $(id) || key && scope && Array.from(scope.querySelectorAll('[data-focus-key]')).find(function (el) { return el.dataset.focusKey === key; });
-      if (next && next.closest('[hidden]')) next = null;
+      function visible(el) { return el && !el.disabled && !el.closest('[hidden]') && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden'; }
+      var scope = $(view), next = id && visible($(id)) ? $(id) : key && scope && Array.from(scope.querySelectorAll('[data-focus-key]')).find(function (el) { return el.dataset.focusKey === key && visible(el); });
       if (!next && view === 'detail') next = $('detail-title');
       if (next) { next.focus({ preventScroll: true }); window.scrollTo(x, y); }
     }
@@ -179,7 +179,7 @@
   function choose(s, f) {
     if (pending || !eligible(s)) return;
     selected = { session: structuredClone(s), formation: structuredClone(f), policyVersion: catalogue.policy.version };
-    startedAt = new Date().toISOString(); changeRequired = false; candidateChange = null;
+    knownResult = null; startedAt = new Date().toISOString(); changeRequired = false; candidateChange = null;
     $('changed').hidden = true; $('form-status').textContent = ''; $('retry').hidden = true; $('consentement').checked = false;
     $('personal-fields').disabled = false; $('submit').disabled = false; $('change-date').disabled = false; clearErrors(); summary($('summary'), selected); formAvailability(s, 'Disponibilité au choix de la date'); show('registration'); $('form-title').textContent = 'Inscription à ' + f.titre; $('form-title').focus();
   }
@@ -203,6 +203,7 @@
     $('personal-fields').disabled = true; $('submit').disabled = true; $('change-date').disabled = true; $('retry').hidden = false; $('retry').disabled = false; $('form-status').focus();
   }
   function finish(result) {
+    knownResult = result;
     var cancelled = result.reservation_status === 'annulee';
     $('result-title').textContent = cancelled ? 'Cette inscription a été annulée' : 'Votre place est réservée';
     $('reservation-message').textContent = cancelled ? 'La reprise conserve son statut annulé. Aucune nouvelle place n’a été réservée.' : 'Votre inscription est confirmée. Votre place est réservée pour ' + selected.formation.titre + ', le ' + localDate(selected.session.start_at) + ', jusqu’à ' + formatTime(selected.session.end_at) + ' (Heure de Montréal).' ;
@@ -246,9 +247,9 @@
   }
   $('form').addEventListener('submit', function (event) { event.preventDefault(); if (sending || changeRequired || pending || !selected) return; pending = makeCommand(); send(pending); });
   $('retry').addEventListener('click', function () { if (pending) send(pending); });
-  $('accept-change').addEventListener('click', function () { if (candidateChange) { selected = candidateChange; candidateChange = null; changeRequired = false; startedAt = new Date().toISOString(); $('consentement').checked = false; $('changed').hidden = true; $('submit').disabled = false; $('form-status').textContent = 'Conditions actualisées. Renouvelez votre accord puis confirmez votre inscription.'; } });
+  $('accept-change').addEventListener('click', function () { if (candidateChange) { selected = candidateChange; candidateChange = null; changeRequired = false; $('form-title').textContent = 'Inscription à ' + selected.formation.titre; $('consentement').checked = false; $('changed').hidden = true; $('submit').disabled = false; $('form-status').textContent = 'Conditions actualisées. Renouvelez votre accord puis confirmez votre inscription.'; } });
   $('change-date').addEventListener('click', function () { if (!pending) { openDetail(selected.formation.id, selected.session.id_cohorte); history.pushState(null, '', routeHash(selected.formation.id, selected.session.id_cohorte)); refresh(); } });
-  $('back').addEventListener('click', function () { $('form').reset(); selected = null; goHome(null, true); refresh(); });
+  $('back').addEventListener('click', function () { $('form').reset(); if (!knownResult) selected = null; goHome(null, true); refresh(); });
   $('reload').addEventListener('click', refresh);
   $('retry-detail').addEventListener('click', refresh);
   $('retry-catalogue').addEventListener('click', refresh);
@@ -257,7 +258,7 @@
   window.addEventListener('focus', refreshVisibleCatalogue);
   document.addEventListener('visibilitychange', refreshVisibleCatalogue);
   function currentPublicRoute() {
-    if (view === 'registration' && selected) return routeHash(selected.formation.id, selected.session.id_cohorte, true);
+    if ((view === 'registration' || view === 'result') && selected) return routeHash(selected.formation.id, selected.session.id_cohorte, true);
     if (view === 'detail' && detailId) return routeHash(detailId, detailSession, false, detailMonth);
     return location.hash === '#main' ? '#' : location.hash || '#';
   }

@@ -8,12 +8,24 @@ async function setup(page, mutate = () => {}, hash = '') {
   await page.goto('/' + hash); await expect(page.locator('#catalogue-status')).not.toContainText('Chargement'); return h;
 }
 const enabled = s => ({ ...s, status: 'open', registration_enabled: true, registration_block_reason: null });
-test('audit R7 — actualisation garde le focus sur l’action d’inscription visible sur ordinateur', async ({ page }) => {
-  test.skip(page.viewportSize().width < 760, 'desktop duplicate-control focus boundary');
+test('audit R7 — actualisation garde le focus sur l’action d’inscription visible ordinateur/mobile', async ({ page }) => {
   await page.clock.install(); const h = await setup(page); await page.locator('#formations a').click();
-  const action = page.locator('.desktop-summary button'); await action.focus();
+  const selector = page.viewportSize().width < 760 ? '.mobile-summary' : '.desktop-summary';
+  const action = page.locator(selector + ' button'); await action.focus();
   h.data.formations[0].prix = 975; await page.clock.fastForward(30000);
-  await expect(page.locator('.desktop-summary')).toContainText('975'); await expect(action).toBeFocused();
+  await expect(page.locator(selector)).toContainText('975'); await expect(action).toBeFocused();
+});
+test('audit R7 — dernière place disparue restaure le focus au titre plutôt qu’au bouton désactivé', async ({ page }) => {
+  await page.clock.install(); const h = await setup(page);
+  h.data.sessions[0].places_max = 1; await page.locator('#reload').click();
+  await expect(page.locator('#formations article').first()).toContainText('1 place restante');
+  await page.locator('#formations a').click();
+  const selector = page.viewportSize().width < 760 ? '.mobile-summary' : '.desktop-summary';
+  const action = page.locator(selector + ' button'); await action.focus(); await expect(action).toBeFocused();
+  expect(h.service.register(h.command()).recording_status).toBe('recorded');
+  await page.clock.fastForward(30000);
+  await expect(action).toBeDisabled(); await expect(page.locator(selector)).toContainText('Complet');
+  await expect(page.locator('#detail-title')).toBeFocused();
 });
 test('audit AC-17 — expiration GET à 15 secondes libère la lecture suivante et retire l’avis périmé', async ({ page }) => {
   await page.clock.install(); const h = await setup(page);

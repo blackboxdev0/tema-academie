@@ -1,5 +1,7 @@
 # Fonctionnalités du projet
 
+**État courant après correction (30 octobre) :** neuf correctifs réalisés, revue et vérification locale terminées : 103 tests Node, 21 régressions administratives, 2 transitions VM, 9 contrôles bundle/ICS et 184 parcours navigateur réussis. Google TEST non mis à jour ; Safari/Calendrier Apple non vérifiés. Les propositions UX sont uniquement illustrées. [Rapport courant](acceptance/corrections-2026-10-30.md) · [Rapport visuel](acceptance/ux-options-2026-10-30.html). Les résultats de réalisation/audit ci-dessous sont historiques lorsqu’ils diffèrent de ce checkpoint.
+
 **Réserve actuelle — contre-audit du 30 octobre :** le [rapport indépendant](acceptance/independent-audit-2026-10-30.md) relève des défauts administratifs reproduits et des transitions UI à corriger avant acceptation. Tests existants 103/103 rejoués et neuf nouveaux contrôles bundle/ICS réussis ; sept assertions administratives échouent. Safari/Apple et matrice navigateur restent bloqués dans cette passe. Les résultats de réalisation ci-dessous sont conservés comme preuves historiques, sans validation finale nouvelle.
 
 ## Candidat V1 local + Google TEST préparé pour la recette humaine

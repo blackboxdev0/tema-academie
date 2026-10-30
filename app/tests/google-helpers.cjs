@@ -26,6 +26,7 @@ function googleContext(empty = false, options = {}) {
     getNotes() { return Array.from({ length: this.height }, (_, i) => Array.from({ length: this.width }, (_, j) => this.tab.notes.get(`${this.row + i}:${this.col + j}`) || '')); }
     setNotes(notes) { mutations.push({ kind: 'notes', sheet: this.tab.name }); for (let i = 0; i < notes.length; i++) for (let j = 0; j < notes[i].length; j++) this.tab.notes.set(`${this.row + i}:${this.col + j}`, notes[i][j]); return this; }
     setDataValidation(rule) { mutations.push({ kind: 'dropdown', sheet: this.tab.name }); validations.push({ name: this.tab.name, column: this.col, rule }); return this; }
+    clearDataValidations() { mutations.push({ kind: 'dropdown', sheet: this.tab.name }); validations.push({ name: this.tab.name, column: this.col, rule: null }); return this; }
     insertCheckboxes() { events.push('checkboxes'); for (let i = 0; i < this.height; i++) this.tab.getRange(this.row + i, this.col).setValue(false); return this; }
     protect() { const protection = { range: this, description: '', warning: false, getRange() { return this.range; }, setRange(range) { this.range = range; return this; }, getDescription() { return this.description; }, setDescription(value) { this.description = value; return this; }, setWarningOnly(value) { this.warning = value; return this; } }; this.tab.protections.push(protection); return protection; }
   }

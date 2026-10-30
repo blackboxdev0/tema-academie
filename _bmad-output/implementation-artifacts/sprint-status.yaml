@@ -32,7 +32,7 @@ generated: 10-30-2026 15:16
 last_updated: 10-30-2026 17:21
 project: Tema Académie
 # Contre-audit 2026-10-30 : réserves ouvertes dans acceptance/independent-audit-2026-10-30.md.
-# GO correctifs Sofiane : reprise des stories affectées ; UX facultative différée au rapport visuel.
+# Correctifs locaux vérifiés ; Google réel/recette restent en cours, frontend en Review ; UX différée.
 project_key: NOKEY
 tracking_system: file-system
 story_location: _bmad-output/implementation-artifacts
@@ -51,9 +51,9 @@ development_status:
 
   epic-3: in-progress
   3-1-confirmer-une-inscription-unique-aux-conditions-présentées: review
-  3-2-reprendre-un-résultat-incertain-et-reconfirmer-des-condition: in-progress
+  3-2-reprendre-un-résultat-incertain-et-reconfirmer-des-condition: review
   3-3-recevoir-confirmation-invitation-et-avis-interne-fidèles: review
-  3-4-conserver-la-place-et-un-suivi-honnête-lorsque-l-envoi-échou: in-progress
+  3-4-conserver-la-place-et-un-suivi-honnête-lorsque-l-envoi-échou: review
   epic-3-retrospective: optional
 
   epic-4: in-progress
@@ -63,7 +63,7 @@ development_status:
   epic-4-retrospective: optional
 
   epic-5: in-progress
-  5-1-finaliser-une-interface-tema-lisible-et-accessible: in-progress
+  5-1-finaliser-une-interface-tema-lisible-et-accessible: review
   5-2-rejouer-les-contrôles-avant-chaque-mise-à-jour: in-progress
   5-3-recetter-la-solution-complète-et-ses-invitations-de-bout-en: in-progress
   5-4-remettre-le-candidat-le-guide-et-les-éléments-de-publication: review

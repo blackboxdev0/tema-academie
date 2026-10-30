@@ -76,13 +76,12 @@ function fixture() {
   navigation.location.hash = '#politique'; navigation.audit.applyRoute();
   assert.equal(navigation.audit.state().view, 'privacy');
   navigation.location.hash = originalRoute; navigation.audit.applyRoute();
-  assert.equal(navigation.audit.state().view, 'registration');
-  assert.equal(navigation.get('personal-fields').disabled, true);
-  assert.equal(navigation.get('submit').disabled, true);
-  assert.equal(navigation.get('change-date').disabled, true);
-  assert.equal(navigation.get('retry').hidden, true);
+  assert.equal(navigation.audit.state().view, 'result');
+  assert.equal(navigation.get('result-title').textContent, 'Votre place est réservée');
   assert.equal(navigation.audit.state().pending, null);
-  console.log(JSON.stringify({ proof: 'Node VM, fake DOM; not browser history proof', case: 'recorded-result -> policy hash -> original registration hash', resulting_view: navigation.audit.state().view, personal_fields_disabled: true, submit_disabled: true, change_date_disabled: true, retry_hidden: true, pending: null, recorded_rows: navigation.h.data.registrations.length, post_requests: navigation.requests() }));
+  assert.equal(navigation.requests(), 1);
+  assert.equal(navigation.h.data.registrations.length, 1);
+  console.log('PASS R6: known result restored after policy return, one POST/registration (Node VM only)');
 
   const renamed = fixture(); await renamed.openForm();
   const oldHeading = renamed.get('form-title').textContent;
@@ -93,12 +92,7 @@ function fixture() {
   renamed.get('accept-change').listeners.click();
   assert.equal(renamed.audit.state().selected.formation.titre, 'Titre actualisé après sélection');
   assert.equal(renamed.audit.state().changeRequired, false);
-  assert.equal(renamed.get('form-title').textContent, oldHeading);
-  console.log(JSON.stringify({ proof: 'Node VM, fake DOM', case: 'SESSION_CHANGED title and acceptance', selected_title: renamed.audit.state().selected.formation.titre, summary_has_new_title: true, form_heading: renamed.get('form-title').textContent, old_heading_retained: true, submit_disabled: renamed.get('submit').disabled, consent_checked: renamed.get('consentement').checked }));
-
-  const malformed = fixture(); const good = await malformed.audit.read();
-  const bad = structuredClone(good); delete bad.softwares; malformed.setCatalogue(bad);
-  await malformed.audit.read();
-  assert.throws(() => malformed.audit.software(bad.formations[0]), /Cannot read properties of undefined/);
-  console.log(JSON.stringify({ proof: 'Node VM, fake DOM', case: 'catalogue missing softwares', accepted_by_fetchCatalogue: true, software_renderer_throws: "Cannot read properties of undefined (reading 'find')" }));
+  assert.notEqual(renamed.get('form-title').textContent, oldHeading);
+  assert.equal(renamed.get('form-title').textContent, 'Inscription à Titre actualisé après sélection');
+  console.log('PASS R8: accepted title and summary agree (Node VM only)');
 })().catch(error => { console.error(error); process.exitCode = 1; });

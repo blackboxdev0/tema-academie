@@ -1,6 +1,30 @@
 # Contre-audit développement, UX et tests — 30 octobre 2026
 
-## Avis de remise
+**État courant :** voir le [rapport final des corrections](corrections-2026-10-30.md) et le [rapport visuel UX](ux-options-2026-10-30.html). Les sections ci-dessous conservent les deux checkpoints historiques, avant correction puis avant contre-revue finale. Le bilan courant est 184 parcours navigateur, 103 Node, 21 régressions, 2 transitions VM et 9 contrôles bundle/ICS réussis ; Google TEST corrigé et applications Apple restent non vérifiés.
+
+## Première reprise locale — historique avant contre-revue finale
+
+Les sections d’audit ci-dessous conservent les constats et résultats du candidat `0f3249fe` avant correction. Le GO de reprise porte sur R1/R3/R4/R5/R6/R7/R8/R9/R11 et V1/V2, avec UX/UI différée et aucune opération Google réelle. Le candidat corrigé fait encore l’objet de sa revue native et du checkpoint de l’orchestrateur ; cette réalisation locale ne vaut pas acceptation humaine ni déploiement.
+
+| Périmètre | Correction et contre-preuve |
+|---|---|
+| R1 | Bloc de diagnostic délimité dans les notes ; texte humain conservé avant, pendant et après correction, y compris remplacement humain de la note. Migration limitée aux anciens messages diagnostiques reconnus. Assertions locales sur la cellule touchée. |
+| R3 | Retrait de la validation native lorsque toutes les formations ont disparu ou sont ambiguës, puis restauration de la liste après réparation. Tests simulés suppression/doublon/réparation. |
+| R4 | Calcul `places_restantes` vidé pour capacité vide, nulle, négative, fractionnaire ou non numérique ; diagnostic et exclusion publique conservés. |
+| R5 | Diagnostic privé dans la cellule `label`/`id` concernée avant refus CONFIG ; libellé vide, doublon et absence d’identifiant générable couverts. Réparation retire le seul diagnostic, même lorsque les anciennes valeurs valides sont rétablies exactement après un flush interrompu. Lectures de notes groupées, seulement si le registre change ; budget réel non remesuré. |
+| R6 | Reçu certain conservé en mémoire pendant la visite et restauré au retour historique sur la route d’inscription, y compris après Catalogue/politique. Un POST, une inscription et deux messages simulés restent constants. Aucun stockage navigateur durable. |
+| R7 | Restauration du focus sur le contrôle affiché selon la largeur, avec vérification géométrique et CSS. Test exécuté sur ordinateur et profil mobile. |
+| R8/R9 | Adoption des conditions actualise aussi le titre et conserve le début réel de la saisie pour l’anti-spam. Nouvel accord et nouvel UUID toujours requis ; reconfirmation sans attente artificielle testée. |
+| R11 | Dictionnaires de validation logiciels sans prototype ; libellés `constructor`, `__proto__` et `toString` acceptés sans collision. |
+| V1/V2 | Expirations POST45s/GET15s réellement franchies avec l’horloge de test du navigateur ; reprise identique sans doublon et lecture fraîche suivant expiration vérifiées. Réseau et Google simulés. |
+
+`npm run test:audit-regressions` devient le contrôle du lot autorisé, intégré à `verify` : 18 assertions administratives et deux assertions UI VM sur le comportement corrigé. L’injection de catalogue sans `softwares`, rejetée au triage, n’est plus une assertion de défaut volontaire dans ce contrôle de conformité. Le script VM reste explicitement distinct d’un navigateur ; les transitions concernées ont aussi leurs tests Playwright.
+
+**R2 reste ouvert et hors périmètre.** Son assertion inchangée est déplacée dans `tests/audit/optional-regressions.test.cjs`, exécutée par `npm run test:audit-optional`, hors commande de validation du lot. Ce contrôle échoue toujours (`WRONG` au lieu de `DIV — Divalto`) : ni correction revendiquée ni test artificiellement vert.
+
+Contrôle ciblé : **24/24 Playwright réussis** sur Chromium ordinateur/mobile, Firefox et WebKit. **Matrice complète : 176/176 Playwright réussis**, sans contrôle focus mobile ignoré. Les103tests Node historiques passent ; après le dernier ajustement backend de reprise après flush interrompu, ces103tests, les18assertions administratives/deux assertions UI VM, build/sécurité et les sept contrôles portables du bundle sont rejoués avec succès. Les fichiers frontend sont inchangés pendant cette reprise ciblée backend. Le build et la sécurité passent ; le bundle reconstruit passe ses sept contrôles portables, avec deux fichiers ICS privés explicitement ignorés sans variable de dossier. Bundle Google local reconstruit SHA-256 `0bc8f98dd5b5a9897dea23d93619add2e4c05e68c85c73b374454cc109f8b38d` ; aucun HEAD Google distant modifié. Aucun mail, import, modification de Sheet, déploiement ou budget TEST consommé ; Safari installé et Calendrier Apple ne sont pas validés par WebKit.
+
+## Avis initial de remise — historique avant corrections
 
 **Je ne recommande pas de considérer le candidat comme entièrement vérifié.** La réalisation couvre les parcours attendus et les tests historiques restent utiles, mais cette contre-revue découvre des défauts de gestion et de navigation absents de la première couverture. Les corriger puis rejouer les parcours concernés est recommandé avant l’acceptation finale. Aucun défaut de sur-réservation ou de double envoi nouveau n’a été démontré dans cette passe.
 
@@ -98,7 +122,7 @@ Protocole Apple prêt dès accès autorisé : créer/choisir un calendrier de re
 
 Ces trois propositions ne sont pas des défauts bloquants et n’ont pas été appliquées. Aucun nouveau problème de contraste n’a été mesuré dans cette passe ; les contrastes antérieurs ne sont pas requalifiés en audit natif actuel.
 
-## Contrôles encore ouverts avant acceptation complète
+## Contrôles ouverts au checkpoint initial — historique
 
 | Contrôle | État / action |
 |---|---|
@@ -136,7 +160,7 @@ Chaque constat a reçu un verdict avant regroupement. Les doublons conservent le
 
 Bilan : 17 constats bruts, deux doublons regroupés, trois rejetés avec leur motif, **12 actions distinctes** dont neuf correctifs produit proposés et trois compléments de preuve. V3 est traité ; V1/V2 sont préparés mais pas exécutés ; neuf correctifs produit restent ouverts. Aucune nouvelle décision métier nécessaire pour corriger ces neuf défauts dans les invariants existants. Les trois propositions UX de confort ont leur arbitrage propre.
 
-## Suivi et état laissé
+## État laissé par l’audit initial — historique
 
 Tests et rapport ajoutés localement, sans modification du code produit, déploiement, commit ou push. Les vérifications Node/bundle sont exécutées ; les régressions rouges sont conservées, non masquées. La spec Build porte les actions ouvertes et n’est plus considérée close après cette contre-revue. Aucun `story_key` unique ne représente cet audit transversal : le sprint conserve ses 17 stories en Review, avec un commentaire de réserve ; les corrections n’ont pas démarré. Linear reste en Review, relu mais non modifié. Aucune acceptation/Done/main n’est déduite de cette passe.
 

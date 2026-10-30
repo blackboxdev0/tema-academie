@@ -2,7 +2,7 @@
 title: 'V1 locale connectée à Google TEST'
 type: feature
 created: '2026-10-30'
-status: in-progress
+status: in-review
 route: dispatch
 baseline_commit: a57ced60b0186c2fe1070fe28ce305b23d3b0137
 review_loop_iteration: 1
@@ -66,16 +66,16 @@ Les modifications en cours avant ce GO sont les tests et documents du contre-aud
 
 Statut rouvert pour constats non résolus ; les tâches réalisées et preuves historiques ci-dessous restent conservées. Audit transversal sans `story_key` unique : aucune story de sprint n’est artificiellement marquée done ou démarrée en correction. [Rapport et triage exhaustif](../../docs/project/acceptance/independent-audit-2026-10-30.md).
 
-- [ ] [Review][Patch] R1 Préserver les notes humaines pendant les diagnostics (`app/apps-script/google.js:275`).
-- [ ] [Review][Patch] R3 Retirer les options de formation devenues inexistantes (`app/apps-script/google.js:255`).
-- [ ] [Review][Patch] R4 Effacer le calcul de places lorsque la capacité est invalide (`app/apps-script/engine.js:350`).
-- [ ] [Review][Patch] R5 Fournir les diagnostics privés des logiciels invalides (`app/apps-script/google.js:301`).
-- [ ] [Review][Patch] R6 Restaurer le résultat connu après retour sur la route d’inscription (`app/web/app.js:148`).
-- [ ] [Review][Patch] R7 Restaurer le focus sur le contrôle visible (`app/web/app.js:157`).
-- [ ] [Review][Patch] R8 Réactualiser le titre après reconfirmation (`app/web/app.js:249`).
-- [ ] [Review][Patch] R9 Éviter le refus anti-spam inexpliqué après relecture (`app/web/app.js:249`).
-- [ ] [Review][Patch] R11 Éviter les collisions de libellés avec Object.prototype (`app/apps-script/engine.js:103`).
-- [ ] [Review][Patch] V1/V2 Exécuter les nouveaux tests des expirations POST45s/GET15s, actuellement bloqués ; code de test ajouté.
+- [x] [Review][Patch] R1 Préserver les notes humaines pendant les diagnostics (`app/apps-script/google.js:275`).
+- [x] [Review][Patch] R3 Retirer les options de formation devenues inexistantes (`app/apps-script/google.js:255`).
+- [x] [Review][Patch] R4 Effacer le calcul de places lorsque la capacité est invalide (`app/apps-script/engine.js:350`).
+- [x] [Review][Patch] R5 Fournir les diagnostics privés des logiciels invalides (`app/apps-script/google.js:301`).
+- [x] [Review][Patch] R6 Restaurer le résultat connu après retour sur la route d’inscription (`app/web/app.js:148`).
+- [x] [Review][Patch] R7 Restaurer le focus sur le contrôle visible (`app/web/app.js:157`).
+- [x] [Review][Patch] R8 Réactualiser le titre après reconfirmation (`app/web/app.js:249`).
+- [x] [Review][Patch] R9 Éviter le refus anti-spam inexpliqué après relecture (`app/web/app.js:249`).
+- [x] [Review][Patch] R11 Éviter les collisions de libellés avec Object.prototype (`app/apps-script/engine.js:103`).
+- [x] [Review][Patch] V1/V2 Expirations POST45s/GET15s exécutées sur Chromium ordinateur/mobile, Firefox et WebKit automatisés ; aucune preuve Safari installé déduite.
 - [x] [Review][Patch] V3 Exécuter le bundle Code.gs construit et intégrer ce contrôle après build ; réussi en adaptateur simulé.
 
 #### Rejected
@@ -95,6 +95,8 @@ Statut rouvert pour constats non résolus ; les tâches réalisées et preuves h
 Critères : étant donné chaque story 1.1–5.4 et ses AC dans epics.md, lorsque réalisée dans la cible locale + Google TEST, alors son comportement et ses preuves sont traçables ; publication/remise publique exclues par GO courant. Les vérifications Google réelles sont exécutées par l’orchestrateur via Computer Use après candidat local ; elles ne sont pas remplacées par les tests simulés.
 
 ## Implementation Notes
+
+Reprise corrective locale après préparation224c598 : R1/R3/R4/R5/R6/R7/R8/R9/R11 réalisés ; 103tests Node historiques,18assertions administratives, deux assertions UI VM,176Playwright sur quatre profils réussis. Build/sécurité et sept contrôles bundle portables réussis ; deux ICS privés ignorés explicitement. Dernier ajustement backend de reprise après flush diagnostique interrompu couvert par la relance Node/audit/build/bundle ; frontend inchangé depuis la matrice. R2 conservé rouge dans `test:audit-optional`, hors `verify`, aucune correction revendiquée. Aucun appel Google, mail, déploiement, commit ou push par l’agent de réalisation. Rapport de contre-audit complété ; revue native et checkpoint de l’orchestrateur restent à terminer, statut de cette reprise conservé in-progress.
 
 Réalisation e3eab026 puis correctif final c5eca1e1 vérifiés :103tests Node et156parcours sur quatre projets, dont20contrôles accessibilité/32scans axe ; CI push/PR vertes. Google réel version7, import/rejeu24/24,216champs importés et24mentions de date source préservés, cinq inscriptions historiques strictement identiques. Concurrence/reprise, reconfirmation09h30, trois confirmations+trois avis reçus, deux ICS importés dans Google Calendar hiver/été. Dix éditions finales maximum26.677s, secours réel4min45 et budget prudent41.2995min/j≤45 après correction. Retour compatible7→6→7 vérifié ; TEST au repos12h/onEdit conservé. Catalogue public final24/3, quatre nouvelles réservations annulées sans suppression ; budget8/16 et quota94. Le rapport final distingue chaque preuve réelle, locale, injectée et humaine réservée. Patch public de présentation Ergonomie aligné sur les maquettes sans modification de la source privée.
 
@@ -125,13 +127,34 @@ Préparation acceptée par GO et audit readiness PASS ; aucune question métier 
 | G1 Initialisation de capacité après flush interrompu | medium | Contre-revue E1 : une capacité explicitement saisie ne doit pas redevenir éligible au défaut après interruption puis effacement humain. Réservation complète avant mutations, cinq contrôles ciblés réussis. |
 | G2 Budget natif de déclencheurs | medium | Mesures réelles : extrapolation prudente initiale54.37min >45min. Optimisation admin des écritures/listes/notes et nouvelles mesures requises avant clôture, sans cache d’admission ni changement de cadence. |
 
+### Contre-revue du lot correctif
+
+Les trois couches natives Build ont lu le diff de la baseline historique conservée, avec priorité au delta depuis `0f3249fe`. La spec figure aussi dans ce diff documentaire : la séparation stricte des claims de la couche cas limites est donc imparfaite et n’est pas revendiquée. Chaque constat ci-dessous a été vérifié avant regroupement ; les scénarios sont locaux/simulés, sauf parcours navigateur exécutés avec réseau simulé.
+
+| Origine / constat | Verdict | Preuve et route |
+|---|---|---|
+| Blind C1 — R3 liste vide interrompue puis restaurée | medium | Retrait natif simulé suivi de flush interrompu laisse les anciens checkpoints ; restaurer exactement la formation peut sauter la réparation. Patch : invalider les checkpoints avant mutation et tester reprise. |
+| Blind C2 — R5 ligne invalide effacée | medium | Notes limitées à la plage des valeurs encore présentes ; le modèle de ligne vidée conserve le diagnostic hors plage. Patch : traiter aussi les lignes vides de la zone de notes, en préservant les notes humaines. Comportement Google natif distinct, non prouvé ici. |
+| Blind C3 — R7 contrôle devenu désactivé | medium | Bouton visible mais disabled sélectionné ; focus échoue et BODY devient actif. Patch : exclure le contrôle non focalisable et utiliser le titre de repli. |
+| Blind C4 — états documentaires contradictoires | low | Anciennes sections de rapport et clôture Build paraissent encore actuelles. Correction de checkpoint documentaire par l’orchestrateur : marquer explicitement l’historique et présenter un état courant unique ; aucune réécriture du contrat figé. |
+| Edge C1 — R5 setNotes interrompu | medium | L’écriture des notes précède le try/catch invalidant le digest admin ; setNotes écrit puis échoue, restauration exacte et patches:0 laissent la note. Patch : invalider avant toute mutation de réconciliation et contre-test d’interruption plus précoce. |
+| Edge C2 — R7 dernière place disparue | medium | Reproduction Chromium avec API simulée : nouveau bouton disabled, activeElement BODY. Regroupé avec Blind C3 après vérification individuelle. |
+| Verification C1 — R6 nouvelle sélection après succès non couverte | medium | Mutation supprimant knownResult=null produit une fausse confirmation de B alors que seule A est inscrite ; la suite existante ne changeait pas de sélection après succès. Patch de test : A réussie → B → politique → retour, formulaire B et une seule inscription A. |
+| Verification C2 — R5 setNotes interrompu | medium | Reproduction indépendante même frontière avant le catch ; ancien test ne coupait qu’au flush. Regroupé avec Edge C1 après vérification individuelle. |
+
+Toutes les corrections retenues restent dans les neuf comportements approuvés. Aucun changement métier ni amélioration UX facultative n’est introduit.
+
 ## Verification
 
 `cd app && npm run verify` ; contrôles méthode/check ; suites navigateur/sécurité/accessibilité ajoutées. Google réel : identité TEST, budget avant/après, import/rejeu, édition→projection, inscription/reprise, courriels reçus et export réel. Aucune preuve acquise par la rédaction de cette spec.
 
 
-## Clôture du parcours Build
+## Clôture initiale du parcours Build — historique
 
 Préparation a57ced60, réalisation e3eab026 et correction c5eca1e1 poussées sur la branche de travail. Revues natives et corrections achevées, y compris performance réelle et empreinte hors caches. Dernier candidat :103Node/156Playwright, build/sécurité/audit npm réussis ; CI push41129653830 et PR41129664647 réussies. Bundle Google TEST7/HEAD f8689f42a980ea8d1fecf0eaac47dbf47328dc88cb91ae2c7ba288ec1a9b85ee. Catalogue24/3, réceptions/ICS Google hiver/été, concurrence/reconfirmation/replay/annulation, intégrité historique, secours réel et budget41.2995min/j vérifiés. Retour compatible7→6→7 sans restauration de données ; onEdit conservé et TEST remis au repos12h.
 
-La spec est done pour la réalisation de la cible autorisée,17stories BMAD review et22issues Linear Review relues après écriture ; epics BMAD in-progress jusqu’à acceptation globale. Projet Linear In Progress avant recette finale. Aucun Done humain, merge/main, publication Vercel/FTP ou PROD. Rapport final : docs/project/acceptance/V1-results.md ; limites de simulation/injection et contrôles humains explicités. Guide/adresse4173 remis. Le push documentaire de clôture suit son checkpoint Git/CI propre.
+Au checkpoint initial, la spec était done pour la réalisation de la cible autorisée,17stories BMAD review et22issues Linear Review relues après écriture ; epics BMAD in-progress jusqu’à acceptation globale. Projet Linear In Progress avant recette finale. Aucun Done humain, merge/main, publication Vercel/FTP ou PROD. Rapport final : docs/project/acceptance/V1-results.md ; limites de simulation/injection et contrôles humains explicités. Guide/adresse4173 remis. Le push documentaire de clôture suit son checkpoint Git/CI propre.
+
+## Checkpoint correctif courant
+
+Neuf correctifs et V1/V2 réalisés ; contre-revue native traitée et vérification complète finale réussie : 103 Node, 21 régressions administratives, 2 transitions VM, 9 contrôles bundle/ICS, 184 parcours navigateur. R2 reste volontairement hors lot et rouge. Les propositions UX sont seulement illustrées. La spec globale reste `in-review` : application à Google TEST et contrôles natifs/recette encore ouverts, donc pas de clôture globale déduite du parcours local. [Rapport courant](../../docs/project/acceptance/corrections-2026-10-30.md).

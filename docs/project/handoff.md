@@ -1,5 +1,7 @@
 # Reprise du projet
 
+**État courant après correction (30 octobre) :** neuf correctifs réalisés, revue et vérification locale terminées : 103 tests Node, 21 régressions administratives, 2 transitions VM, 9 contrôles bundle/ICS et 184 parcours navigateur réussis. Google TEST non mis à jour ; Safari/Calendrier Apple non vérifiés. Les propositions UX sont uniquement illustrées. [Rapport courant](acceptance/corrections-2026-10-30.md) · [Rapport visuel](acceptance/ux-options-2026-10-30.html). Les résultats de réalisation/audit ci-dessous sont historiques lorsqu’ils diffèrent de ce checkpoint.
+
 **Décision la plus récente :** Sofiane autorise les neuf correctifs R1/R3/R4/R5/R6/R7/R8/R9/R11 et leurs tests. Les améliorations UX/UI sont différées à un rapport visuel, sans implémentation. Reprise via BMAD Build sur la spec existante ; [décision](decisions/2026-10-30-correctifs-et-ux-differee.md). Les constats ci-dessous décrivent le checkpoint d’audit avant correction.
 
 ## Contre-audit demandé par Sofiane — réserves ouvertes

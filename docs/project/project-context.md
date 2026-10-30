@@ -1,5 +1,7 @@
 # Contexte du projet — Tema Académie
 
+**État courant après correction (30 octobre) :** neuf correctifs réalisés, revue et vérification locale terminées : 103 tests Node, 21 régressions administratives, 2 transitions VM, 9 contrôles bundle/ICS et 184 parcours navigateur réussis. Google TEST non mis à jour ; Safari/Calendrier Apple non vérifiés. Les propositions UX sont uniquement illustrées. [Rapport courant](acceptance/corrections-2026-10-30.md) · [Rapport visuel](acceptance/ux-options-2026-10-30.html). Les résultats de réalisation/audit ci-dessous sont historiques lorsqu’ils diffèrent de ce checkpoint.
+
 ## Réserve de qualité après contre-revue
 
 Le 30 octobre, Sofiane demande une vérification indépendante poussée du développement, de l’UX et des essais manquants, notamment Safari et Calendrier Apple. Le [contre-audit](acceptance/independent-audit-2026-10-30.md) documente les défauts découverts, tests rouges, contrôles supplémentaires réussis et refus d’accès natifs. Il prime sur une lecture sans réserve de « prêt pour recette ». Aucune correction produit ou préférence UX nouvelle appliquée ; état/commandes et suites ouvertes dans le handoff. Les confirmations, tests Google et validations antérieures conservent leur date et leur portée.

@@ -238,7 +238,11 @@ function trialRefreshChoices_(sheet, data, metadata) {
     // Explicit installation keeps its forced repair behavior. Reconciliation
     // checkpoints these small metadata digests only after a successful flush.
     if (!metadata || PropertiesService.getScriptProperties().getProperty(key) !== digest) {
-      tab.getRange(2, column, height).setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(values, true).setAllowInvalid(false).build());
+      // A write may take effect before it throws or flush is interrupted.
+      PropertiesService.getScriptProperties().setProperty(key, '');
+      var range = tab.getRange(2, column, height);
+      if (values.length) range.setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(values, true).setAllowInvalid(false).build());
+      else range.clearDataValidations();
       if (metadata) { metadata.choiceDigests = metadata.choiceDigests || {}; metadata.choiceDigests[key] = digest; }
     }
   }
@@ -254,7 +258,7 @@ function trialRefreshChoices_(sheet, data, metadata) {
   });
   var uniqueFormations = formations.filter(function (f) { return f.id && typeof f.titre === 'string' && f.titre.trim() && formations.filter(function (other) { return other.id === f.id; }).length === 1; });
   var formChoices = uniqueFormations.map(function (f) { return f.id + ' — ' + f.titre; });
-  if (formChoices.length) refreshList(sessionTab, sessionHeaders, 'formation', formChoices, 'TRIAL_FORMATION_CHOICES_DIGEST');
+  refreshList(sessionTab, sessionHeaders, 'formation', formChoices, 'TRIAL_FORMATION_CHOICES_DIGEST');
   (data ? data.sessions : trialReadTable_(sheet, 'Disponibilités')).forEach(function (s) {
     var id = String(s.formation).split(' — ')[0].trim(), f = uniqueFormations.find(function (entry) { return entry.id === id; });
     if (f && s.formation !== f.id + ' — ' + f.titre) {
@@ -271,14 +275,29 @@ function trialWarnProtection_(range, description) {
   });
   (existing ? existing.setRange(range) : range.protect()).setDescription(description).setWarningOnly(true);
 }
+// Only the marked diagnostic belongs to the application; surrounding notes
+// remain human text, including additions made while a diagnostic is present.
+function trialDiagnosticNote_(current, diagnostic) {
+  var begin = '[TEM-6 diagnostic]\n', end = '\n[/TEM-6 diagnostic]', text = String(current || '');
+  var from = text.indexOf(begin), to = from < 0 ? -1 : text.indexOf(end, from + begin.length);
+  if (to >= 0) {
+    // The preceding newline was inserted with this block, not human content.
+    var prefix = from > 0 && text[from - 1] === '\n' ? from - 1 : from;
+    text = text.slice(0, prefix) + text.slice(to + end.length);
+  }
+  // Migrate exact legacy diagnostics; never erase an arbitrary TEM-6 note.
+  var legacy = /^(TEM-6 — (Identifiant de formation manquant|Identifiant de formation dupliqué|Titre requis avec un caractère alphanumérique|Durée requise|Référence logiciel absente ou ambiguë|Prix numérique positif ou vide requis|Case Active invalide))(\n|$)/;
+  text = text.replace(legacy, '');
+  return text + (diagnostic ? (text ? '\n' : '') + begin + diagnostic + end : '');
+}
 function trialFormationNotes_(sheet, data) {
   var formations = data ? data.formations : trialReadTable_(sheet, 'Formations'), tab = sheet.getSheetByName('Formations'), headers = data && data._layout ? data._layout.Formations.headers : tab.getRange(1, 1, 1, tab.getLastColumn()).getValues()[0];
   var issues = TemaTrial.formationIssues({ formations: formations, params: data ? data.params : trialReadParams_(sheet) }), count = 0;
   var currentNotes = tab.getRange(2, 1, tab.getMaxRows() - 1, headers.length).getNotes();
   ['id', 'titre', 'duree', 'logiciel', 'prix', 'actif'].forEach(function (key) {
-    var column = headers.indexOf(key), notes = currentNotes.map(function (line) { return [line[column]]; });
-    notes.forEach(function (line) { if (line[0].indexOf('TEM-6 — ') === 0) line[0] = ''; });
-    formations.forEach(function (f, index) { if (issues[index][key]) { notes[f._sheetRow - 2][0] = 'TEM-6 — ' + issues[index][key]; count += 1; } });
+    var column = headers.indexOf(key), diagnostics = Object.create(null);
+    formations.forEach(function (f, index) { if (issues[index][key]) { diagnostics[f._sheetRow - 2] = issues[index][key]; count += 1; } });
+    var notes = currentNotes.map(function (line, index) { return [trialDiagnosticNote_(line[column], diagnostics[index])]; });
     if (notes.some(function (line, index) { return line[0] !== currentNotes[index][column]; })) tab.getRange(2, column + 1, tab.getMaxRows() - 1).setNotes(notes);
   });
   return count;
@@ -298,7 +317,7 @@ function trialRepairPresentation_(sheet) {
   });
   return { environment: 'TEST', formatted_columns: formatCount, warning_protections: protectionCount, formation_diagnostics: trialFormationNotes_(sheet) };
 }
-function trialReconcileSoftwares_(sheet, props) {
+function trialReconcileSoftwares_(sheet, props, metadata) {
   var tab = sheet.getSheetByName('Paramètres'), table = trialParamsTable_(tab), reserved;
   try { reserved = JSON.parse(props.getProperty('SOFTWARE_RESERVED_IDS_JSON') || '[]'); if (!Array.isArray(reserved)) throw TemaTrial.fault('CONFIG'); } catch (_) { throw TemaTrial.fault('CONFIG'); }
   table.rows.forEach(function (r) { if (r.id && reserved.indexOf(String(r.id)) < 0) reserved.push(String(r.id)); });
@@ -314,6 +333,39 @@ function trialReconcileSoftwares_(sheet, props) {
     var choice = r.id + ' — ' + r.label;
     if (r.choix !== choice) tab.getRange(r._sheetRow, table.headers.indexOf('choix') + 1).setValue(TemaTrial.inertCell(choice));
   });
+  // Write actionable private diagnostics before the shared validator rejects
+  // an ambiguous configuration. Public reads remain non-mutating/unavailable.
+  var labelColumn = table.headers.indexOf('label') + 1, idColumn = table.headers.indexOf('id') + 1;
+  var diagnosticDigest = trialDependencies_().hash(JSON.stringify(table.rows.map(function (r) { return [r._sheetRow, r.id, r.label]; })));
+  if (props.getProperty('TRIAL_SOFTWARE_DIAGNOSTICS_DIGEST') !== diagnosticDigest) {
+    // Invalidate before writes: an interrupted flush followed by reverting
+    // to former valid values must still remove a partially written diagnostic.
+    props.setProperty('TRIAL_SOFTWARE_DIAGNOSTICS_DIGEST', '');
+    var notes = tab.getRange(2, 1, tab.getMaxRows() - 1, table.headers.length).getNotes();
+    // Notes can survive a fully cleared row beyond the current values range.
+    var nextNotes = notes.map(function (line) {
+      var next = line.slice();
+      [labelColumn, idColumn].forEach(function (column) { next[column - 1] = trialDiagnosticNote_(line[column - 1], ''); });
+      return next;
+    });
+    table.rows.forEach(function (r) {
+      var active = Boolean(r.id || r.label), labelIssue = '', idIssue = '';
+      if (active) {
+        if (!String(r.label).trim()) labelIssue = 'Libellé logiciel requis';
+        else if (table.rows.filter(function (other) { return other.label === r.label; }).length > 1) labelIssue = 'Libellé logiciel dupliqué';
+        else if (!r.id) labelIssue = 'Libellé logiciel sans caractère alphanumérique pour générer son identifiant';
+        if (r.id && !/^[A-Z0-9]+$/.test(String(r.id))) idIssue = 'Identifiant logiciel invalide : lettres majuscules et chiffres requis';
+        else if (r.id && table.rows.filter(function (other) { return other.id === r.id; }).length > 1) idIssue = 'Identifiant logiciel dupliqué';
+      }
+      [[labelColumn, labelIssue], [idColumn, idIssue]].forEach(function (entry) {
+        nextNotes[r._sheetRow - 2][entry[0] - 1] = trialDiagnosticNote_(notes[r._sheetRow - 2][entry[0] - 1], entry[1]);
+      });
+    });
+    [labelColumn, idColumn].forEach(function (column) {
+      if (nextNotes.some(function (line, index) { return line[column - 1] !== notes[index][column - 1]; })) tab.getRange(2, column, nextNotes.length).setNotes(nextNotes.map(function (line) { return [line[column - 1]]; }));
+    });
+    metadata.softwareDiagnosticDigest = diagnosticDigest;
+  }
   var savedReserved = JSON.stringify(reserved);
   if (props.getProperty('SOFTWARE_RESERVED_IDS_JSON') !== savedReserved) props.setProperty('SOFTWARE_RESERVED_IDS_JSON', savedReserved);
   return table.rows.filter(function (r) { return r.id || r.label; }).map(function (r) { return { id: String(r.id), label: String(r.label) }; });
@@ -324,7 +376,7 @@ function trialAdministrationDigest_(data, counter, hash) {
   // Notes and notification states do not drive these repairs.
   function rows(records, keys) { return records.map(function (row) { return [row._sheetRow].concat(keys.map(function (key) { return row[key]; })); }); }
   return hash(JSON.stringify([
-    'V1-admin-v4-changed-metadata', counter, data._layout || null,
+    'V1-admin-v5-preserved-diagnostics', counter, data._layout || null,
     rows(data.formations, TemaTrial.HEADERS.Formations), rows(data.sessions, TemaTrial.HEADERS['Disponibilités']),
     data.registrations.map(function (row) { return [row.id_inscription, row.id_cohorte, row.statut]; }),
     Object.keys(data.params).sort().map(function (key) { return [key, data.params[key]]; })
@@ -336,8 +388,18 @@ function reconcileTrialUnlocked_() {
   if (savedCounter !== null && !/^\d+$/.test(savedCounter) || !Number.isSafeInteger(next) || next < 0) throw TemaTrial.fault('COUNTER_RANGE');
   var data = deps.store.read(true);
   if (props.getProperty('TRIAL_ADMIN_DIGEST') === trialAdministrationDigest_(data, next, deps.hash)) return { patches: 0, counter: next };
-  data.params.softwares = trialReconcileSoftwares_(sheet, props);
-  var result = TemaTrial.prepareAdministration(data, deps, next);
+  // Keep the unchanged fast path above, but invalidate before any mutation:
+  // a Sheets write can take effect and then throw before the normal flush.
+  props.setProperty('TRIAL_ADMIN_DIGEST', '');
+  var metadata = {}, result;
+  data.params.softwares = trialReconcileSoftwares_(sheet, props, metadata);
+  try { result = TemaTrial.prepareAdministration(data, deps, next); }
+  catch (error) {
+    // Invalid configuration still needs its private repair guidance persisted.
+    SpreadsheetApp.flush();
+    if (metadata.softwareDiagnosticDigest) props.setProperty('TRIAL_SOFTWARE_DIAGNOSTICS_DIGEST', metadata.softwareDiagnosticDigest);
+    throw error;
+  }
   // Reserve the monotonic counter before IDs are written. Gaps are allowed.
   if (savedCounter !== String(result.counter)) props.setProperty('FORMATION_COUNTER', String(result.counter));
   result.capacity_initializations.forEach(function (state) {
@@ -348,7 +410,7 @@ function reconcileTrialUnlocked_() {
       deps.capacityInitialization.set(state.id_cohorte, { version: 1, status: state.adopted_historical || state.explicit_capacity ? 'complete' : 'waiting' });
     }
   });
-  var tableHeaders = {}, metadata = {};
+  var tableHeaders = {};
   result.patches.forEach(function (p) {
     var source = p.sheet === 'Formations' ? data.formations : data.sessions, row = source[p.index]._sheetRow;
     var keys = Object.keys(p.values).filter(function (key) { return source[p.index][key] !== p.values[key]; });
@@ -362,6 +424,7 @@ function reconcileTrialUnlocked_() {
   });
   trialFormationNotes_(sheet, data);
   SpreadsheetApp.flush();
+  if (metadata.softwareDiagnosticDigest) props.setProperty('TRIAL_SOFTWARE_DIAGNOSTICS_DIGEST', metadata.softwareDiagnosticDigest);
   Object.keys(metadata.choiceDigests || {}).forEach(function (key) { props.setProperty(key, metadata.choiceDigests[key]); });
   result.capacity_initializations.forEach(function (state) { deps.capacityInitialization.set(state.id_cohorte, { version: 1, status: state.status }); });
   // Checkpoint only the inputs actually processed, plus our own generated
