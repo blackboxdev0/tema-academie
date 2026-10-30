@@ -5,6 +5,7 @@ const root = path.resolve(__dirname, '..');
 const files = ['package.json', 'package-lock.json', 'playwright.config.cjs'];
 function visit(name) {
   for (const entry of fs.readdirSync(path.join(root, name), { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+    if (entry.name === '__pycache__' || entry.name.endsWith('.pyc')) continue;
     const file = `${name}/${entry.name}`; if (entry.isDirectory()) visit(file); else files.push(file);
   }
 }

@@ -84,6 +84,58 @@ test('ET-04/09: unchanged reconciliation rewrites no cells/dropdowns/notes; a mi
   assert.ok(g.validations.at(-1).rule.choices.includes('DIMO-COL-002 — Collage manqué')); assert.ok(g.mutations.length > firstMutations);
   const repairedMutations = g.mutations.length; assert.equal(g.context.reconcileTrial_().patches, 0); assert.equal(g.mutations.length, repairedMutations); assert.equal(g.sent.length, 0);
 });
+
+test('Performance reconcile: valid price edit makes no unchanged calculated-cell, dropdown or diagnostic writes; reads stay fresh', () => {
+  const g = googleContext(); g.context.reconcileTrial_();
+  const reads = { values: 0, notes: 0 };
+  Object.values(g.tabs).forEach(tab => {
+    const getRange = tab.getRange.bind(tab);
+    tab.getRange = (...args) => { const range = getRange(...args); for (const [method, key] of [['getValues', 'values'], ['getNotes', 'notes']]) { const read = range[method].bind(range); range[method] = (...parameters) => { reads[key]++; return read(...parameters); }; } return range; };
+  });
+  const prior = g.mutations.length, notes = structuredClone([...g.tabs.Formations.notes]);
+  g.tabs.Formations.values[1][TemaTrial.HEADERS.Formations.indexOf('prix')] = 751;
+  g.context.reconcileTrial_();
+  assert.equal(g.mutations.length, prior); assert.deepEqual([...g.tabs.Formations.notes], notes);
+  assert.equal(reads.notes, 1); assert.equal(reads.values, 5, 'one business snapshot and the native software registry; no presentation table/header rereads');
+  assert.equal(JSON.parse(g.context.doGet({}).text).formations[0].prix, 751); assert.equal(g.sent.length, 0);
+});
+
+test('Performance reconcile: title changes only its dependent dropdown and labels, with metadata committed after flush', () => {
+  const g = googleContext(); g.context.reconcileTrial_();
+  const softwareDigest = g.properties.get('TRIAL_SOFTWARE_CHOICES_DIGEST'), oldFormationDigest = g.properties.get('TRIAL_FORMATION_CHOICES_DIGEST');
+  const priorValidations = g.validations.length, priorMutations = g.mutations.length;
+  g.tabs.Formations.values[1][TemaTrial.HEADERS.Formations.indexOf('titre')] = 'Titre modifié pour recette';
+  const flush = g.context.SpreadsheetApp.flush; g.context.SpreadsheetApp.flush = () => { throw Error('metadata flush interrupted'); };
+  assert.throws(() => g.context.reconcileTrial_(), /metadata flush interrupted/);
+  assert.equal(g.properties.get('TRIAL_FORMATION_CHOICES_DIGEST'), oldFormationDigest); assert.equal(g.properties.get('TRIAL_SOFTWARE_CHOICES_DIGEST'), softwareDigest);
+  assert.equal(g.validations.length, priorValidations + 1); assert.equal(g.validations.at(-1).name, 'Disponibilités');
+  const mutations = g.mutations.slice(priorMutations); assert.equal(mutations.filter(m => m.kind === 'values').length, 2); assert.equal(mutations.filter(m => m.kind === 'notes').length, 0);
+  g.context.SpreadsheetApp.flush = flush; g.context.reconcileTrial_();
+  assert.equal(g.validations.length, priorValidations + 2); assert.notEqual(g.properties.get('TRIAL_FORMATION_CHOICES_DIGEST'), oldFormationDigest); assert.equal(g.properties.get('TRIAL_SOFTWARE_CHOICES_DIGEST'), softwareDigest);
+  assert.ok(g.tabs['Disponibilités'].values.slice(1).every(row => row[1].endsWith(' — Titre modifié pour recette'))); assert.equal(g.sent.length, 0);
+});
+
+test('Performance reconcile: only changed diagnostic columns are written and independent human notes survive', () => {
+  const g = googleContext(), tab = g.tabs.Formations, headers = TemaTrial.HEADERS.Formations; g.context.reconcileTrial_();
+  const titleColumn = headers.indexOf('titre') + 1, contentColumn = headers.indexOf('contenu') + 1;
+  tab.notes.set(`2:${contentColumn}`, 'Note humaine à conserver'); tab.notes.set(`10:${titleColumn}`, 'Autre note humaine');
+  tab.values[1][titleColumn - 1] = '   '; const prior = g.mutations.length; g.context.reconcileTrial_();
+  assert.equal(g.mutations.slice(prior).filter(m => m.kind === 'notes').length, 1); assert.match(tab.notes.get(`2:${titleColumn}`), /Titre requis/);
+  tab.values[1][headers.indexOf('prix')] = 752; const unchangedNotes = g.mutations.length; g.context.reconcileTrial_();
+  assert.equal(g.mutations.slice(unchangedNotes).filter(m => m.kind === 'notes').length, 0);
+  tab.values[1][titleColumn - 1] = 'Titre valide'; const cleared = g.mutations.length; g.context.reconcileTrial_();
+  assert.equal(g.mutations.slice(cleared).filter(m => m.kind === 'notes').length, 1); assert.equal(tab.notes.get(`2:${titleColumn}`), '');
+  assert.equal(tab.notes.get(`2:${contentColumn}`), 'Note humaine à conserver'); assert.equal(tab.notes.get(`10:${titleColumn}`), 'Autre note humaine'); assert.equal(g.sent.length, 0);
+});
+
+test('Performance reconcile: dropdown metadata includes relocated columns and expanded grid', () => {
+  const g = googleContext(), tab = g.tabs.Formations; g.context.reconcileTrial_();
+  const headers = tab.values[0], source = headers.indexOf('logiciel'), destination = headers.indexOf('description'), prior = g.validations.length;
+  tab.values.forEach(row => { [row[source], row[destination]] = [row[destination], row[source]]; });
+  g.context.reconcileTrial_(); assert.equal(g.validations.length, prior + 1); assert.equal(g.validations.at(-1).name, 'Formations'); assert.equal(g.validations.at(-1).column, destination + 1);
+  tab.maxRows += 10; const resized = g.validations.length; g.context.reconcileTrial_();
+  assert.equal(g.validations.length, resized + 1); assert.equal(g.validations.at(-1).name, 'Formations'); assert.equal(g.sent.length, 0);
+});
 test('ET-04/09: registration/cancellation changes invalidate the checkpoint but mail status updates do not', () => {
   const g = googleContext(), c = harness().command(); c.anti_spam.form_started_at = new Date(Date.now() - 2000).toISOString();
   g.context.reconcileTrial_(); g.context.doPost(formEvent(c)); g.context.reconcileTrial_(); assert.equal(g.tabs['Disponibilités'].values[1][9], 2);
