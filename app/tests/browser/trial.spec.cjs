@@ -35,6 +35,20 @@ test('AC-07 — date devenue complète garde les coordonnées et propose un chan
   await fill(page); await page.getByRole('button', { name: 'Confirmer mon inscription', exact: true }).click();
   await expect(page.locator('#form-status')).toContainText('désormais complète'); await expect(page.locator('#prenom')).toHaveValue('Anne'); await expect(page.locator('#change-date')).toBeEnabled(); expect(h.data.registrations.length).toBe(1);
 });
+test('audit R6 — retour historique après confirmation restaure le résultat certain', async ({ page }) => {
+  await setup(page); await fill(page); await page.locator('#submit').click();
+  await expect(page.locator('#result-title')).toHaveText('Votre place est réservée');
+  await page.locator('[data-home="catalogue"]').click(); await expect(page.locator('#catalogue')).toBeVisible();
+  await page.goBack(); await expect(page.locator('#result')).toBeVisible();
+  await expect(page.locator('#reservation-message')).toContainText('Votre inscription est confirmée');
+});
+test('audit R8 — reconfirmation après renommage aligne le titre et le récapitulatif', async ({ page }) => {
+  await setup(page, { beforePost(h) { h.data.formations[0].titre = 'Nouveau titre fictif'; } });
+  await fill(page); await page.locator('#submit').click();
+  await expect(page.locator('#summary')).toContainText('Nouveau titre fictif');
+  await page.locator('#accept-change').click();
+  await expect(page.locator('#form-title')).toHaveText('Inscription à Nouveau titre fictif');
+});
 test('AC-08 — réponse perdue puis reprise conserve la même demande sans doublon/envoi', async ({ page }) => {
   const { h, commands } = await setup(page, { drop: true }); await fill(page); await page.getByRole('button', { name: 'Confirmer mon inscription', exact: true }).click();
   await expect(page.locator('#form-status')).toContainText('inconnu'); await expect(page.locator('#prenom')).toBeDisabled();
@@ -56,6 +70,24 @@ test('AC-08 — réponse lente à vingt secondes reste en cours puis confirme sa
   } finally { releaseReply(); }
   await expect(page.getByRole('heading', { name: 'Votre place est réservée' })).toBeVisible();
   expect(commands).toHaveLength(1); expect(h.data.registrations).toHaveLength(1); expect(h.messages).toHaveLength(2);
+});
+test('audit AC-08 — expiration du POST à 45 secondes puis reprise identique sans double réservation', async ({ page }) => {
+  await page.clock.install();
+  let releaseReply, markReplyHeld, replies = 0;
+  const held = new Promise(resolve => { releaseReply = resolve; });
+  const started = new Promise(resolve => { markReplyHeld = resolve; });
+  const { h, commands } = await setup(page, { beforeReply: async () => { if (++replies === 1) { markReplyHeld(); await held; } } });
+  await fill(page); await page.locator('#submit').click(); await started;
+  try {
+    await page.clock.fastForward(45001);
+    await expect(page.locator('#form-status')).toContainText('inconnu');
+    await expect(page.locator('#retry')).toBeEnabled(); await expect(page.locator('#prenom')).toBeDisabled();
+    expect(h.data.registrations).toHaveLength(1); expect(h.messages).toHaveLength(2);
+  } finally { releaseReply(); }
+  await page.locator('#retry').click();
+  await expect(page.locator('#result-title')).toHaveText('Votre place est réservée');
+  expect(commands).toHaveLength(2); expect(commands[1]).toEqual(commands[0]);
+  expect(h.data.registrations).toHaveLength(1); expect(h.messages).toHaveLength(2);
 });
 test('AC-13 — conditions modifiées demandent relecture puis nouvel accord/nouvelle clé', async ({ page }) => {
   let changed = false;

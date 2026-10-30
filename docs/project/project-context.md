@@ -1,5 +1,9 @@
 # Contexte du projet — Tema Académie
 
+## Réserve de qualité après contre-revue
+
+Le 30 octobre, Sofiane demande une vérification indépendante poussée du développement, de l’UX et des essais manquants, notamment Safari et Calendrier Apple. Le [contre-audit](acceptance/independent-audit-2026-10-30.md) documente les défauts découverts, tests rouges, contrôles supplémentaires réussis et refus d’accès natifs. Il prime sur une lecture sans réserve de « prêt pour recette ». Aucune correction produit ou préférence UX nouvelle appliquée ; état/commandes et suites ouvertes dans le handoff. Les confirmations, tests Google et validations antérieures conservent leur date et leur portée.
+
 ## Mandat et état courant
 
 Plateforme française de présentation et d’inscription aux formations de Tema Solutions : catalogue/calendriers sur site statique portable, offre et inscrits dans Google Sheets privé, réservation avec capacité autoritaire et confirmation/ICS puis avis Tema. Le dépôt unique contient le socle à la racine et l’application dans `app/web`, `app/apps-script`, `app/tests`. Pas de serveur applicatif Vercel ni de base externe.

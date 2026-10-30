@@ -13,8 +13,10 @@
     "test:e2e": "playwright test",
     "test:browsers": "TEMA_BROWSER_MATRIX=all playwright test",
     "test:a11y": "playwright test tests/browser/accessibility.spec.cjs",
+    "test:artifact": "node --test tests/audit/calendar-bundle.test.cjs",
+    "test:audit-regressions": "node --test tests/audit/known-regressions.test.cjs",
     "security": "node scripts/security.cjs",
-    "verify": "npm test && npm run build && npm run security && npm run test:e2e",
+    "verify": "npm test && npm run build && npm run security && npm run test:artifact && npm run test:e2e",
     "fingerprint": "node scripts/fingerprint.cjs",
     "test:real": "node scripts/real-read.cjs"
   },

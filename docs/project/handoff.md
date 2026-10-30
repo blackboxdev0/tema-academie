@@ -1,5 +1,15 @@
 # Reprise du projet
 
+**Décision la plus récente :** Sofiane autorise les neuf correctifs R1/R3/R4/R5/R6/R7/R8/R9/R11 et leurs tests. Les améliorations UX/UI sont différées à un rapport visuel, sans implémentation. Reprise via BMAD Build sur la spec existante ; [décision](decisions/2026-10-30-correctifs-et-ux-differee.md). Les constats ci-dessous décrivent le checkpoint d’audit avant correction.
+
+## Contre-audit demandé par Sofiane — réserves ouvertes
+
+Le [contre-audit du 30 octobre](acceptance/independent-audit-2026-10-30.md) complète et nuance la remise ci-dessous : 103 tests Node rejoués, neuf contrôles bundle/ICS réussis, **sept nouvelles assertions rouges sur cinq comportements administratifs**. Des transitions UI défectueuses sont également établies par lecture et VM/DOM simulé. Ne pas annoncer « tout est double-vérifié ». Aucun changement produit : neuf correctifs proposés restent à traiter, un complément bundle est vérifié, deux tests de délais sont préparés mais non exécutés.
+
+Safari/Calendrier Apple explicitement demandés et mentionnés par Sofiane restent refusés par Computer Use, même après réinitialisation ; le serveur et Chromium sont aussi bloqués par le sandbox. Matrice augmentée à 176 tests découverts, non exécutés dans cette passe. Les 156 PASS ci-dessous restent historiques. Les deux ICS reçus sont vérifiés en format/heure, pas importés dans Apple. Procédure de reprise native dans le rapport ; préserver les budgets Google restants.
+
+Tests/rapport locaux non committés ; aucun push/déploiement ni écriture Google/Linear. GitHub distant inaccessible depuis le terminal. Workspace Linear et 22 issues Review relus ; spec Build rouverte `in-progress` pour constats non résolus, sprint 17 stories Review conservé tant que les corrections ne démarrent pas. Le rapport contient le triage complet, les preuves, commandes et suggestions UX distinctes des défauts.
+
 ## Candidat V1 préparé pour la recette humaine — 30 octobre 2026
 
 Les cinq blocs et 17 stories sont réalisés dans le candidat de code [`e3eab026ed2b9cedc123ecf10d10a1d3535eb0c6`](https://github.com/blackboxdev0/tema-academie/commit/e3eab026ed2b9cedc123ecf10d10a1d3535eb0c6), après préparation BMAD versionnée dans [`a57ced60b0186c2fe1070fe28ce305b23d3b0137`](https://github.com/blackboxdev0/tema-academie/commit/a57ced60b0186c2fe1070fe28ce305b23d3b0137). Les corrections finales, l’intégration réelle Google, les mesures d’actualisation/secours et l’annulation sont vérifiées selon les résultats ci-dessous. Le [rapport V1](acceptance/V1-results.md) centralise le candidat exact et ses preuves. Retour compatible7→6→7, repos TEST12h, passe Computer Use à4173 et checkpoint CI/Linear vérifiés. Le code final est [c5eca1e1](https://github.com/blackboxdev0/tema-academie/commit/c5eca1e1c673f012ca48d716e49eef0c6df0f4f5). **La cible locale est prête pour recette Sofiane ; aucun ticket Done, acceptation humaine ou intégration main déclaré.**

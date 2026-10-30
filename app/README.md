@@ -76,3 +76,9 @@ Le tarif vide reste consultable et refuse une nouvelle admission, distinct du z�
 ## État historique après TEM-6
 
 Google version 3/HEAD et site corrigé rétablis après retour compatible. Cinq inscriptions fictives conservées ; deux dates fermées, injection de panne retirée. Deux triggers de données : onEdit et périodique réglé12 h au repos, sans email. `installTrialTriggers` ajoute un handler absent mais ne change pas la fréquence d’un handler existant : pour rejouer les mesures minute, régler explicitement le trigger dans Google sur une séquence bornée, puis remettre au repos. Ce réglage TEST n’adopte aucune cadence V1 ; voir le [bilan](../docs/project/technical-trial/TEM-6-results.md) et sa limite de quota. Aucun reset de compteurs/données pour relancer la suite.
+
+## Contre-audit et tests additionnels
+
+Le [rapport du 30 octobre](../docs/project/acceptance/independent-audit-2026-10-30.md) complète la campagne initiale et décrit les défauts ouverts. Après `npm run build`, `npm run test:artifact` charge le vrai bundle `Code.gs` dans l’adaptateur Google simulé et contrôle les ICS ; ce contrôle est maintenant intégré à `npm run verify`. Les deux tests de fichiers reçus sont ignorés sans `TEMA_AUDIT_RECEIVED_ICS_DIR` pointant vers leur dossier privé. Aucun fichier nominatif requis en CI.
+
+`npm run test:audit-regressions` est une suite diagnostique séparée : sept assertions échouent sur le candidat audité et doivent devenir vertes après traitement des constats. Ne pas les ignorer ou affaiblir pour masquer ces défauts. `node tests/audit/ui-state-proof.cjs` reproduit les transitions problématiques sur le vrai script dans une VM avec DOM simulé ; il ne valide pas l’interface native. Les nouveaux tests Playwright sont préparés mais n’ont pas pu être exécutés dans la session d’audit.

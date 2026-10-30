@@ -2,7 +2,7 @@
 title: 'V1 locale connectée à Google TEST'
 type: feature
 created: '2026-10-30'
-status: done
+status: in-progress
 route: dispatch
 baseline_commit: a57ced60b0186c2fe1070fe28ce305b23d3b0137
 review_loop_iteration: 1
@@ -51,6 +51,40 @@ Jamais : fusion/main, production, Vercel/FTP, achats, destinataire supplémentai
 - Maquettes/JSON/assets : dossier UX `ux-tema-academie-2026-10-20/.working/` ; classeur complet privé référencé dans config/project.json.
 
 ## Tasks & Acceptance
+
+### Reprise corrective autorisée du 30 octobre
+
+Le GO actuel de Sofiane porte uniquement sur les neuf cases R1/R3/R4/R5/R6/R7/R8/R9/R11 ci-dessous, leurs tests et V1/V2. Les tâches initiales cochées sont conservées comme historique, sans recommencer import ni opérations Google. Les propositions UX/UI sont différées à un rapport visuel réalisé par l’orchestrateur. [Décision](../../docs/project/decisions/2026-10-30-correctifs-et-ux-differee.md).
+
+Critères de cette reprise : étant donné chaque défaut et sa reproduction dans le rapport, lorsque sa transition est exécutée après correction, alors l’invariant attendu est assuré et un test de régression le vérifie. Cas à couvrir : note humaine avant/pendant/après diagnostic ; disparition de toutes les options ; capacité devenue invalide ; logiciel vide, doublon et libellé sans identifiant ; retour historique et politique après confirmation sans second POST ; focus ordinateur et mobile après rafraîchissement ; titre modifié puis accepté ; reconfirmation immédiate après une saisie assez longue ; libellé `constructor` valide sans collision.
+
+Exécution locale uniquement pour cette reprise : conserver les garde-fous TEST, aucune consommation de budget mail, aucun déploiement. Convertir les preuves diagnostiques temporaires en assertions du comportement corrigé. R2 reste hors périmètre : isoler explicitement ce contrôle optionnel de la commande de validation du lot, sans le faire passer artificiellement. Garder la trace du défaut dans le rapport. Le GET15s et POST45s sont testés dans les navigateurs automatisés disponibles, sans assimiler WebKit à Safari installé.
+
+Les modifications en cours avant ce GO sont les tests et documents du contre-audit, tous attendus. Le jalon de préparation est versionné par l’orchestrateur avant le dispatch. Ne pas commiter/pousser depuis l’agent de réalisation ; remettre les fichiers et résultats à l’orchestrateur. La revue native portera spécialement sur le delta depuis `0f3249feab56161a90f31984115683885f94e44d`, après la revue initiale déjà conservée ci-dessous.
+
+### Review Findings — contre-audit du 30 octobre 2026
+
+Statut rouvert pour constats non résolus ; les tâches réalisées et preuves historiques ci-dessous restent conservées. Audit transversal sans `story_key` unique : aucune story de sprint n’est artificiellement marquée done ou démarrée en correction. [Rapport et triage exhaustif](../../docs/project/acceptance/independent-audit-2026-10-30.md).
+
+- [ ] [Review][Patch] R1 Préserver les notes humaines pendant les diagnostics (`app/apps-script/google.js:275`).
+- [ ] [Review][Patch] R3 Retirer les options de formation devenues inexistantes (`app/apps-script/google.js:255`).
+- [ ] [Review][Patch] R4 Effacer le calcul de places lorsque la capacité est invalide (`app/apps-script/engine.js:350`).
+- [ ] [Review][Patch] R5 Fournir les diagnostics privés des logiciels invalides (`app/apps-script/google.js:301`).
+- [ ] [Review][Patch] R6 Restaurer le résultat connu après retour sur la route d’inscription (`app/web/app.js:148`).
+- [ ] [Review][Patch] R7 Restaurer le focus sur le contrôle visible (`app/web/app.js:157`).
+- [ ] [Review][Patch] R8 Réactualiser le titre après reconfirmation (`app/web/app.js:249`).
+- [ ] [Review][Patch] R9 Éviter le refus anti-spam inexpliqué après relecture (`app/web/app.js:249`).
+- [ ] [Review][Patch] R11 Éviter les collisions de libellés avec Object.prototype (`app/apps-script/engine.js:103`).
+- [ ] [Review][Patch] V1/V2 Exécuter les nouveaux tests des expirations POST45s/GET15s, actuellement bloqués ; code de test ajouté.
+- [x] [Review][Patch] V3 Exécuter le bundle Code.gs construit et intégrer ce contrôle après build ; réussi en adaptateur simulé.
+
+#### Rejected
+
+- R2 — low : réparation du seul affichage calculé `Paramètres.choix` après écriture manuelle ; anomalie reproduite, sans conséquence démontrée sur les références ou le catalogue. Durcissement optionnel.
+- Installation vide avec cases décochées — low : défaut du helper historique reproduit, mais non utilisé pour cette recette sur TEST peuplé ; reprise initiale à revoir seulement si requise.
+- Catalogue sans `softwares` — low : fragilité prouvée sur réponse injectée, producteur actuel ne générant pas cette forme ; durcissement de schéma non imposé pour cette seule injection.
+
+### Réalisation initiale
 
 - [x] `app/apps-script/` : réaliser stories 1.1–1.3, extensions 3.1–3.4 et 4.1–4.3 ; import privé stable source→ID sans écrasement, champs publics dérivés, anti-abus, secours 5 min et diagnostics ; garder budgets TEST.
 - [x] `app/web/` : réaliser 2.1–2.3 et parcours 3, finition 5.1 ; reproduire maquettes approuvées, programme avant dates, sélection initiale/routage/retours, clavier/mobile et confidentialité.

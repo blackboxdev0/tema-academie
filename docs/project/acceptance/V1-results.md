@@ -1,5 +1,7 @@
 # Résultats V1 — locale et Google TEST
 
+> **Complément actuel :** lire le [contre-audit indépendant du 30 octobre](independent-audit-2026-10-30.md) avant d’accepter le candidat. Il découvre des défauts supplémentaires et complète les tests bundle/ICS ; Safari/Calendrier Apple et le rejeu navigateur restent bloqués par les accès de la session. Les résultats ci-dessous décrivent la campagne antérieure et ne deviennent pas de nouvelles réussites par cette relecture.
+
 30 octobre 2026. Cible du GO Sofiane : cinq blocs et 17 stories réalisés en application locale réellement connectée au Google TEST isolé, prête pour sa recette finale. L’acceptation humaine et l’intégration dans main ne sont pas acquises. Aucune publication Vercel/FTP, release publique ou opération Métier/PROD.
 
 ## Candidat et démarrage

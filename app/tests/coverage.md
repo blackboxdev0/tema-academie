@@ -58,3 +58,11 @@ Les identifiants sont ceux de `epics.md` ; cette matrice relie les52scénarios a
 | 5.4-3 | Routes statiques/hash, assets locaux, serveur sans rewrite | Démo Vercel et FTP selon GO distinct, bascule Sofiane |
 
 La CI n’exécute aucune de ces cases réelles/humaines. Les stories restent ouvertes lorsque leur critère exige un niveau de preuve encore absent ou une intégration/acceptation distincte.
+
+## Contre-audit du 30 octobre 2026
+
+[Rapport indépendant](../../docs/project/acceptance/independent-audit-2026-10-30.md) : `npm run test:artifact` exécute désormais le bundle Google construit et les contrôles ICS après build. Sept contrôles portables réussis ; deux contrôles additionnels des fichiers privés réellement reçus réussis avec `TEMA_AUDIT_RECEIVED_ICS_DIR`, ignorés explicitement sans ces fichiers. Aucun import Apple/Outlook déduit.
+
+`npm run test:audit-regressions` expose sept assertions rouges sur notes humaines, listes de formation, calcul de capacité, choix logiciel dérivé et diagnostics logiciels. Tests purement simulés ; correctifs ouverts. `node tests/audit/ui-state-proof.cjs` reproduit des transitions défectueuses du vrai script dans une VM avec DOM simulé, sans preuve navigateur.
+
+Cinq nouveaux scénarios navigateur : délais GET15s/POST45s, retour après confirmation, titre après reconfirmation, focus du bouton ordinateur après actualisation. Matrice176 découverts, non exécutés dans cette session ; la limite d’exécution ne vaut pas PASS. Les nouvelles assertions peuvent échouer jusqu’à correction des défauts de parcours. Les156PASS précédents restent historiques.

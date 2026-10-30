@@ -99,6 +99,39 @@
       ],
       "report": "docs/project/acceptance/V1-results.md",
       "latest_local_candidate_google_sha256": "f8689f42a980ea8d1fecf0eaac47dbf47328dc88cb91ae2c7ba288ec1a9b85ee"
+    },
+    "independent_audit": {
+      "performed_on": "2026-10-30",
+      "status": "changes_recommended_native_checks_blocked",
+      "report": "docs/project/acceptance/independent-audit-2026-10-30.md",
+      "reviewed_head": "0f3249feab56161a90f31984115683885f94e44d",
+      "product_code_changed": false,
+      "node_tests_passed": 103,
+      "artifact_and_received_ics_checks_passed": 9,
+      "known_administration_regression_assertions_failed": 7,
+      "browser_tests_discovered": 176,
+      "browser_tests_executed": 0,
+      "safari_native": "blocked_computer_use_access",
+      "apple_calendar_import": "blocked_computer_use_access",
+      "github_remote_reverified": false,
+      "linear_read_only_review_issues": 22,
+      "correction_authorization": {
+        "date": "2026-10-30",
+        "scope": [
+          "R1",
+          "R3",
+          "R4",
+          "R5",
+          "R6",
+          "R7",
+          "R8",
+          "R9",
+          "R11"
+        ],
+        "status": "approved_implementation_starting",
+        "ux_ui": "deferred_visual_report_only",
+        "decision": "docs/project/decisions/2026-10-30-correctifs-et-ux-differee.md"
+      }
     }
   },
   "delivery": {

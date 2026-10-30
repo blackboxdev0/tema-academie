@@ -85,3 +85,7 @@ Les autres orientations du brief fourni restent en discussion ; leur présence d
 ## Clôture de conception du 28 octobre
 
 Sofiane demande puis donne le GO à la clôture d’architecture avant UX/UI. Les contrats sont réconciliés et la revue native est PASS pour G0 : [contrôle commun](../architecture/controle-technique-v1.md), [résolution](../../../_bmad-output/planning-artifacts/architecture/architecture-tema-academie-2026-10-20/reviews/resolution-2026-10-28.md). Les contrôles d’implémentation futurs et le GO principal restent distincts.
+
+## Reprise corrective du 30 octobre
+
+[Neuf correctifs approuvés et UX différée](2026-10-30-correctifs-et-ux-differee.md) : GO de réalisation groupée, rapport visuel des propositions avant arbitrage ultérieur.

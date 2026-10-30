@@ -5,7 +5,7 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const { TemaTrial, fixture, formatLocal, harness } = require('./helpers.cjs');
 
-function googleContext(empty = false) {
+function googleContext(empty = false, options = {}) {
   const data = fixture(), sent = [], events = [], validations = [], logs = [], mutations = [];
   const values = Object.fromEntries(Object.entries(TemaTrial.HEADERS).map(([name, headers]) => [name, [headers.slice(), ...(empty ? [] : (name === 'Formations' ? data.formations : name === 'Disponibilités' ? data.sessions : data.registrations).map(row => headers.map(key => row[key] ?? '')))]]));
   values['Paramètres'] = [['cle', 'valeur', 'description', '', 'id', 'label', 'choix'],
@@ -53,7 +53,8 @@ function googleContext(empty = false) {
     Utilities: { getUuid: () => crypto.randomUUID(), formatDate: (date, zone, pattern) => { const t = formatLocal(date.getTime()); return pattern === 'yyyy-MM-dd' ? t.slice(0, 10) : pattern === 'HH:mm' ? t.slice(11) : t; }, computeDigest: (algorithm, str) => [...crypto.createHash('sha256').update(str).digest()].map(n => n > 127 ? n - 256 : n), DigestAlgorithm: { SHA_256: 'SHA_256' }, Charset: { UTF_8: 'UTF_8' }, newBlob: (content, type, name) => ({ content, type, name }) },
     ContentService: { createTextOutput: str => ({ text: str, setMimeType() { return this; } }), MimeType: { JSON: 'application/json' } }
   });
-  for (const name of ['engine.js', 'google.js']) vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'apps-script', name), 'utf8'), context, { filename: name });
+  const scripts = options.bundlePath ? [options.bundlePath] : ['engine.js', 'google.js'].map(name => path.join(__dirname, '..', 'apps-script', name));
+  for (const file of scripts) vm.runInContext(fs.readFileSync(file, 'utf8'), context, { filename: file });
   return { context, properties, tabs, sent, events, validations, logs, mutations, setQuota: n => { quota = n; }, setAcquire: v => { acquire = v; } };
 }
 module.exports = { googleContext };

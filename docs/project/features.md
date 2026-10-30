@@ -1,5 +1,7 @@
 # Fonctionnalités du projet
 
+**Réserve actuelle — contre-audit du 30 octobre :** le [rapport indépendant](acceptance/independent-audit-2026-10-30.md) relève des défauts administratifs reproduits et des transitions UI à corriger avant acceptation. Tests existants 103/103 rejoués et neuf nouveaux contrôles bundle/ICS réussis ; sept assertions administratives échouent. Safari/Apple et matrice navigateur restent bloqués dans cette passe. Les résultats de réalisation ci-dessous sont conservés comme preuves historiques, sans validation finale nouvelle.
+
 ## Candidat V1 local + Google TEST préparé pour la recette humaine
 
 Les cinq blocs et 17 stories sont réalisés dans [`e3eab026ed2b9cedc123ecf10d10a1d3535eb0c6`](https://github.com/blackboxdev0/tema-academie/commit/e3eab026ed2b9cedc123ecf10d10a1d3535eb0c6), selon le `/goal` de Sofiane du 30 octobre 2026, après préparation BMAD versionnée. Les corrections finales et les preuves réelles ci-dessous préparent la recette humaine. Retour compatible7→6→7, repos TEST12h, Computer Use final et CI/Linear vérifiés ; code final [c5eca1e1](https://github.com/blackboxdev0/tema-academie/commit/c5eca1e1c673f012ca48d716e49eef0c6df0f4f5). Aucune recette humaine acceptée ou Done déclaré ici. Adresse locale retenue : [127.0.0.1:4173](http://127.0.0.1:4173). [Rapport V1](acceptance/V1-results.md) · [Commandes](../../app/README.md) · [Guide Google](guide-google.md) · [Reprise](handoff.md).

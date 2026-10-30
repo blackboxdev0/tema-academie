@@ -8,6 +8,39 @@ async function setup(page, mutate = () => {}, hash = '') {
   await page.goto('/' + hash); await expect(page.locator('#catalogue-status')).not.toContainText('Chargement'); return h;
 }
 const enabled = s => ({ ...s, status: 'open', registration_enabled: true, registration_block_reason: null });
+test('audit R7 — actualisation garde le focus sur l’action d’inscription visible sur ordinateur', async ({ page }) => {
+  test.skip(page.viewportSize().width < 760, 'desktop duplicate-control focus boundary');
+  await page.clock.install(); const h = await setup(page); await page.locator('#formations a').click();
+  const action = page.locator('.desktop-summary button'); await action.focus();
+  h.data.formations[0].prix = 975; await page.clock.fastForward(30000);
+  await expect(page.locator('.desktop-summary')).toContainText('975'); await expect(action).toBeFocused();
+});
+test('audit AC-17 — expiration GET à 15 secondes libère la lecture suivante et retire l’avis périmé', async ({ page }) => {
+  await page.clock.install(); const h = await setup(page);
+  let reads = 0, releaseOld, releaseFresh, markOld, markFresh;
+  const oldHeld = new Promise(resolve => { releaseOld = resolve; });
+  const freshHeld = new Promise(resolve => { releaseFresh = resolve; });
+  const oldStarted = new Promise(resolve => { markOld = resolve; });
+  const freshStarted = new Promise(resolve => { markFresh = resolve; });
+  await page.route('**/test-api', async route => {
+    const data = h.service.catalogue();
+    if (++reads === 1) { markOld(); await oldHeld; }
+    else { markFresh(); await freshHeld; }
+    await route.fulfill({ json: data });
+  });
+  await page.locator('#reload').click(); await oldStarted;
+  h.data.formations[0].prix = 975;
+  await page.evaluate(() => window.dispatchEvent(new Event('focus')));
+  try {
+    await page.clock.fastForward(15001); await expect.poll(() => reads).toBe(2); await freshStarted;
+    await expect(page.locator('#catalogue-notice')).toBeVisible();
+    await expect(page.locator('#formations')).toContainText('Dernière lecture');
+    releaseFresh();
+    await expect(page.locator('#catalogue-notice')).toBeHidden();
+    await expect(page.locator('#formations')).toContainText('975 $ CAD');
+    expect(reads).toBe(2);
+  } finally { releaseOld(); releaseFresh(); }
+});
 function fullCatalogue(cat) {
   cat.formations = source.formations.map((f, i) => ({ id: 'F-' + i, logiciel: ({ Divalto: 'DIV', Dimo: 'DIMO', MoovApps: 'MOOV' })[f.software], titre: f.title, description: '', prerequis: f.prerequisites, contenu: f.content, resultat: f.outcome, duree: f.duration, prix: Number(f.price_label.match(/\d+/)[0]), prix_qualificatif: 'À partir de' }));
   cat.sessions = [];
