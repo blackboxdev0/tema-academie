@@ -106,6 +106,16 @@
       "access": "FTP_declared_not_verified",
       "details": "deferred_by_owner",
       "google_backend": "durable_tema_resources"
+    },
+    "local_acceptance": {
+      "status": "target_defined_execution_confirmation_pending",
+      "defined_on": "2026-10-30",
+      "target": "complete_V1_local_frontend_connected_to_isolated_Google_Sheets_and_Apps_Script",
+      "scope": "5_epics_17_stories_functional_scope_except_public_release",
+      "final_human_acceptance": "Sofiane_after_development_QA_and_Sally_review",
+      "release_required": false,
+      "verifiable_finish": "required_features_implemented_relevant_tests_passed_real_Google_evidence_and_final_report",
+      "execution_note": "docs/project/planning/mandat-v1-locale-et-google.md"
     }
   },
   "permissions": {
@@ -535,7 +545,7 @@
       "artifact": "_bmad-output/planning-artifacts/epics.md",
       "plan": "docs/project/planning/plan-developpement-v1.md",
       "readiness": "_bmad-output/planning-artifacts/implementation-readiness.md",
-      "readiness_verdict": "CONCERNS_pending_documentary_closeout_human_estimate_and_start",
+      "readiness_verdict": "CONCERNS_pending_documentary_closeout_and_start",
       "epic_count": 5,
       "story_count": 17,
       "linear_registry": "docs/project/planning/linear-v1.json",
@@ -543,7 +553,7 @@
       "active_human_effort_remaining_proposal_days": 3,
       "base_days": 2.5,
       "reserve_days": 0.5,
-      "estimate_approved": false,
+      "estimate_approved": true,
       "principal_development_authorized": false,
       "preparation_autonomy": "Sofiane delegates preparation through final review without intermediate step confirmations; ask only for genuine blockers",
       "global_review": {
@@ -559,7 +569,17 @@
         ],
         "principal_development_authorized": false
       },
-      "architecture_gate": "G0_PASS"
+      "architecture_gate": "G0_PASS",
+      "estimate_approval": {
+        "approved_on": "2026-10-30",
+        "source": "Sofiane confirme oui au point 4 : enveloppe de trois jours-personnes comme base de planification.",
+        "total_human_person_days": 3,
+        "base_human_person_days": 2.5,
+        "reserve_human_person_days": 0.5,
+        "people": "Sofiane_and_Tema_combined",
+        "excludes": "autonomous_agent_execution_and_calendar_duration",
+        "product_start_authorized": false
+      }
     },
     "architecture_closure": {
       "status": "g0_documentary_complete",
@@ -596,6 +616,14 @@
       "execution_status": "not_started",
       "start_condition": "complete_the_preparation_review_before_starting",
       "clarified_on": "2026-10-30"
+    },
+    "delivery_expectation": {
+      "discussed_on": "2026-10-30",
+      "priority": "sustained_autonomous_work_until_local_Google_candidate_ready",
+      "hard_calendar_deadline": null,
+      "automatic_continuation": "persistent_goal_recommended_not_activated",
+      "model_selection": "advice_requested_not_changed",
+      "principal_start_confirmed_by_this_question": false
     }
   },
   "access_preparation": {
@@ -652,5 +680,23 @@
       "catalogue_reinspected": true,
       "product_tests": "not_run_for_documentary_checkpoint"
     }
+  },
+  "catalogue_source": {
+    "status": "provided_and_verified",
+    "verified_on": "2026-10-30",
+    "source_path": "/Users/sofiane/Downloads/Académie - Programmes pour le Pré Lancement.xlsx",
+    "private_snapshot_path": "/Users/sofiane/.config/tema-academie/sources/catalogue-2026-10-30-dabc97f1e426.xlsx",
+    "sha256": "dabc97f1e4261d3bcd9ec200ae452b6300e97ced92f23e15bcbea9779bdf66de",
+    "sheet": "Sheet1",
+    "formation_count": 24,
+    "source_column_count": 9,
+    "out_of_scope_presentation_count": 9,
+    "comparison_with_ux_extraction": "24_semantically_identical_records_8_titles_trim_trailing_spaces_only",
+    "trainer_cells_present": 22,
+    "trainer_cells_blank": 2,
+    "source_capacity": "8_for_each_formation_seed_only_remains_configurable_per_session",
+    "source_dates": "all_to_come_no_real_session_dates",
+    "original_workbook_modified": false,
+    "google_import_executed": false
   }
 }

@@ -1,8 +1,12 @@
 # Reprise du projet
 
+Cible précisée au point 6 le 30 octobre : [V1 complète locale + Google](planning/mandat-v1-locale-et-google.md), tests/QA/revue Sally et rapport avant recette Sofiane ; release/Vercel/FTP/main hors cible actuelle. Priorité à une exécution soutenue, aucune date ferme garantie. Sofiane demande encore conseil sur capacités/prérequis/modèle ; lancement et Goal ne sont pas activés par cette question, conformément à sa clarification précédente.
+
+Source récupérée et vérifiée au point 5 le 30 octobre : 24 formations / neuf colonnes, [comparaison source](catalogue/source-catalogue-2026-10-30.md). Contenus utiles identiques à l’extraction, seuls huit espaces terminaux d’intitulés diffèrent ; empreinte binaire différente, ancienne empreinte non faussement revalidée. Copie source complète privée hors Git ; pas d’import Google ni de modification des maquettes. Reste le point 6 (échéance), sans démarrage V1 pendant les confirmations.
+
 ## Point Git et socle — 30 octobre
 
-Sofiane autorise les commits de la préparation actuelle, les commits par jalon et les push sur la branche de travail, et retire explicitement la restriction de demande par commit. Conventional Commits en anglais, sans attribution. Cette décision remplace la consigne restrictive fournie précédemment dans le chat ; fusion/main/déploiement/publication restent soumis à leur GO. Aucun démarrage du développement V1 déduit. Point 3 réglé ; points préparatoires suivants : effort humain, source Excel originale et échéance.
+Sofiane autorise les commits de la préparation actuelle, les commits par jalon et les push sur la branche de travail, et retire explicitement la restriction de demande par commit. Conventional Commits en anglais, sans attribution. Cette décision remplace la consigne restrictive fournie précédemment dans le chat ; fusion/main/déploiement/publication restent soumis à leur GO. Aucun démarrage du développement V1 déduit. Points 3, 4 et 5 réglés ; reste le point préparatoire 6 sur l’échéance. L’enveloppe de trois jours-personnes cumulés pour Sofiane et Tema (2,5 de base +0,5 de réserve) est validée le 30 octobre comme base de planification. Ce total ne représente ni la durée du développement ni l’exécution autonome de l’agent. Cette confirmation ne lance pas le développement V1.
 
 Socle source : [bkbx-agentic](https://github.com/blackboxdev0/bkbx-agentic), version 1.0.1, révision `48d56f7bab5f5e18dcc0a455784dae77854bcbd5`, main distante relue le 30 octobre. Onze fichiers de méthode repris après comparaison avec la base `8217e52` : règles worktrees/version et documentation ; consignes Tema et contexte produit conservés. BMAD reste 6.12.4.
 

@@ -2,7 +2,7 @@
 
 Actualisé le 30 octobre 2026 après confirmation du plan et des règles Git ; revue des maquettes et contrôle Git/Linear/BMAD conservés. Clôture d’architecture G0 du28octobre conservée.
 
-**G0 PASS : l’architecture documentaire est clôturée.** Le verdict de préparation du développement reste **CONCERNS** : clôture documentaire UX, estimation humaine et fin des confirmations avant démarrage restent à terminer. Le plan et la méthode future autonome sont validés le 30 octobre ; commits par jalon et push de travail sont autorisés. La validation humaine globale du design est acquise le29octobre. Aucun sprint de développement activé.
+**G0 PASS : l’architecture documentaire est clôturée.** Le verdict de préparation du développement reste **CONCERNS** : clôture documentaire UX et fin des confirmations avant démarrage restent à terminer. L’enveloppe humaine de trois jours-personnes cumulés est validée par Sofiane au point 4 le 30 octobre. Le plan et la méthode future autonome sont validés le 30 octobre ; commits par jalon et push de travail sont autorisés. La validation humaine globale du design est acquise le29octobre. Aucun sprint de développement activé.
 
 | Sujet | État actuel | Prochain jalon |
 |---|---|---|
@@ -10,7 +10,7 @@ Actualisé le 30 octobre 2026 après confirmation du plan et des règles Git ; r
 | Contrôles techniques | Import reprenable, protection rafales, export texte, promotion TEST/Métier, navigation portable et preview avant recette définis | Réalisation/tests aprèsGOselonG1–G4, pas desPASSactuels |
 | Preuves TEM6 |4PASS/8NONVÉRIFIÉ historiques ; nouvelle cadence/éligibilité/limiteur non implémentés | Vérifier le composant réalisé avant ouverture hors périmètre contrôlé ; Outlook/Apple àrecettecomplète |
 | UX/UI | Accueil/calendrier retenus, formulaire/confirmation validés ;24fiches/cas harmonisés, pastille verte validée/appliquée et contrôles ciblés effectués | Design global confirmé terminé par Sofiane ; préparation des maquettes versionnée dans 5fa86f7, consolidation finale des références et contrôles techniques de finition avant code dépendant |
-| Plan/estimation |5blocs/17stories, estimation3jours-personnes humains actifs reste proposition ;22issues du plan relues Backlog dans Linear | Plan validé le 30 octobre ; estimation humaine encore à confirmer, démarrage différé pendant les points préparatoires |
+| Plan/estimation |5blocs/17stories, estimation de 3 jours-personnes humains actifs cumulés validée le 30 octobre ;22issues du plan relues Backlog dans Linear | Plan validé le 30 octobre ; enveloppe humaine validée au point 4, démarrage différé pendant les points préparatoires |
 | Ouverture/remise | Prixactifs/textes/identité/offre/droits/cible client àconfirmer | Leurjalon avantdéploiementclient/ouverture, sans bloquer la revueUX |
 
 [Contrôle commun G0–G4](../../docs/project/architecture/controle-technique-v1.md) · [Gate natif](architecture/architecture-tema-academie-2026-10-20/reviews/resolution-2026-10-28.md) · [Plan](../../docs/project/planning/plan-developpement-v1.md).
@@ -20,3 +20,5 @@ Aucune décisionpartagée manquante ne bloque la phaseUXdocumentaire. Un GO prin
 Checkpoint Git du29octobre :41fichiers non commités (21modifications,13suppressions,7nouveaux),0staged, un commit local476fc04 non poussé ; branche distante190a881, main8217e52 inchangée. Aucun changement app/ dans cette revue. Ces constats du 29 octobre sont historiques : la restriction de demande par commit a été explicitement retirée par Sofiane le 30 octobre ; préparation actuelle, commits par jalon et push sur branche de travail sont autorisés. Voir le handoff pour le checkpoint courant.
 
 Contrôles du 30 octobre pour l’adoption documentaire du socle BKBX Agentic 1.0.1 (source 48d56f7) : 89 tests de méthode, check et doctor réussis ; BMAD 6.12.4 stable confirmé en ligne, catalogue relu. Cinq maquettes / 385 liens locaux vérifiés. Aucun changement app/, nouvelle campagne produit/Google ou démarrage de story ; aucune fusion ni livraison.
+
+Point 5 du 30 octobre : source Excel de nouveau disponible, 24 formations / neuf colonnes vérifiées et contenus utiles identiques à l’extraction (huit espaces terminaux sur les titres seulement). Source complète privée, import non exécuté ; voir [comparaison](../../docs/project/catalogue/source-catalogue-2026-10-30.md). Reste l’échéance à préciser au point 6 ; aucun démarrage déduit.

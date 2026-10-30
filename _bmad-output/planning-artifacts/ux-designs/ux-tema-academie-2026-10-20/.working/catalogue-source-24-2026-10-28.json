@@ -267,5 +267,14 @@
       "outcome": "Administre son environnement en autonomie",
       "source_date": "à venir"
     }
-  ]
+  ],
+  "source_comparison_2026_10_30": {
+    "provided_file_sha256": "dabc97f1e4261d3bcd9ec200ae452b6300e97ced92f23e15bcbea9779bdf66de",
+    "old_binary_hash_reproduced": false,
+    "semantic_records_match": 24,
+    "source_title_trailing_space_normalizations": 8,
+    "other_compared_fields_differ": 0,
+    "internal_columns_verified_separately": true,
+    "google_import_executed": false
+  }
 }

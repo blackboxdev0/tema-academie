@@ -47,7 +47,7 @@ Les dépendances techniques ont été distinguées de l’ordre conseillé des c
 
 ## Estimation du reste : interventions humaines actives
 
-**Proposition à valider : 2,5 jours-personnes humains actifs cumulés de base +0,5 jour-personne de réserve =3 jours-personnes.** Fourchette de préparation2,5–3,5 jours selon les résultats de recette. Il s’agit du reste estimé à partir de maintenant, sans reconstituer un temps passé non mesuré ni soustraire mécaniquement les anciens trois jours proposés pour le mandat entier. Aucun supplément commercial ou prix modifié n’en découle.
+**Base de planification validée par Sofiane au point 4 le 30 octobre : 2,5 jours-personnes humains actifs cumulés de base +0,5 jour-personne de réserve =3 jours-personnes, pour Sofiane et Tema réunis.** Fourchette de préparation2,5–3,5 jours selon les résultats de recette. Il s’agit du reste estimé à partir de maintenant, sans reconstituer un temps passé non mesuré ni soustraire mécaniquement les anciens trois jours proposés pour le mandat entier. Aucun supplément commercial ou prix modifié n’en découle.
 
 | Intervention humaine restante | Base | Qui intervient |
 |---|---:|---|
@@ -57,7 +57,7 @@ Les dépendances techniques ont été distinguées de l’ordre conseillé des c
 | Validation de remise, passation30min et coordination bascule gérée par Sofiane | 0,5 j | Sofiane/Tema |
 | Réserve pour reprise de recette ou accès | 0,5 j | Affectation au besoin, non consommée par défaut |
 
-Les postes ci-dessus cumulent les interventions des personnes concernées ; ils ne réservent pas automatiquement trois journées personnelles à Sofiane. La répartition précise Sofiane/Tema est à confirmer lors de la validation globale, pas pendant la clôture d’architecture. Le code, les tests et les revues exécutés en autonomie sont du travail distinct : leur durée d’exécution n’est ni un jour humain continu ni une promesse calendaire. Le temps de lecture et d’arbitrage réel est inclus dans les postes humains ; l’agent ne s’attribue pas du temps humain fictif. La bascule FTP technique reste sous responsabilité Sofiane et son effort ne peut être chiffré sans information serveur ; le poste ci-dessus couvre la coordination/validation, pas un chantier d’hébergement inconnu.
+Les postes ci-dessus cumulent les interventions des personnes concernées ; ils ne réservent pas automatiquement trois journées personnelles à Sofiane. La répartition précise Sofiane/Tema sera ajustée selon les interventions réelles ; la validation porte sur l’enveloppe cumulée. Le code, les tests et les revues exécutés en autonomie sont du travail distinct : leur durée d’exécution n’est ni un jour humain continu ni une promesse calendaire. Le temps de lecture et d’arbitrage réel est inclus dans les postes humains ; l’agent ne s’attribue pas du temps humain fictif. La bascule FTP technique reste sous responsabilité Sofiane et son effort ne peut être chiffré sans information serveur ; le poste ci-dessus couvre la coordination/validation, pas un chantier d’hébergement inconnu.
 
 Attentes externes séparées : réponses Tema, validation des textes/prix/identité, récupération du compte, disponibilité Outlook/Apple et appareils, offre Vercel compatible. Aucun délai de calendrier ou date de livraison promis. Réviser l’estimation si le transport échoue hors navigateur intégré, si les quotas imposent une autre solution ou si le périmètre change.
 
