@@ -624,6 +624,15 @@
       "automatic_continuation": "persistent_goal_recommended_not_activated",
       "model_selection": "advice_requested_not_changed",
       "principal_start_confirmed_by_this_question": false
+    },
+    "execution_goal_draft": {
+      "status": "prepared_not_activated",
+      "prepared_on": "2026-10-30",
+      "requested_by": "Sofiane",
+      "artifact": "docs/project/planning/goal-v1-locale-et-google.md",
+      "scope": "complete_defined_V1_ready_for_local_and_real_Google_acceptance",
+      "explicit_final_start_confirmation_pending": true,
+      "native_goal_active": false
     }
   },
   "access_preparation": {

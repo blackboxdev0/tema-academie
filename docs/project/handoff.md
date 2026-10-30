@@ -1,5 +1,7 @@
 # Reprise du projet
 
+Goal rédigé à la demande de Sofiane le 30 octobre : [texte de lancement](planning/goal-v1-locale-et-google.md). Aucun nouveau point de cadrage bloquant identifié ; les éventuelles reconnexions/permissions Google restent des dépendances opérationnelles à vérifier au démarrage. Brouillon non activé : son GO intégré ne vaut pas instruction humaine tant que Sofiane ne le soumet pas ou ne confirme pas le lancement. Cible : V1 complète locale + Google prête pour sa recette, avec tests/QA/Sally, sans release publique.
+
 Cible précisée au point 6 le 30 octobre : [V1 complète locale + Google](planning/mandat-v1-locale-et-google.md), tests/QA/revue Sally et rapport avant recette Sofiane ; release/Vercel/FTP/main hors cible actuelle. Priorité à une exécution soutenue, aucune date ferme garantie. Sofiane demande encore conseil sur capacités/prérequis/modèle ; lancement et Goal ne sont pas activés par cette question, conformément à sa clarification précédente.
 
 Source récupérée et vérifiée au point 5 le 30 octobre : 24 formations / neuf colonnes, [comparaison source](catalogue/source-catalogue-2026-10-30.md). Contenus utiles identiques à l’extraction, seuls huit espaces terminaux d’intitulés diffèrent ; empreinte binaire différente, ancienne empreinte non faussement revalidée. Copie source complète privée hors Git ; pas d’import Google ni de modification des maquettes. Reste le point 6 (échéance), sans démarrage V1 pendant les confirmations.
