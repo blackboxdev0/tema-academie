@@ -110,16 +110,25 @@
   },
   "permissions": {
     "development": "explicit_go",
-    "commits": "owner_authorized_milestone_commits",
+    "commits": "milestones_within_authorized_scope",
     "working_branch_pushes": "within_authorized_scope",
     "draft_pull_requests": "within_authorized_scope",
     "main_merge": "explicit_go",
     "delivery": "explicit_go",
     "commit_authorization": {
-      "approved_on": "2026-10-26",
-      "source": "Sofiane, demande explicite de commits au fur et à mesure et par jalon, avec rattrapage des fichiers existants",
-      "scope": "existing_framing_and_TEM-6_then_authorized_future_work",
-      "principal_development_authorized": false
+      "approved_on": "2026-10-30",
+      "source": "Sofiane autorise la préparation actuelle, les commits par jalon et les push sur la branche de travail et retire explicitement la restriction de demande par commit.",
+      "scope": "current_preparation_and_milestones_of_authorized_work",
+      "principal_development_authorized": false,
+      "main_merge_authorized": false,
+      "delivery_authorized": false
+    },
+    "current_commit_instruction": {
+      "source": "Sofiane, réponse explicite au point 3 le 30 octobre 2026 ; remplace la consigne restrictive AGENTS fournie précédemment dans le chat.",
+      "status": "milestone_commits_and_working_branch_pushes_authorized",
+      "format": "Conventional Commits",
+      "language": "English",
+      "assistant_attribution": false
     }
   },
   "initialized_at": "2026-10-19T17:20:58+00:00",
@@ -236,14 +245,20 @@
       "scope": "functional-v1",
       "source": "Sofiane, confirmation explicite après relecture consolidée dans le chat"
     },
-    "current_review": "ux_ui_home_catalogue_calendar",
+    "current_review": "global_plan_and_documentary_checkpoint",
     "visual_direction_approval": {
       "status": "approved",
       "approved_on": "2026-10-24",
       "scope": "visual-direction-v2",
       "source": "Sofiane, confirmation explicite après proposition V2 et revue Sally dans le chat",
-      "refinement_status": "pending_visual_rework",
-      "refinement_reason": "Traitement jugé trop générique par Sofiane ; finition différée, priorité à la fonctionnalité et à la disposition."
+      "refinement_status": "home_card_theme_selected_remaining_ux_pending",
+      "refinement_reason": "Traitement jugé trop générique par Sofiane ; finition différée, priorité à la fonctionnalité et à la disposition.",
+      "refinement_selection": {
+        "variant": "03 — Rose + gris clair",
+        "approved_on": "2026-10-28",
+        "scope": "home_card_theme",
+        "source": "Sofiane, sélection explicite puis application à la maquette complète."
+      }
     },
     "ux_approval": {
       "status": "approved_with_visual_reservation",
@@ -265,12 +280,144 @@
       "source": "Sofiane, confirmations orales du classement et des notifications puis clôture du flux UX le 25 octobre",
       "native_surface_coverage": "documented_without_dedicated_mockups; retained_as_non_blocking_assumption",
       "current_visual_review": {
-        "status": "in_progress",
+        "status": "home_card_theme_selected",
         "started_on": "2026-10-28",
-        "scope": "existing_home_mockup_catalogue_and_calendar",
-        "source": "Sofiane demande explicitement de reprendre les maquettes en commençant par accueil/catalogue/calendrier",
-        "mockup": "_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/mockups/direction-tema-academie-v2.html",
-        "new_visual_approval": false
+        "scope": "home_card_theme_only",
+        "source": "Sofiane choisit la version3 et précise explicitement Appliquer à la maquette d’accueil complète, pas au code applicatif.",
+        "mockup": "_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/.working/accueil-tema-academie.html",
+        "new_visual_approval": true,
+        "selected_base": "B — Rose et structurée",
+        "base_selected_on": "2026-10-28",
+        "candidate_mockups": [
+          "_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/.working/accueil-tema-academie.html"
+        ],
+        "remaining": "descriptions/états sans information et suite de la revue UX ; petits textes blancs à renforcer avant ouverture",
+        "selected_variant": "03 — Rose + gris clair",
+        "selected_on": "2026-10-28"
+      },
+      "calendar_review": {
+        "status": "selected_and_applied_to_home_mockup",
+        "prepared_on": "2026-10-28",
+        "scope": "calendar_visual_composition_only",
+        "source": "Sofiane retient explicitement la version2 avec en-tête blanc et couleurs par logiciel, demande son application à la maquette d’accueil complète et le retrait de l’autre proposition.",
+        "mockup": "_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/.working/accueil-tema-academie.html",
+        "selected_variant": "02 — Repères Tema, en-tête blanc",
+        "last_revision": "white_header_and_software_markers",
+        "selected_on": "2026-10-28",
+        "anchor": "tous-1-calendrier",
+        "catalogue_cards_and_fiche_unchanged": true,
+        "comparison_removed": true,
+        "software_colors": {
+          "Divalto": "#FF008F",
+          "Dimo": "#365AA7",
+          "MoovApps": "#176C68"
+        },
+        "implementation_attention": [
+          "Défilement et ancrages stables lors des filtres et changements de mois",
+          "Composition et hauteur des semaines lorsque peu de dates restent visibles",
+          "Vérifier les repères de jours après filtrage : les captures Dimo gardent des jours roses sans événement Dimo visible"
+        ],
+        "attention_status": "deferred_to_implementation_and_full_e2e_at_user_request"
+      },
+      "formation_detail_review": {
+        "status": "approved_in_global_design_review",
+        "prepared_on": "2026-10-28",
+        "scope": "ergonomie_mockup_only",
+        "source": "Sofiane demande explicitement programme avant dates et calendrier/récapitulatif cohérents avec accueil sans modifier les textes client.",
+        "mockup": "_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/.working/fiche-ergonomie.html",
+        "programme_before_dates": true,
+        "client_texts_unchanged_verified": true,
+        "mobile_recap_after_selected_date_verified": true,
+        "visual_result_approved": true,
+        "remaining": "Consolidation documentaire finale et préparation du checkpoint Git ; comportements produit à réaliser et vérifier selon les contrats.",
+        "last_revised_on": "2026-10-29",
+        "last_revision": "restored_cta_arrows_with_text_only_underline",
+        "calendar_layout_changed": false,
+        "decorative_cta_arrows_removed_from_current_mockups": false,
+        "see_dates_style": "graphite_cta_with_separate_arrow_and_text_only_underline",
+        "programme_white_surface_preserved": true,
+        "initial_selection": "next_future_registration_enabled_session_unless_explicit_date",
+        "initial_selection_mockup_fixture": "2026-11-12_4_places",
+        "initial_selection_verified_desktop_and_mobile": true
+      },
+      "registration_and_confirmation_review": {
+        "status": "current_form_and_confirmation_approved",
+        "prepared_on": "2026-10-29",
+        "source": "Sofiane : GO pour la suite de revue design recommandée, formulaire puis confirmation.",
+        "scope": "visual_mockups_only_existing_flows_preserved",
+        "form_mockup": "_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/.working/inscription.html",
+        "confirmation_mockup": "_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/.working/confirmation.html",
+        "form_states": [
+          "normal",
+          "erreur",
+          "complet",
+          "inconnu",
+          "conditions-modifiees"
+        ],
+        "confirmation_states": [
+          "confirmee",
+          "envoi-echoue",
+          "envoi-incertain",
+          "horaires-modifies"
+        ],
+        "source_inputs_preserved": true,
+        "initial_consent_unchecked_verified": true,
+        "local_demo_navigation_verified": true,
+        "desktop_mobile_observed": true,
+        "visual_result_approved": true,
+        "real_submission": false,
+        "form_visual_approval": {
+          "status": "approved_for_current_step",
+          "approved_on": "2026-10-29",
+          "scope": "current_form_mockup_and_input_finish",
+          "source": "Sofiane : OK parfait, ça me convient pour cette étape, après revue et finition des inputs."
+        },
+        "confirmation_visual_approval": {
+          "status": "approved",
+          "approved_on": "2026-10-29",
+          "scope": "current_confirmation_mockup",
+          "source": "Sofiane : Pareil pour la confirmation validée."
+        }
+      },
+      "all_formations_review": {
+        "status": "approved_in_global_design_review",
+        "prepared_on": "2026-10-29",
+        "scope": "24_formations_mockups_and_special_cases",
+        "source": "Sofiane : GO pour harmoniser les autres fiches, cas sans date/complet/tarif à confirmer et cohérence ordinateur/mobile.",
+        "mockup": "_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/.working/fiche-tema-academie.html",
+        "formations": 24,
+        "navigation_contexts": 48,
+        "fictitious_sessions": 9,
+        "client_texts_unchanged_verified": true,
+        "home_only_18_calendar_hrefs_changed": true,
+        "review_cases": [
+          "sans_date",
+          "complet",
+          "inscriptions_terminees",
+          "tarif_a_confirmer_simulated"
+        ],
+        "visual_result_approved": true,
+        "static_limitations": "Seule Ergonomie12novembre ouvre le formulaire illustratif ; calendriers généraux retournent Tous1, pas de mémoire dynamique de visite.",
+        "retired_promoted_templates": 5,
+        "historical_sources_ref": "190a881149766fd72c2411bf6e77314968bdff97"
+      },
+      "availability_indicator_approval": {
+        "status": "approved_and_applied_to_current_mockups",
+        "approved_on": "2026-10-29",
+        "source": "Sofiane valide l’indicateur vert avec le nombre de places restantes.",
+        "scope": "available_places_indicator",
+        "background": "#EAF5EC",
+        "foreground_and_dot": "#236247",
+        "visible_count_preserved": true,
+        "desktop_mobile_observed": true
+      },
+      "global_design_approval": {
+        "status": "approved",
+        "approved_on": "2026-10-29",
+        "scope": "v1_mockup_design_and_layout",
+        "source": "Sofiane confirme que tout est fait en termes de design, après revue des écrans et validation du repère de disponibilité.",
+        "documentary_closeout": "pending",
+        "product_implementation_or_release_approved": false
       }
     },
     "technical_trial_order_approval": {
@@ -382,13 +529,13 @@
       "verified": false
     },
     "development_breakdown": {
-      "status": "draft_prepared_pending_owner_review",
+      "status": "plan_and_execution_method_approved_preparation_review_ongoing",
       "prepared_on": "2026-10-26",
       "skill": "bmad-create-epics-and-stories",
       "artifact": "_bmad-output/planning-artifacts/epics.md",
       "plan": "docs/project/planning/plan-developpement-v1.md",
       "readiness": "_bmad-output/planning-artifacts/implementation-readiness.md",
-      "readiness_verdict": "CONCERNS_pending_ux_plan_and_explicit_go",
+      "readiness_verdict": "CONCERNS_pending_documentary_closeout_human_estimate_and_start",
       "epic_count": 5,
       "story_count": 17,
       "linear_registry": "docs/project/planning/linear-v1.json",
@@ -435,6 +582,20 @@
       "paid_service_added": false,
       "fixed_daily_booking_cap_added": false,
       "fifty_two_notification_bookings": "theoretical_max_before_other_account_use_not_guaranteed"
+    },
+    "principal_development_go": {
+      "status": "execution_deferred_during_preparation_review",
+      "approved_on": "2026-10-30",
+      "scope": "entire_defined_v1_plan_5_epics_17_stories",
+      "source": "Sofiane valide le plan et la méthode future autonome, puis précise que nous poursuivons les points de préparation sans lancer le développement à ce stade.",
+      "autonomy": "implement_test_review_without_per_story_human_test_requests",
+      "human_validation": "final_candidate_acceptance",
+      "open_decisions": "surface material blockers or scope changes; routine decisions delegated",
+      "commits_and_pushes": "approved_2026-10-30_within_authorized_scope",
+      "merge_deployment_publication": "separate_delivery_gates",
+      "execution_status": "not_started",
+      "start_condition": "complete_the_preparation_review_before_starting",
+      "clarified_on": "2026-10-30"
     }
   },
   "access_preparation": {
@@ -473,5 +634,23 @@
     "deployment_environment_label": "production_label_on_empty_project_used_only_for_authorized_TEST",
     "frontend_app_sha256": "1a03fd30e453f29f1008672918d1fdddf4f30488062cd7ecb1ff2a6a1b5a18e5",
     "rollback_and_restore": "test_verified"
+  },
+  "agentic_foundation": {
+    "name": "BKBX Agentic",
+    "version": "1.0.1",
+    "source_url": "https://github.com/blackboxdev0/bkbx-agentic",
+    "source_revision": "48d56f7bab5f5e18dcc0a455784dae77854bcbd5",
+    "adopted_on": "2026-10-30",
+    "scope": "11_method_files_compared_product_adaptations_preserved",
+    "bmad_version": "6.12.4",
+    "product_development_started": false,
+    "verification": {
+      "method_tests_passed": 89,
+      "method_check": "passed",
+      "doctor": "passed",
+      "bmad_online_status": "up_to_date_6.12.4",
+      "catalogue_reinspected": true,
+      "product_tests": "not_run_for_documentary_checkpoint"
+    }
   }
 }

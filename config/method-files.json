@@ -3,9 +3,11 @@
   "files": [
     ".gitignore",
     "AGENTS.md",
+    "CHANGELOG.md",
     "CLAUDE.md",
     "README.md",
     "THIRD_PARTY_NOTICES.md",
+    "VERSION",
     "_bmad/_config/manifest.yaml",
     "_bmad/_config/files-manifest.csv",
     "_bmad/config.toml",

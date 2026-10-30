@@ -1,6 +1,6 @@
 # Préparation du développement V1
 
-26 octobre 2026 — préparation déléguée par Sofiane, validation finale regroupée en attente. **Aucun GO de développement principal, de fusion ou de livraison.** Les commits locaux par jalon sont autorisés. [Découpage BMAD](../../../_bmad-output/planning-artifacts/epics.md).
+26 octobre 2026 — préparation déléguée par Sofiane, validation finale regroupée en attente. **Aucun GO de développement principal, de fusion ou de livraison.** Le plan est validé le 30 octobre ; le démarrage V1 reste différé pendant les confirmations préparatoires. Commits par jalon et push sur branche de travail autorisés le 30 octobre. [Découpage BMAD](../../../_bmad-output/planning-artifacts/epics.md).
 
 ## Résultats et ordre
 
@@ -20,7 +20,7 @@ Chaque story comprend ses tests et sa revue au fil du développement. Le socle l
 - Transport A comme base de travail sur sa preuve existante ; absence de preuve sur les autres supports conservée. Ne pas transformer cette recommandation en validation universelle. Un repli qui modifie UX/coût repasse par un arbitrage.
 - Cadence normale<2min, secours nominal5min, admission fraîche sous verrou ; le TEST reste réglé à12h au repos. Mesures et implémentation ne sont pas déduites de l’accord.
 - Les17 stories restent Backlog tant que leur préparation détaillée n’est pas acceptée ; aucun point Linear n’est converti en jour. Les issues parents regroupent les résultats et les liens, sans créer cinq projets séparés.
-- Modifications progressives dans le même dépôt, commits par jalon ; aucun push effectué dans cette préparation. Les règles d’autorisation de déploiement/fusion restent applicables.
+- Modifications progressives dans le même dépôt ; les commits/push historiques sont consignés dans handoff.md. Sofiane autorise le 30 octobre le checkpoint des maquettes actuelles, les commits par jalon et les push sur la branche de travail, et retire la demande par commit. Les règles d’autorisation de déploiement/fusion restent applicables.
 
 ## Contrats consolidés et séquence de validation
 
