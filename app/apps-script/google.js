@@ -14,6 +14,23 @@ function trialLock_(fn) {
   if (!lock.tryLock(5000)) throw TemaTrial.fault('BUSY');
   try { return fn(); } finally { lock.releaseLock(); }
 }
+function trialUsefulRow_(line, headers, name) {
+  var ignored = name === 'Formations' ? ['actif'] : name === 'Disponibilités' ? ['inscriptions_ouvertes', 'places_restantes', 'etat_validation'] : [];
+  return line.some(function (value, index) { return ignored.indexOf(headers[index]) < 0 && value !== '' && value !== null; });
+}
+/** Native checkboxes can make getLastRow() the entire grid. Reuse a truly
+ * empty row, preserving every row containing IDs or any useful business data. */
+function trialInsertionRow_(tab, name) {
+  var values = tab.getDataRange().getValues(), headers = values[0];
+  TemaTrial.tableRows([headers], TemaTrial.HEADERS[name]);
+  var checkbox = name === 'Formations' ? 'actif' : name === 'Disponibilités' ? 'inscriptions_ouvertes' : null;
+  for (var i = 1; i < values.length; i += 1) {
+    if (values[i].every(function (value, column) { return value === '' || value === null || headers[column] === checkbox && value === false; })) return i + 1;
+  }
+  var next = Math.max(2, values.length + 1), capacity = tab.getMaxRows();
+  if (next > capacity) tab.insertRowsAfter(capacity, next - capacity);
+  return next;
+}
 function trialReadTable_(sheet, name) {
   var tab = sheet.getSheetByName(name); if (!tab) throw TemaTrial.fault('CONFIG');
   var values = tab.getDataRange().getValues(), headers = TemaTrial.HEADERS[name];
@@ -22,8 +39,7 @@ function trialReadTable_(sheet, name) {
   values.slice(1).forEach(function (line, index) {
     // Native checkbox validation fills unused rows with false. Those default
     // cells must not become hundreds of empty sessions/automatic IDs.
-    var ignored = name === 'Formations' ? ['actif'] : name === 'Disponibilités' ? ['inscriptions_ouvertes', 'places_restantes', 'etat_validation'] : [];
-    if (!line.some(function (v, i) { return ignored.indexOf(values[0][i]) < 0 && v !== '' && v !== null; })) return;
+    if (!trialUsefulRow_(line, values[0], name)) return;
     var row = TemaTrial.tableRows([values[0], line], headers)[0]; row._sheetRow = index + 2;
     if (name === 'Disponibilités') {
       if (row.date instanceof Date) row.date = Utilities.formatDate(row.date, 'America/Toronto', 'yyyy-MM-dd');
@@ -73,10 +89,18 @@ function trialStore_() {
     var tab = trialSheet_().getSheetByName('Inscriptions'), headers = tab.getRange(1, 1, 1, tab.getLastColumn()).getValues()[0];
     TemaTrial.tableRows([headers], TemaTrial.HEADERS.Inscriptions);
     var line = headers.map(function (k) { return Object.prototype.hasOwnProperty.call(row, k) ? TemaTrial.inertCell(row[k]) : ''; });
-    // Force text before writing; an apostrophe additionally neutralizes formulas.
-    tab.getRange(tab.getLastRow() + 1, 1, 1, headers.length).setNumberFormat('@').setValues([line]);
+    trialWriteTypedRow_(tab, headers, trialInsertionRow_(tab, 'Inscriptions'), line);
   }
   return { read: read, insert: insert, patch: patch, flush: function () { SpreadsheetApp.flush(); } };
+}
+/** Sheets plain-text format coerces booleans to strings. Set native formats BEFORE values. */
+function trialWriteTypedRow_(tab, headers, row, line) {
+  var range = tab.getRange(row, 1, 1, headers.length);
+  range.setNumberFormat('@');
+  line.forEach(function (value, index) {
+    if (typeof value === 'boolean' || typeof value === 'number') tab.getRange(row, index + 1).setNumberFormat(typeof value === 'boolean' ? 'General' : headers[index] === 'prix' ? '0.00' : '0');
+  });
+  range.setValues([line]);
 }
 function trialReserveMail_(id, channel, to) {
   // Called only while the script lock is held. Reserve BEFORE MailApp so an
@@ -107,7 +131,12 @@ function trialReserveMail_(id, channel, to) {
 }
 function trialDependencies_() {
   return {
-    guard: trialGuard_, store: trialStore_(), withLock: trialLock_, reserveMail: trialReserveMail_,
+    privateSheetUrl: 'https://docs.google.com/spreadsheets/d/' + TEMA_TRIAL_TARGET.spreadsheet + '/edit',
+    capacityInitialization: {
+      get: function (id) { var value = PropertiesService.getScriptProperties().getProperty('CAPACITY_INIT_' + id); return value === null ? null : JSON.parse(value); },
+      set: function (id, value) { PropertiesService.getScriptProperties().setProperty('CAPACITY_INIT_' + id, JSON.stringify(value)); }
+    },
+    guard: trialGuard_, consumeNewCommand: trialConsumeNewCommand_, store: trialStore_(), withLock: trialLock_, reserveMail: trialReserveMail_,
     allowNewRegistration: function (command) { return trialAllowedRecipients_().indexOf(command.courriel) >= 0; },
     now: function () { return Date.now(); }, uuid: function () { return Utilities.getUuid(); },
     hash: function (value) { return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, value, Utilities.Charset.UTF_8).map(function (n) { return (n < 0 ? n + 256 : n).toString(16).padStart(2, '0'); }).join(''); },
@@ -165,14 +194,14 @@ function installTrial_() {
     }
     var formation = { id: '', logiciel: 'DIV — Divalto', titre: 'Essai technique — ergonomie', description: 'Formation fictive pour TEM-6.', prerequis: 'Aucun — essai fictif', contenu: 'Parcours technique uniquement.', resultat: 'Aucune formation commerciale proposée.', duree: 'Demi-journée', prix: 450, prix_qualificatif: 'À partir de', places_par_defaut: 3, formateurs: 'TEST', actif: false };
     var formTab = sheet.getSheetByName('Formations'), formHeaders = formTab.getRange(1, 1, 1, formTab.getLastColumn()).getValues()[0];
-    formTab.getRange(2, 1, 1, formHeaders.length).setValues([formHeaders.map(function (k) { return formation[k] === undefined ? '' : formation[k]; })]);
+    trialWriteTypedRow_(formTab, formHeaders, 2, formHeaders.map(function (k) { return formation[k] === undefined ? '' : formation[k]; }));
     var year = new Date().getUTCFullYear() + 1;
     var sessions = [
       { id_cohorte: 'C-' + Utilities.getUuid(), formation: '', date: year + '-01-15', heure_debut: '09:00', heure_fin: '12:00', places_max: 3, mode: 'en_ligne', lieu_ou_lien: '', inscriptions_ouvertes: false, places_restantes: 3, etat_validation: '' },
       { id_cohorte: 'C-' + Utilities.getUuid(), formation: '', date: year + '-07-15', heure_debut: '09:00', heure_fin: '12:00', places_max: 3, mode: 'presentiel', lieu_ou_lien: '123, rue Fictive, Montréal — TEST', inscriptions_ouvertes: false, places_restantes: 3, etat_validation: '' }
     ];
     var sessionTab = sheet.getSheetByName('Disponibilités'), sessionHeaders = sessionTab.getRange(1, 1, 1, sessionTab.getLastColumn()).getValues()[0];
-    sessionTab.getRange(2, 1, 2, sessionHeaders.length).setNumberFormat('@').setValues(sessions.map(function (s) { return sessionHeaders.map(function (k) { return s[k] === undefined ? '' : s[k]; }); }));
+    sessions.forEach(function (s, index) { trialWriteTypedRow_(sessionTab, sessionHeaders, index + 2, sessionHeaders.map(function (k) { return s[k] === undefined ? '' : s[k]; })); });
     SpreadsheetApp.flush();
     reconcileTrialUnlocked_();
     var current = trialStore_().read().formations[0], choice = current.id + ' — ' + current.titre;
@@ -278,7 +307,7 @@ function trialAdministrationDigest_(data, counter, hash) {
   // Notes and notification states do not drive these repairs.
   function rows(records, keys) { return records.map(function (row) { return [row._sheetRow].concat(keys.map(function (key) { return row[key]; })); }); }
   return hash(JSON.stringify([
-    'TEM-6-admin-v2', counter,
+    'V1-admin-v3-capacity-initialization', counter,
     rows(data.formations, TemaTrial.HEADERS.Formations), rows(data.sessions, TemaTrial.HEADERS['Disponibilités']),
     data.registrations.map(function (row) { return [row.id_inscription, row.id_cohorte, row.statut]; }),
     Object.keys(data.params).sort().map(function (key) { return [key, data.params[key]]; })
@@ -294,10 +323,18 @@ function reconcileTrialUnlocked_() {
   var result = TemaTrial.prepareAdministration(data, deps, next);
   // Reserve the monotonic counter before IDs are written. Gaps are allowed.
   props.setProperty('FORMATION_COUNTER', String(result.counter));
+  result.capacity_initializations.forEach(function (state) {
+    if (deps.capacityInitialization.get(state.id_cohorte) === null || state.explicit_capacity) {
+      // Historical adoption and an already explicit capacity need no default
+      // write. Reserve complete before Sheet mutations: an interrupted flush
+      // followed by a human clear must never make either eligible to refill.
+      deps.capacityInitialization.set(state.id_cohorte, { version: 1, status: state.adopted_historical || state.explicit_capacity ? 'complete' : 'waiting' });
+    }
+  });
   result.patches.forEach(function (p) {
     var tab = sheet.getSheetByName(p.sheet), headers = tab.getRange(1, 1, 1, tab.getLastColumn()).getValues()[0];
     var source = p.sheet === 'Formations' ? data.formations : data.sessions, row = source[p.index]._sheetRow;
-    Object.keys(p.values).forEach(function (k) { tab.getRange(row, headers.indexOf(k) + 1).setValue(TemaTrial.inertCell(p.values[k])); source[p.index][k] = p.values[k]; });
+    Object.keys(p.values).forEach(function (k) { var value = p.values[k], cell = tab.getRange(row, headers.indexOf(k) + 1); cell.setNumberFormat(typeof value === 'boolean' ? 'General' : typeof value === 'number' ? '0' : '@').setValue(TemaTrial.inertCell(value)); source[p.index][k] = value; });
   });
   trialRefreshChoices_(sheet).forEach(function (change) {
     var row = data[change.table].find(function (r) { return r._sheetRow === change.row; });
@@ -305,6 +342,7 @@ function reconcileTrialUnlocked_() {
   });
   trialFormationNotes_(sheet);
   SpreadsheetApp.flush();
+  result.capacity_initializations.forEach(function (state) { deps.capacityInitialization.set(state.id_cohorte, { version: 1, status: state.status }); });
   // Checkpoint only the inputs actually processed, plus our own generated
   // defaults/references. A concurrent human edit remains different next run.
   props.setProperty('TRIAL_ADMIN_DIGEST', trialAdministrationDigest_(data, result.counter, deps.hash));
@@ -320,14 +358,16 @@ function installTrialTriggers_() {
   trialGuard_();
   var existing = ScriptApp.getProjectTriggers(), handlers = existing.map(function (t) { return t.getHandlerFunction(); });
   if (handlers.indexOf('trialOnEdit_') < 0) ScriptApp.newTrigger('trialOnEdit_').forSpreadsheet(TEMA_TRIAL_TARGET.spreadsheet).onEdit().create();
-  if (handlers.indexOf('reconcileTrial_') < 0) ScriptApp.newTrigger('reconcileTrial_').timeBased().everyMinutes(1).create();
+  if (handlers.indexOf('reconcileTrial_') < 0) ScriptApp.newTrigger('reconcileTrial_').timeBased().everyMinutes(5).create();
   return { trigger_count: ScriptApp.getProjectTriggers().length };
 }
 /** Read-only private evidence, without recipients or PII. Never resets a counter. */
 function inspectTrial_() {
   trialGuard_(); var props = PropertiesService.getScriptProperties(), data = trialStore_().read();
   var budget = JSON.parse(props.getProperty('TRIAL_MAIL_BUDGET_JSON') || '{"version":1,"registrations":{},"recipients":0}');
-  return { environment: 'TEST', formations: data.formations.length, sessions: data.sessions.length, registrations: data.registrations.length, real_mail_registrations: Object.keys(budget.registrations).length, reserved_recipients: budget.recipients, remaining_daily_quota: MailApp.getRemainingDailyQuota(), trigger_count: ScriptApp.getProjectTriggers().length };
+  var cat = TemaTrial.publicCatalogue(data, trialDependencies_()), issues = TemaTrial.formationIssues(data);
+  var rateSaved = props.getProperty('V1_RATE_BUDGET_JSON'), rate = rateSaved === null ? null : JSON.parse(rateSaved);
+  return { environment: 'TEST', formations: data.formations.length, public_formations: cat.formations.length, sessions: data.sessions.length, public_sessions: cat.sessions.length, registrations: data.registrations.length, confirmed_registrations: data.registrations.filter(function (r) { return r.statut === 'confirmee'; }).length, cancelled_registrations: data.registrations.filter(function (r) { return r.statut === 'annulee'; }).length, invalid_formations: issues.filter(function (i) { return Object.keys(i).length > 0; }).length, session_diagnostics: data.sessions.filter(function (s) { return Boolean(s.etat_validation); }).length, real_mail_registrations: Object.keys(budget.registrations).length, reserved_recipients: budget.recipients, remaining_daily_quota: MailApp.getRemainingDailyQuota(), trigger_count: ScriptApp.getProjectTriggers().length, rate_window: rate ? rate.window : null, rate_new_commands: rate ? rate.total : 0 };
 }
 
 // Apps Script hides trailing-underscore names in the editor's Run selector.
@@ -338,3 +378,193 @@ function installTrial() { var result = installTrial_(); console.log(JSON.stringi
 function reconcileTrial() { var result = reconcileTrial_(); console.log(JSON.stringify(result)); return result; }
 function repairTrial() { var result = repairTrial_(); console.log(JSON.stringify(result)); return result; }
 function installTrialTriggers() { var result = installTrialTriggers_(); console.log(JSON.stringify(result)); return result; }
+
+/** Called only inside trialLock_ by the shared admission engine. */
+function trialConsumeNewCommand_(addressHash, now) {
+  var props = PropertiesService.getScriptProperties(), saved = props.getProperty('V1_RATE_BUDGET_JSON');
+  var decision = TemaTrial.nextRateBudget(saved === null ? null : JSON.parse(saved), addressHash, now);
+  if (decision.allowed) props.setProperty('V1_RATE_BUDGET_JSON', JSON.stringify(decision.state));
+  return decision.allowed;
+}
+function trialImportManifest_() {
+  // A transient editor-only variable is convenient for a private paste. It is
+  // never supplied in the deployed/public bundle or accepted through HTTP.
+  if (typeof TEMA_PRIVATE_CATALOGUE_IMPORT !== 'undefined') return TEMA_PRIVATE_CATALOGUE_IMPORT;
+  var props = PropertiesService.getScriptProperties(), count = Number(props.getProperty('CATALOGUE_IMPORT_CHUNKS'));
+  if (!Number.isInteger(count) || count < 1 || count > 100) throw TemaTrial.fault('IMPORT_PRIVATE_SOURCE_REQUIRED');
+  var source = '';
+  for (var i = 0; i < count; i += 1) { var chunk = props.getProperty('CATALOGUE_IMPORT_' + i); if (chunk === null || chunk.length > 8192) throw TemaTrial.fault('IMPORT_PRIVATE_SOURCE_REQUIRED'); source += chunk; }
+  return JSON.parse(source);
+}
+function importCatalogueTrial_(manifest) {
+  trialGuard_();
+  return trialLock_(function () {
+    manifest = manifest || trialImportManifest_();
+    if (manifest.source_id !== 'tema-catalogue-pre-lancement-v1' || !Array.isArray(manifest.records) || manifest.records.length !== 24) throw TemaTrial.fault('IMPORT_MANIFEST');
+    var counts = { DIV: 0, DIMO: 0, MOOV: 0 };
+    manifest.records.forEach(function (r) { if (!Object.prototype.hasOwnProperty.call(counts, r.logiciel)) throw TemaTrial.fault('IMPORT_MANIFEST'); counts[r.logiciel] += 1; });
+    if (counts.DIV !== 18 || counts.DIMO !== 4 || counts.MOOV !== 2) throw TemaTrial.fault('IMPORT_MANIFEST');
+    var deps = trialDependencies_(), props = PropertiesService.getScriptProperties();
+    var hasMapping = manifest.records.some(function (r) { return props.getProperty('CATALOGUE_MAP_' + deps.hash(JSON.stringify([manifest.source_id, r.source_key]))) !== null; });
+    if (!hasMapping) {
+      // The isolated historical TEM-6 fixture may coexist with a first V1
+      // import. Anything else requires an explicit private mapping: never
+      // guess identity from matching titles or overwrite a populated catalogue.
+      var baseline = deps.store.read().formations;
+      if (baseline.length && !(baseline.length === 1 && /^Essai(?: technique| —)/.test(baseline[0].titre))) throw TemaTrial.fault('IMPORT_DESTINATION_NOT_PRISTINE');
+    }
+    deps.importState = {
+      get: function (key) { var value = props.getProperty('CATALOGUE_MAP_' + key); return value === null ? null : JSON.parse(value); },
+      set: function (key, value) { props.setProperty('CATALOGUE_MAP_' + key, JSON.stringify(value)); },
+      counter: function () { var value = props.getProperty('FORMATION_COUNTER'); if (value !== null && !/^\d+$/.test(value)) throw TemaTrial.fault('COUNTER_RANGE'); return value === null ? 0 : Number(value); },
+      setCounter: function (value) { props.setProperty('FORMATION_COUNTER', String(value)); }
+    };
+    deps.importStore = { insertFormation: function (row) {
+      var tab = trialSheet_().getSheetByName('Formations'), headers = tab.getRange(1, 1, 1, tab.getLastColumn()).getValues()[0];
+      TemaTrial.tableRows([headers], TemaTrial.HEADERS.Formations);
+      var line = headers.map(function (key) { return Object.prototype.hasOwnProperty.call(row, key) ? TemaTrial.inertCell(row[key]) : ''; });
+      trialWriteTypedRow_(tab, headers, trialInsertionRow_(tab, 'Formations'), line);
+    } };
+    var result = TemaTrial.importCatalogue(manifest, deps);
+    var index = manifest.records.map(function (r) {
+      var key = deps.hash(JSON.stringify([manifest.source_id, r.source_key])), state = deps.importState.get(key);
+      return state && state.status === 'complete' ? state.id : null;
+    });
+    props.setProperty('V1_CATALOGUE_IDS_JSON', JSON.stringify(index));
+    // Imports, human edits and fallback invoke the same validator explicitly.
+    reconcileTrialUnlocked_();
+    return Object.assign({ environment: 'TEST', source_count: 24, complete: index.filter(Boolean).length }, result);
+  });
+}
+function importCatalogueTrial() { var result = importCatalogueTrial_(); console.log(JSON.stringify(result)); return result; }
+
+/** Explicit editor action: imported records only, not historical TEM-6 rows. */
+function activateV1TrialCatalogue() {
+  trialGuard_();
+  return trialLock_(function () {
+    var props = PropertiesService.getScriptProperties(), ids = JSON.parse(props.getProperty('V1_CATALOGUE_IDS_JSON') || 'null');
+    if (!Array.isArray(ids) || ids.length !== 24 || ids.some(function (id) { return typeof id !== 'string'; }) || new Set(ids).size !== 24) throw TemaTrial.fault('IMPORT_INCOMPLETE');
+    var repaired = trialRepairV1CellTypesUnlocked_();
+    if (repaired.invalid_known_cells.length) throw TemaTrial.fault('V1_BOOLEAN_INVALID');
+    var data = trialStore_().read(), tab = trialSheet_().getSheetByName('Formations'), headers = tab.getRange(1, 1, 1, tab.getLastColumn()).getValues()[0];
+    ids.forEach(function (id) { var matches = data.formations.filter(function (f) { return f.id === id; }); if (matches.length !== 1) throw TemaTrial.fault('CONFIG'); });
+    ids.forEach(function (id) { var row = data.formations.find(function (f) { return f.id === id; }); if (row.actif !== true) tab.getRange(row._sheetRow, headers.indexOf('actif') + 1).setNumberFormat('General').setValue(true); });
+    SpreadsheetApp.flush(); var result = reconcileTrialUnlocked_();
+    return { environment: 'TEST', activated_imported_formations: ids.length, administration: result };
+  });
+}
+/** Three explicitly fictitious future sessions; durable reservations prevent replay duplicates. */
+function seedV1TrialSessions() {
+  trialGuard_();
+  return trialLock_(function () {
+    var props = PropertiesService.getScriptProperties(), ids = JSON.parse(props.getProperty('V1_CATALOGUE_IDS_JSON') || 'null');
+    if (!Array.isArray(ids) || ids.filter(Boolean).length !== 24) throw TemaTrial.fault('IMPORT_INCOMPLETE');
+    var repaired = trialRepairV1CellTypesUnlocked_();
+    if (repaired.invalid_known_cells.length) throw TemaTrial.fault('V1_BOOLEAN_INVALID');
+    var plans = [
+      { index: 0, month: '01', day: '15', capacity: 1, mode: 'en_ligne', place: '' },
+      { index: 18, month: '07', day: '15', capacity: 3, mode: 'presentiel', place: '123, rue Fictive, Montréal — RECETTE TEST' },
+      { index: 22, month: '09', day: '15', capacity: 12, mode: 'en_ligne', place: 'https://example.invalid/recette-test' }
+    ], added = 0;
+    var year = new Date().getUTCFullYear() + 1, sheet = trialSheet_(), tab = sheet.getSheetByName('Disponibilités'), headers = tab.getRange(1, 1, 1, tab.getLastColumn()).getValues()[0];
+    TemaTrial.tableRows([headers], TemaTrial.HEADERS['Disponibilités']);
+    plans.forEach(function (plan, i) {
+      var key = 'V1_FICTITIOUS_SESSION_' + i, saved = props.getProperty(key), state = saved ? JSON.parse(saved) : null;
+      if (!state) { state = { id: 'C-' + Utilities.getUuid(), year: year, version: 1 }; props.setProperty(key, JSON.stringify(state)); }
+      if (state.version !== 1 || !/^C-[a-f0-9-]{36}$/i.test(state.id) || !Number.isInteger(state.year)) throw TemaTrial.fault('SEED_CONFIG');
+      var data = trialStore_().read(), matches = data.sessions.filter(function (s) { return s.id_cohorte === state.id; });
+      if (matches.length > 1) throw TemaTrial.fault('CONFIG');
+      if (matches.length) return;
+      var formation = data.formations.find(function (f) { return f.id === ids[plan.index]; }); if (!formation) throw TemaTrial.fault('CONFIG');
+      var row = { id_cohorte: state.id, formation: formation.id + ' — ' + formation.titre, date: state.year + '-' + plan.month + '-' + plan.day, heure_debut: '09:00', heure_fin: '12:00', places_max: plan.capacity, mode: plan.mode, lieu_ou_lien: plan.place, inscriptions_ouvertes: false, places_restantes: plan.capacity, etat_validation: '' };
+      var number = trialInsertionRow_(tab, 'Disponibilités');
+      trialWriteTypedRow_(tab, headers, number, headers.map(function (key) { return TemaTrial.inertCell(row[key] === undefined ? '' : row[key]); }));
+      SpreadsheetApp.flush(); added += 1;
+    });
+    return { environment: 'TEST', added_fictitious_sessions: added, default_open: false, administration: reconcileTrialUnlocked_() };
+  });
+}
+/** Repair only the known V1 import/fixture cells affected by the old text writer. */
+function trialRepairV1CellTypesUnlocked_() {
+  var props = PropertiesService.getScriptProperties(), data = trialStore_().read(), sheet = trialSheet_();
+  var ids = JSON.parse(props.getProperty('V1_CATALOGUE_IDS_JSON') || '[]');
+  if (!Array.isArray(ids) || ids.length && (ids.length !== 24 || ids.some(function (id) { return typeof id !== 'string'; }) || new Set(ids).size !== 24)) throw TemaTrial.fault('IMPORT_INCOMPLETE');
+  var result = { formation_boolean_repairs: 0, session_boolean_repairs: 0, invalid_known_cells: [] };
+  function repair(name, rows, idField, id, field, counter) {
+    var matches = rows.filter(function (r) { return r[idField] === id; });
+    if (matches.length > 1) throw TemaTrial.fault('CONFIG');
+    if (!matches.length) return;
+    var row = matches[0], tab = sheet.getSheetByName(name), headers = tab.getRange(1, 1, 1, tab.getLastColumn()).getValues()[0], cell = tab.getRange(row._sheetRow, headers.indexOf(field) + 1), value = row[field];
+    if (typeof value === 'boolean') { if (cell.getNumberFormat() === '@') cell.setNumberFormat('General'); return; }
+    if (cell.getNumberFormat() === '@' && (value === 'true' || value === 'false')) { cell.setNumberFormat('General').setValue(value === 'true'); result[counter] += 1; return; }
+    result.invalid_known_cells.push({ id: id, field: field });
+  }
+  ids.forEach(function (id) { repair('Formations', data.formations, 'id', id, 'actif', 'formation_boolean_repairs'); });
+  for (var i = 0; i < 3; i += 1) { var saved = props.getProperty('V1_FICTITIOUS_SESSION_' + i); if (!saved) continue; var state = JSON.parse(saved); if (state.version !== 1 || typeof state.id !== 'string') throw TemaTrial.fault('SEED_CONFIG'); repair('Disponibilités', data.sessions, 'id_cohorte', state.id, 'inscriptions_ouvertes', 'session_boolean_repairs'); }
+  SpreadsheetApp.flush();
+  return result;
+}
+function repairV1TrialCellTypes() { trialGuard_(); return trialLock_(function () { var result = trialRepairV1CellTypesUnlocked_(); result.administration = reconcileTrialUnlocked_(); console.log(JSON.stringify(result)); return result; }); }
+/** Replace this project's own fallback only; unrelated triggers are retained. */
+function installV1TrialTriggers() {
+  trialGuard_();
+  var triggers = ScriptApp.getProjectTriggers(), previousFallbacks = triggers.filter(function (t) { return t.getHandlerFunction() === 'reconcileTrial_'; });
+  // Preserve the previous recovery path until Google confirms replacement
+  // creation. A quota/permission failure must not remove working fallbacks.
+  if (!triggers.some(function (t) { return t.getHandlerFunction() === 'trialOnEdit_'; })) ScriptApp.newTrigger('trialOnEdit_').forSpreadsheet(TEMA_TRIAL_TARGET.spreadsheet).onEdit().create();
+  ScriptApp.newTrigger('reconcileTrial_').timeBased().everyMinutes(5).create();
+  previousFallbacks.forEach(function (t) { ScriptApp.deleteTrigger(t); });
+  return { environment: 'TEST', fallback_minutes: 5, trigger_count: ScriptApp.getProjectTriggers().length };
+}
+/** Values remain private; callers must never log/stringify this export to public evidence. */
+function exportTrialData_() {
+  trialGuard_();
+  return trialLock_(function () {
+    var sheet = trialSheet_(), tables = {};
+    Object.keys(TemaTrial.HEADERS).concat(['Paramètres']).forEach(function (name) {
+      var tab = sheet.getSheetByName(name); if (!tab) throw TemaTrial.fault('CONFIG');
+      // Typed JSON -> supplied XLSX tool. Do not use CSV or formulas.
+      tables[name] = tab.getDataRange().getValues().map(function (line) { return line.map(function (value) { return value instanceof Date ? value.toISOString() : value; }); });
+    });
+    return { schema_version: 1, environment: 'TEST', tables: tables };
+  });
+}
+function exportTrialData() { return exportTrialData_(); }
+/** Manual, explicit privacy operation. Retains IDs, replay fingerprint and snapshots. */
+function removeTrialCoordinates_(id, cancelReservation) {
+  trialGuard_(); if (typeof cancelReservation !== 'boolean') throw TemaTrial.fault('CLEANUP_DECISION_REQUIRED');
+  return trialLock_(function () {
+    var store = trialStore_(), data = store.read(), matches = data.registrations.filter(function (r) { return r.id_inscription === id; });
+    if (matches.length !== 1) throw TemaTrial.fault('CONFIG');
+    var row = matches[0];
+    if (row.statut === 'confirmee' && !cancelReservation) {
+      // Removing the deduplication identity of a future reservation while
+      // retaining its place would admit another booking for the same person.
+      // An unreadable instant cannot establish that cleanup is safely past.
+      var start = typeof row.debut_snapshot === 'string' ? Date.parse(row.debut_snapshot) : NaN;
+      var cohorts = data.sessions.filter(function (session) { return session.id_cohorte === row.id_cohorte; }), currentStart = NaN;
+      if (cohorts.length === 1) { try { currentStart = Date.parse(TemaTrial.localToUtc(cohorts[0].date, cohorts[0].heure_debut, trialDependencies_().formatLocal)); } catch (_) { /* Remain unknown and fail closed. */ } }
+      if (!Number.isFinite(start) || !Number.isFinite(currentStart) || start > Date.now() || currentStart > Date.now()) throw TemaTrial.fault('CLEANUP_FUTURE_RESERVATION_REQUIRES_CANCELLATION');
+    }
+    var patch = { prenom: '', nom: '', entreprise: '', courriel: '', telephone: '' };
+    if (cancelReservation) patch.statut = 'annulee';
+    ['participant', 'tema'].forEach(function (channel) {
+      var state = row['mail_' + channel + '_etat'];
+      if (state === 'PENDING') { patch['mail_' + channel + '_etat'] = 'SUPPRESSED'; patch['mail_' + channel + '_error_code'] = 'COORDINATES_REMOVED'; }
+      if (state === 'SENDING') { patch['mail_' + channel + '_etat'] = 'UNKNOWN'; patch['mail_' + channel + '_error_code'] = 'COORDINATES_REMOVED_AFTER_CLAIM'; }
+    });
+    store.patch(id, patch); store.flush();
+    PropertiesService.getScriptProperties().setProperty('CLEANUP_' + id, JSON.stringify({ version: 1, at: new Date().toISOString(), reservation_cancelled: cancelReservation }));
+    reconcileTrialUnlocked_();
+    return { environment: 'TEST', coordinates_removed: true, reservation_cancelled: cancelReservation, copies_and_Gmail_require_manual_cleanup: true, already_claimed_mail_may_still_be_transmitted: ['participant', 'tema'].some(function (channel) { return row['mail_' + channel + '_etat'] === 'SENDING'; }) };
+  });
+}
+/** Deterministic no-change timing only; edit-to-browser latency is measured separately. */
+function measureV1TrialUnchanged() {
+  trialGuard_(); var measurements = [], mailsBefore = inspectTrial_().reserved_recipients;
+  reconcileTrial_();
+  for (var i = 0; i < 12; i += 1) { var start = Date.now(), result = reconcileTrial_(); measurements.push({ ms: Date.now() - start, patches: result.patches }); }
+  var result = { environment: 'TEST', unchanged_runs: measurements, max_ms: Math.max.apply(null, measurements.map(function (m) { return m.ms; })), reserved_recipients_before: mailsBefore, reserved_recipients_after: inspectTrial_().reserved_recipients, extrapolated_fallback_ms_per_day: 288 * Math.max.apply(null, measurements.map(function (m) { return m.ms; })), edit_measurements_required: true };
+  console.log(JSON.stringify(result));
+  return result;
+}

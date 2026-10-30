@@ -4,27 +4,31 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
-  <title>Tema Académie — Essai technique</title>
+  <title>Tema Académie — Formations</title>
   <link rel="stylesheet" href="styles.css">
   <script src="config.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Aller au contenu</a>
-  <header><a href="./" class="brand">Tema <span>Académie</span></a><span class="badge">TEST — données fictives</span></header>
-  <main id="main">
+  <div class="test-banner">Environnement TEST — sessions et inscriptions fictives</div>
+  <header><a href="#" class="brand"><img src="assets/logo-tema.png" alt="Tema"><span>Académie</span></a><nav aria-label="Navigation principale"><a href="#" data-home="catalogue">Catalogue</a><a href="#calendrier" data-home="calendrier">Calendrier</a><a class="contact-link" hidden>Nous contacter</a></nav></header>
+  <main id="main" tabindex="-1">
     <section id="catalogue" aria-labelledby="catalogue-title">
-      <p class="eyebrow">Essai technique TEM-6</p>
-      <h1 id="catalogue-title">Les formations</h1>
-      <p>Une formation et deux dates fictives pour vérifier le parcours d’inscription.</p>
-      <div id="catalogue-status" role="status" aria-live="polite">Chargement des dates…</div>
-      <div id="formations"></div>
+      <div class="hero"><p class="eyebrow">Tema Académie</p><h1 id="catalogue-title" tabindex="-1">Formations Divalto, Dimo et MoovApps</h1><p>Choisissez une formation, puis une date parmi les sessions proposées.</p></div>
+      <div class="section-head"><div><p class="eyebrow">01 / Le catalogue</p><h2>Les formations</h2></div></div>
+      <div id="catalogue-notice" class="notice freshness-notice" hidden><p role="status">L’actualisation est indisponible. Les informations affichées proviennent de la dernière lecture ; les places restantes peuvent avoir changé.</p><button id="retry-catalogue" type="button" class="secondary">Réessayer l’actualisation</button></div>
+      <div class="catalogue-controls"><div id="filters" class="filters" role="group" aria-label="Filtrer par logiciel"></div><div id="catalogue-status" role="status" aria-live="polite">Chargement des formations…</div></div>
+      <div id="formations" class="cards"></div>
+      <nav id="pagination" class="pagination" aria-label="Pages du catalogue"></nav>
       <button id="reload" type="button" class="secondary">Actualiser les dates</button>
+      <section id="calendrier" aria-labelledby="calendar-title"><p class="eyebrow">02 / Les dates</p><h2 id="calendar-title">Calendrier des formations</h2><p>Choisissez une date pour consulter la formation. Heure de Montréal — America/Toronto.</p><div id="general-calendar" class="calendar"></div></section>
     </section>
+    <section id="detail" hidden aria-labelledby="detail-title"><button id="catalogue-back" class="text-button" type="button">← Retour au catalogue</button><div id="detail-notice" class="notice freshness-notice" hidden><p role="status">L’actualisation est indisponible. Les informations affichées proviennent de la dernière lecture ; les places restantes peuvent avoir changé. La réservation sera vérifiée à la confirmation.</p><button id="retry-detail" type="button" class="secondary">Réessayer l’actualisation</button></div><div id="detail-content"></div></section>
     <section id="registration" hidden aria-labelledby="form-title">
       <button id="change-date" type="button" class="secondary">Changer de date</button>
-      <h1 id="form-title" tabindex="-1">Votre inscription</h1>
-      <div id="summary" class="summary"></div>
+      <p class="eyebrow">Votre formation</p><h1 id="form-title" tabindex="-1">Votre inscription</h1><p>Vérifiez la date choisie, puis renseignez vos coordonnées. Une inscription réserve une place pour une personne.</p>
+      <div id="summary" class="summary"></div><div id="form-availability" class="form-availability"></div>
       <p>La place est réservée après confirmation de l’enregistrement. Le courriel est envoyé séparément.</p>
       <div id="form-status" role="alert" tabindex="-1"></div>
       <div id="changed" class="notice" hidden>
@@ -37,12 +41,12 @@
           <div class="fields">
             <div><label for="prenom">Prénom (obligatoire)</label><input id="prenom" name="prenom" autocomplete="given-name" required maxlength="100"><span id="prenom-error" class="error"></span></div>
             <div><label for="nom">Nom (obligatoire)</label><input id="nom" name="nom" autocomplete="family-name" required maxlength="100"><span id="nom-error" class="error"></span></div>
-            <div><label for="entreprise">Entreprise (obligatoire)</label><input id="entreprise" name="entreprise" autocomplete="organization" required maxlength="200"><span id="entreprise-error" class="error"></span></div>
-            <div><label for="courriel">Courriel (obligatoire)</label><input id="courriel" name="courriel" type="email" autocomplete="email" required maxlength="254"><span id="courriel-error" class="error"></span></div>
+            <div><label for="entreprise">Entreprise (obligatoire)</label><input id="entreprise" aria-describedby="entreprise-help" name="entreprise" autocomplete="organization" required maxlength="200"><p id="entreprise-help" class="field-help">L’entreprise sera vérifiée manuellement par Tema après confirmation de l’inscription.</p><span id="entreprise-error" class="error"></span></div>
+            <div><label for="courriel">Courriel (obligatoire)</label><input id="courriel" aria-describedby="courriel-help" name="courriel" type="email" autocomplete="email" required maxlength="254"><p id="courriel-help" class="field-help">Votre confirmation et l’invitation agenda seront envoyées à cette adresse.</p><span id="courriel-error" class="error"></span></div>
             <div><label for="telephone">Téléphone (facultatif)</label><input id="telephone" name="telephone" type="tel" autocomplete="tel" maxlength="30"><span id="telephone-error" class="error"></span></div>
           </div>
           <div class="trap" aria-hidden="true"><label for="website">Laissez ce champ vide</label><input id="website" tabindex="-1" autocomplete="off"></div>
-          <p class="consent"><input id="consentement" name="consentement" type="checkbox" required><label for="consentement">J’accepte le traitement de mes coordonnées pour cet essai fictif uniquement (obligatoire). <a id="policy" href="https://example.invalid" target="_blank" rel="noopener noreferrer">Politique d’essai</a></label></p>
+          <p class="consent"><input id="consentement" name="consentement" type="checkbox" required><label for="consentement">J’accepte que Tema utilise les renseignements saisis pour traiter mon inscription fictive de TEST (obligatoire), selon la <a id="policy" href="https://example.invalid">politique de confidentialité</a>. <span id="policy-version"></span></label></p>
           <span id="consentement-error" class="error"></span>
         </fieldset>
         <button id="submit" type="submit">Confirmer mon inscription</button>
@@ -57,7 +61,8 @@
       <p id="mail-message"></p>
       <button id="back" type="button">Retour au catalogue</button>
     </section>
-    <footer><p>Essai limité — aucune formation commerciale ouverte par ce prototype.</p><a id="contact" hidden>Contacter Tema</a></footer>
+    <section id="privacy" hidden aria-labelledby="privacy-title"><button id="privacy-back" type="button" class="text-button">← Retour au parcours</button><p class="eyebrow">Document proposé — environnement TEST</p><h1 id="privacy-title" tabindex="-1">Politique de confidentialité des inscriptions</h1><p id="privacy-version"></p><div class="program privacy-copy"><section><h2>Un essai avec des renseignements fictifs</h2><p>Ce parcours est réservé à la recette de Tema Académie. Utilisez uniquement les identités et adresses fictives autorisées pour les essais. Aucune session commerciale n’est ouverte.</p><h2>Pourquoi ces renseignements sont demandés</h2><p>Le prénom, le nom, l’entreprise et le courriel servent à traiter une inscription, gérer les places, transmettre la confirmation et l’invitation agenda, puis assurer le suivi de la formation. Le téléphone est facultatif. Aucun consentement à des communications marketing n’est demandé.</p><h2>Accès et suivi</h2><p>Les inscriptions sont conservées dans un classeur Google privé accessible aux personnes autorisées par Tema. Les confirmations passent par le service de courriel Google. Les liens de connexion aux formations en ligne ne sont pas publiés dans le catalogue. Pour une question, une correction ou une annulation, contactez Tema : <a id="privacy-contact" class="contact-address" hidden></a>.</p><h2>Conservation et retrait</h2><p>La durée prévue est de douze mois ; le point de départ, les besoins de conservation et les exceptions doivent être validés par Tema. Le nettoyage est manuel. Il doit aussi traiter les copies, exports et avis courriel sous le contrôle de Tema. Il n’existe pas de purge automatique.</p><h2>Validation avant ouverture réelle</h2><p>Ce texte et le libellé de consentement sont des propositions de travail. Tema doit confirmer le responsable, les coordonnées, les accès, les modalités de conservation et de retrait ainsi que le texte applicable avant toute ouverture publique. Aucune conformité juridique n’est présumée par cet essai.</p></section></div></section>
+    <footer><strong>Tema Académie</strong><p>Une question sur votre inscription ?</p><a id="contact" hidden>Contacter Tema</a><a id="footer-policy" hidden>Politique de confidentialité</a><p class="muted">TEST — aucune session client ouverte. Politique et tarifs à faire valider par Tema avant ouverture.</p></footer>
   </main>
 </body>
 </html>

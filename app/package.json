@@ -1,17 +1,25 @@
 {
-  "name": "tema-academie-technical-trial",
-  "version": "0.1.0",
+  "name": "tema-academie",
+  "version": "1.0.0",
   "private": true,
-  "description": "TEM-6 — prototype isolé, sans serveur applicatif produit",
-  "engines": { "node": ">=22.9.0" },
+  "description": "Tema Académie — V1 statique connectée à Google TEST",
+  "engines": {
+    "node": ">=22.9.0"
+  },
   "scripts": {
     "test": "node --test tests/*.test.cjs",
     "build": "node scripts/build.cjs",
     "serve": "node scripts/serve.cjs",
     "test:e2e": "playwright test",
-    "verify": "npm test && npm run build && npm run test:e2e",
+    "test:browsers": "TEMA_BROWSER_MATRIX=all playwright test",
+    "test:a11y": "playwright test tests/browser/accessibility.spec.cjs",
+    "security": "node scripts/security.cjs",
+    "verify": "npm test && npm run build && npm run security && npm run test:e2e",
     "fingerprint": "node scripts/fingerprint.cjs",
     "test:real": "node scripts/real-read.cjs"
   },
-  "devDependencies": { "@playwright/test": "1.64.1" }
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.64.1"
+  }
 }

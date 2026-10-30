@@ -15,11 +15,11 @@ async function setup(page, controls = {}) {
     if (controls.beforeReply) await controls.beforeReply(result);
     if (drop) { drop = false; await route.abort('failed'); } else await route.fulfill({ json: result });
   });
-  await page.goto('/'); await expect(page.getByRole('heading', { level: 2 }).first()).toContainText('Essai');
+  await page.goto('/'); await expect(page.locator('#formations')).toContainText('Essai');
   return { h, commands, traffic };
 }
 async function fill(page) {
-  await page.getByRole('button', { name: 'S’inscrire à cette date' }).first().click();
+  await page.locator('#formations a').first().click(); await page.getByRole('button', { name: 'S’inscrire à cette date' }).filter({ visible: true }).first().click();
   await page.getByLabel('Prénom (obligatoire)', { exact: true }).fill('Anne'); await page.getByLabel('Nom (obligatoire)', { exact: true }).fill('Fictive'); await page.getByLabel('Entreprise (obligatoire)', { exact: true }).fill('Entreprise essai'); await page.getByLabel('Courriel (obligatoire)', { exact: true }).fill('participant@example.invalid'); await page.locator('#consentement').check();
   // Server anti-spam timing is exercised with a real elapsed second.
   await page.waitForTimeout(1100);
@@ -38,6 +38,7 @@ test('AC-07 — date devenue complète garde les coordonnées et propose un chan
 test('AC-08 — réponse perdue puis reprise conserve la même demande sans doublon/envoi', async ({ page }) => {
   const { h, commands } = await setup(page, { drop: true }); await fill(page); await page.getByRole('button', { name: 'Confirmer mon inscription', exact: true }).click();
   await expect(page.locator('#form-status')).toContainText('inconnu'); await expect(page.locator('#prenom')).toBeDisabled();
+  await page.goBack(); await expect(page.locator('#registration')).toBeVisible(); await expect(page.locator('#retry')).toBeVisible();
   await page.getByRole('button', { name: 'Reprendre mon inscription' }).click(); await expect(page.getByRole('heading', { name: 'Votre place est réservée' })).toBeVisible();
   expect(commands[0]).toEqual(commands[1]); expect(h.data.registrations.length).toBe(1); expect(h.messages.length).toBe(2);
 });
@@ -67,7 +68,7 @@ test('AC-13 — conditions modifiées demandent relecture puis nouvel accord/nou
 });
 test('AC-02/14 — fermeture/inactivation visibles à l’actualisation, HTML inerte', async ({ page }) => {
   const { h } = await setup(page); h.data.formations[0].titre = '<img src=x onerror="window.XSS=1">'; h.data.sessions[0].inscriptions_ouvertes = false;
-  await page.getByRole('button', { name: 'Actualiser les dates' }).click(); await expect(page.locator('#formations')).toContainText('<img src=x'); expect(await page.evaluate(() => window.XSS)).toBeUndefined(); expect(await page.locator('#formations img').count()).toBe(0); await expect(page.getByRole('button', { name: 'S’inscrire à cette date' })).toHaveCount(1);
+  await page.getByRole('button', { name: 'Actualiser les dates' }).click(); await expect(page.locator('#formations')).toContainText('<img src=x'); expect(await page.evaluate(() => window.XSS)).toBeUndefined(); expect(await page.locator('#formations img').count()).toBe(0); await expect(page.locator('#formations a')).toHaveCount(1);
   h.data.formations[0].actif = false; await page.getByRole('button', { name: 'Actualiser les dates' }).click(); await expect(page.locator('#catalogue-status')).toContainText('Aucune formation disponible');
 });
 for (const [name, corrupt] of [
@@ -103,5 +104,26 @@ test('AC-02 — onglet masqué ne consulte pas Google ; retour visible puis cade
   await page.clock.fastForward(60000); expect(traffic.gets).toBe(initial);
   await page.evaluate(() => { window.__testHidden = false; document.dispatchEvent(new Event('visibilitychange')); }); await expect.poll(() => traffic.gets).toBe(initial + 1);
   await page.clock.fastForward(30000); await expect.poll(() => traffic.gets).toBe(initial + 2);
-  await page.getByRole('button', { name: 'S’inscrire à cette date' }).first().click(); await page.clock.fastForward(30000); await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange'))); expect(traffic.gets).toBe(initial + 2);
+  await page.locator('#formations a').first().click(); await page.getByRole('button', { name: 'S’inscrire à cette date' }).filter({ visible: true }).first().click(); await page.clock.fastForward(30000); await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange'))); expect(traffic.gets).toBe(initial + 2);
+});
+test('review — refus rate_limited certain conserve la saisie et permet une nouvelle demande après attente', async ({ page }) => {
+  let seeded = false;
+  const { h, commands } = await setup(page, { beforePost(h) {
+    if (!seeded) { for (let i = 0; i < 3; i++) expect(h.service.register(h.command({ consentement: false })).code).toBe('CONSENT_REQUIRED'); seeded = true; }
+    else h.advance(61000);
+  } });
+  await fill(page); await page.locator('#submit').click();
+  await expect(page.locator('#form-status')).toContainText('Attendez une minute'); await expect(page.locator('#prenom')).toHaveValue('Anne'); await expect(page.locator('#prenom')).toBeEnabled();
+  await expect(page.locator('#retry')).toBeHidden(); await expect(page.locator('#submit')).toBeEnabled(); await expect(page.locator('#change-date')).toBeEnabled(); expect(h.data.registrations).toHaveLength(0); expect(h.messages).toHaveLength(0);
+  await page.locator('#submit').click(); await expect(page.getByRole('heading', { name: 'Votre place est réservée' })).toBeVisible();
+  expect(commands).toHaveLength(2); expect(commands[1].request_id).not.toBe(commands[0].request_id); expect(h.data.registrations).toHaveLength(1); expect(h.messages).toHaveLength(2);
+});
+test('review — refus price_unconfirmed certain conserve la saisie et propose les autres dates sans reprise inconnue', async ({ page }) => {
+  const { h, commands } = await setup(page, { beforePost(h) { h.data.formations[0].prix = null; } });
+  await fill(page); await page.locator('#submit').click();
+  await expect(page.locator('#form-status')).toContainText('Tarif à confirmer'); await expect(page.locator('#form-status')).toContainText('n’a pas été enregistrée'); await expect(page.locator('#prenom')).toHaveValue('Anne'); await expect(page.locator('#prenom')).toBeEnabled();
+  await expect(page.locator('#retry')).toBeHidden(); await expect(page.locator('#submit')).toBeDisabled(); await expect(page.locator('#change-date')).toBeEnabled(); await expect(page.locator('#form-availability')).toBeHidden();
+  expect(h.data.registrations).toHaveLength(0); expect(h.messages).toHaveLength(0); expect(commands).toHaveLength(1);
+  await page.locator('#change-date').click(); await expect(page.locator('#detail')).toBeVisible(); await expect(page.locator('#detail-content')).toContainText('Tarif à confirmer');
+  await expect(page.getByRole('button', { name: 'S’inscrire à cette date' }).filter({ visible: true })).toBeDisabled(); await expect(page.locator('#prenom')).toHaveValue('Anne');
 });

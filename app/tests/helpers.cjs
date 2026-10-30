@@ -19,7 +19,14 @@ function harness(options = {}) {
   const data = options.data || fixture();
   let now = options.now || Date.parse('2029-12-01T12:00:00.000Z'), locked = false, reads = 0;
   const events = [], messages = [], reservations = new Set();
+  let rateBudget = null;
+  const capacityInitializations = new Map();
   const deps = {
+    capacityInitialization: { get: id => capacityInitializations.get(id) ?? null, set: (id, value) => capacityInitializations.set(id, structuredClone(value)) },
+    consumeNewCommand: (hash, at) => {
+      if (!locked || options.failRateBudget) throw Error('private rate budget unavailable');
+      const next = TemaTrial.nextRateBudget(rateBudget, hash, at); rateBudget = next.state; return next.allowed;
+    },
     now: () => now, uuid: () => crypto.randomUUID(), hash: input => crypto.createHash('sha256').update(input, 'utf8').digest('hex'), formatLocal,
     guard: () => { if (options.badEnvironment) throw TemaTrial.fault('ENVIRONMENT'); },
     withLock: fn => {

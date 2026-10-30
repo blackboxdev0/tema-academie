@@ -1,4 +1,4 @@
-/* TEM-6. Shared unchanged by Node tests and the Apps Script bundle. */
+/* Shared V1 engine: Node and Google use these exact contracts and rules. */
 var TemaTrial = (function () {
   'use strict';
   var ZONE = 'America/Toronto';
@@ -134,16 +134,33 @@ var TemaTrial = (function () {
       var f = view.formations[id]; if (!checked(f.actif)) return;
       var o = { id: f.id, logiciel: ref(f.logiciel) };
       ['titre', 'description', 'prerequis', 'contenu', 'resultat', 'duree', 'prix_qualificatif'].forEach(function (k) { o[k] = typeof f[k] === 'string' ? f[k] : ''; });
+      // The approved source separates Ergonomie's audience presentation from
+      // its actual prerequisites with a blank line. Keep that existing copy
+      // in the introduction; leave other prerequisites intact.
+      var presentation = o.prerequis.match(/^(Formation destinée [^\r\n]+)(?:\r\n|\r|\n)[ \t]*(?:\r\n|\r|\n)([\s\S]+)$/);
+      if (!nonempty(o.description) && presentation && nonempty(presentation[2])) {
+        o.prerequis = presentation[2];
+        if (!nonempty(o.description)) o.description = presentation[1];
+      }
+      if (!nonempty(o.description)) {
+        // The nine-column source has no description. Select an existing
+        // sentence/line verbatim; never invent copy or modify the programme.
+        var line = o.contenu.split(/\r\n|\r|\n/).find(function (value) { return nonempty(value); });
+        var sentence = line && line.match(/^.*?[.!?](?=\s|$)/);
+        o.description = sentence ? sentence[0] : line || '';
+      }
       o.prix = f.prix === '' || f.prix === null ? null : f.prix; formations.push(o);
     });
     var sessions = [];
     Object.keys(view.sessions).forEach(function (id) {
       var v = view.sessions[id], s = v.row;
       if (!checked(v.formation.actif) || v.start <= now || !checked(s.inscriptions_ouvertes) && v.count === 0) return;
-      sessions.push({ id_cohorte: id, formation: v.formation.id, start_at: v.start, end_at: v.end, mode: s.mode, adresse_presentiel: s.mode === 'presentiel' ? s.lieu_ou_lien : null, places_max: s.places_max, places_restantes: v.remaining, status: !checked(s.inscriptions_ouvertes) ? 'closed' : v.remaining ? 'open' : 'full', session_revision: v.revision });
+      var status = !checked(s.inscriptions_ouvertes) ? 'closed' : v.remaining ? 'open' : 'full';
+      var hasPrice = typeof v.formation.prix === 'number' && Number.isFinite(v.formation.prix) && v.formation.prix >= 0;
+      sessions.push({ registration_enabled: status === 'open' && hasPrice, registration_block_reason: status === 'open' && !hasPrice ? 'price_unconfirmed' : null, id_cohorte: id, formation: v.formation.id, start_at: v.start, end_at: v.end, mode: s.mode, adresse_presentiel: s.mode === 'presentiel' ? s.lieu_ou_lien : null, places_max: s.places_max, places_restantes: v.remaining, status: !checked(s.inscriptions_ouvertes) ? 'closed' : v.remaining ? 'open' : 'full', session_revision: v.revision });
     });
     sessions.sort(function (a, b) { return a.start_at.localeCompare(b.start_at); });
-    return { schema_version: 1, generated_at: now, timezone: ZONE, contact: { courriel: view.params.courriel_contact }, policy: { url: view.params.politique_url, version: view.params.politique_version }, softwares: view.params.softwares.map(function (s) { return { id: s.id, label: s.label, color: null }; }), formations: formations, sessions: sessions };
+    return { schema_version: 1, generated_at: now, timezone: ZONE, contact: { courriel: view.params.courriel_contact }, policy: { url: view.params.politique_url, version: view.params.politique_version }, softwares: view.params.softwares.map(function (s) { return { id: s.id, label: s.label, color: ({DIV: '#FF008F', DIMO: '#365AA7', MOOV: '#176C68'})[s.id] || null }; }), formations: formations, sessions: sessions };
   }
   function errorsFor(c, now) {
     var errors = [];
@@ -185,6 +202,13 @@ var TemaTrial = (function () {
             if (!['confirmee', 'annulee'].includes(existing.statut) || !MAIL_STATES.includes(existing.mail_participant_etat)) throw fault('CONFIG');
             return envelope('REPLAY', c, existing);
           }
+          // New identifiable commands consume the private atomic budget, including
+          // business refusals. Replays/conflicts above never consume it.
+          if (!deps.consumeNewCommand) throw fault('RATE_CONFIG');
+          if (!deps.consumeNewCommand(deps.hash(c.courriel), deps.now())) {
+            var limited = envelope('INVALID', c, null, [{ field: 'anti_spam', code: 'RATE_LIMITED' }]);
+            limited.message_key = 'rate_limited'; return limited;
+          }
           var errors = errorsFor(c, deps.now());
           if (errors.length) return envelope('INVALID', c, null, errors);
           if (deps.allowNewRegistration && !deps.allowNewRegistration(c)) return envelope('INVALID', c, null, [{ field: 'courriel', code: 'TEST_RECIPIENT_NOT_ALLOWED' }]);
@@ -195,6 +219,9 @@ var TemaTrial = (function () {
           if (c.politique_version !== view.params.politique_version) return envelope('POLICY_CHANGED', c);
           if (!v || !checked(v.formation.actif)) return envelope('NOT_FOUND', c);
           if (!checked(v.row.inscriptions_ouvertes) || Date.parse(v.start) <= deps.now()) return envelope('CLOSED', c);
+          if (!(typeof v.formation.prix === 'number' && Number.isFinite(v.formation.prix) && v.formation.prix >= 0)) {
+            var unpriced = envelope('CLOSED', c, null, [{ field: 'prix', code: 'PRICE_UNCONFIRMED' }]); unpriced.message_key = 'price_unconfirmed'; return unpriced;
+          }
           if (v.revision !== c.session_revision) return envelope('SESSION_CHANGED', c);
           if (data.registrations.some(function (r) { return r.statut === 'confirmee' && r.id_cohorte === c.id_cohorte && String(r.courriel).toLowerCase() === c.courriel; })) return envelope('DUPLICATE', c);
           if (!v.remaining) return envelope('FULL', c);
@@ -277,19 +304,20 @@ var TemaTrial = (function () {
   function makeMail(row, params, channel, to, deps) {
     var f = JSON.parse(row.formation_snapshot), place = JSON.parse(row.lieu_snapshot);
     var location = place.mode === 'presentiel' ? place.adresse_presentiel : place.lien_visio || 'En ligne — lien à venir';
-    var logistics = f.titre + '\n' + deps.formatLocal(Date.parse(row.debut_snapshot)) + ' à ' + deps.formatLocal(Date.parse(row.fin_snapshot)).slice(11) + ' (' + ZONE + ')\n' + location;
+    var pricing = typeof f.prix === 'number' ? (f.prix_qualificatif ? f.prix_qualificatif + ' ' : '') + f.prix + ' $ CAD par participant, taxes en sus' : 'Tarif à confirmer';
+    var logistics = f.titre + '\n' + f.duree + '\n' + pricing + '\n' + deps.formatLocal(Date.parse(row.debut_snapshot)) + ' à ' + deps.formatLocal(Date.parse(row.fin_snapshot)).slice(11) + ' (' + ZONE + ')\n' + location;
     var missingLink = place.mode === 'en_ligne' && !place.lien_visio;
     var participantState = row.mail_participant_etat;
-    var body = channel === 'participant' ? 'Votre place est réservée.\n\n' + logistics + '\n\n' + (missingLink ? 'Le lien de connexion vous sera envoyé dans les jours précédant la formation.\n\n' : '') + 'Pour toute question, annulation ou modification : ' + params.courriel_contact : 'Inscription ' + row.id_inscription + ' — statut ' + row.statut + '\n' + row.prenom + ' ' + row.nom + '\n' + row.entreprise + '\n' + row.courriel + '\n' + row.telephone + '\n\n' + logistics + '\n\nConfirmation participant : ' + participantState + (participantState === 'SENT' ? ' (acceptée par le service ; réception non garantie)' : ' — vérifier le suivi et contacter manuellement dans Gmail si nécessaire.') + (missingLink ? '\nLien de connexion à communiquer manuellement aux inscrits.' : '');
+    var body = channel === 'participant' ? 'Votre place est réservée.\n\n' + logistics + '\n\n' + (missingLink ? 'Le lien de connexion vous sera envoyé dans les jours précédant la formation.\n\n' : '') + 'Pour toute question, annulation ou modification : ' + params.courriel_contact : 'Inscription ' + row.id_inscription + ' — statut ' + row.statut + '\n' + row.prenom + ' ' + row.nom + '\n' + row.entreprise + '\n' + row.courriel + '\n' + row.telephone + '\n\n' + logistics + '\n\nConfirmation participant : ' + participantState + (participantState === 'SENT' ? ' (acceptée par le service ; réception non garantie)' : ' — vérifier le suivi et contacter manuellement dans Gmail si nécessaire.') + (missingLink ? '\nLien de connexion à communiquer manuellement aux inscrits.' : '') + (deps.privateSheetUrl ? '\nSuivi privé dans Google Sheets : ' + deps.privateSheetUrl : '');
     return { to: to, subject: (channel === 'participant' ? '[TEST] Confirmation — ' : '[TEST] Inscription — ') + f.titre.replace(/[\r\n]/g, ' '), body: body, name: String(params.nom_expediteur || 'Tema Académie').replace(/[\r\n]/g, ' '), ics: channel === 'participant' ? makeIcs(row) : null };
   }
   function prepareAdministration(data, deps, nextCounter) {
-    var patches = [], counter = nextCounter === undefined ? 0 : nextCounter;
+    var patches = [], capacityInitializations = [], counter = nextCounter === undefined ? 0 : nextCounter;
     if (!Number.isSafeInteger(counter) || counter < 0) throw fault('COUNTER_RANGE');
     data.formations.forEach(function (f) { var match = String(f.id).match(/-(\d+)$/); if (match) { var imported = Number(match[1]); if (!Number.isSafeInteger(imported)) throw fault('COUNTER_RANGE'); counter = Math.max(counter, imported); } });
     data.formations.forEach(function (f, index) {
       var patch = {};
-      if (f.actif === '') patch.actif = false;
+      if (f.actif === '' || f.actif === undefined || f.actif === null) patch.actif = false;
       if (!f.id && nonempty(f.titre) && data.params.softwares.some(function (s) { return s.id === ref(f.logiciel); })) {
         var suffix = ascii(f.titre).slice(0, 3), software = ref(f.logiciel);
         if (suffix) { if (counter === Number.MAX_SAFE_INTEGER) throw fault('COUNTER_RANGE'); counter += 1; patch.id = (['DIV', 'DIMO', 'MOOV'].includes(software) ? software : software.slice(0, 4)) + '-' + suffix + '-' + String(counter).padStart(3, '0'); }
@@ -297,9 +325,30 @@ var TemaTrial = (function () {
       if (Object.keys(patch).length) patches.push({ sheet: 'Formations', index: index, values: patch });
     });
     data.sessions.forEach(function (s, index) {
-      var patch = {}; if (!s.id_cohorte) patch.id_cohorte = 'C-' + deps.uuid(); if (s.inscriptions_ouvertes === '') patch.inscriptions_ouvertes = false;
+      var patch = {};
+      if (!s.id_cohorte) patch.id_cohorte = 'C-' + deps.uuid();
+      var cohortId = patch.id_cohorte || s.id_cohorte;
+      // Capacity initialization has its own durable lifecycle: a date can get
+      // an ID before its formation/default exists. Once initialized (including
+      // an explicit human value), later edits/clears never refill it.
+      if (data.sessions.filter(function (other) { return other.id_cohorte === cohortId; }).length < 2) {
+        var state = deps.capacityInitialization.get(cohortId), blank = s.places_max === '' || s.places_max === null || s.places_max === undefined;
+        if (state && (state.version !== 1 || !['waiting', 'complete'].includes(state.status))) throw fault('CAPACITY_INITIALIZATION');
+        if (!state || state.status === 'waiting') {
+          // Pre-existing IDs without metadata are historical: even a blank
+          // capacity may be a deliberate human clear. Adopt it as complete.
+          var historical = !state && Boolean(s.id_cohorte), status = historical || !blank ? 'complete' : 'waiting';
+          if (blank && !historical) {
+            var choices = data.formations.filter(function (f) { return f.id === ref(s.formation); });
+            if (choices.length === 1 && Number.isSafeInteger(choices[0].places_par_defaut) && choices[0].places_par_defaut > 0) { patch.places_max = choices[0].places_par_defaut; status = 'complete'; }
+          }
+          if (!state || state.status !== status) capacityInitializations.push({ id_cohorte: cohortId, version: 1, status: status, adopted_historical: historical, explicit_capacity: !blank });
+        }
+      }
+      if (s.inscriptions_ouvertes === '' || s.inscriptions_ouvertes === undefined || s.inscriptions_ouvertes === null) patch.inscriptions_ouvertes = false;
+      var capacity = patch.places_max === undefined ? s.places_max : patch.places_max;
       var count = data.registrations.filter(function (r) { return r.id_cohorte === s.id_cohorte && r.statut === 'confirmee'; }).length;
-      if (Number.isSafeInteger(s.places_max) && s.places_max > 0) { patch.places_restantes = Math.max(0, s.places_max - count); patch.etat_validation = count > s.places_max ? 'Capacité inférieure aux inscriptions confirmées' : ''; }
+      if (Number.isSafeInteger(capacity) && capacity > 0) { patch.places_restantes = Math.max(0, capacity - count); patch.etat_validation = count > capacity ? 'Capacité inférieure aux inscriptions confirmées' : ''; }
       else patch.etat_validation = 'Capacité entière positive requise';
       patches.push({ sheet: 'Disponibilités', index: index, values: patch });
     });
@@ -313,8 +362,79 @@ var TemaTrial = (function () {
     patches.filter(function (p) { return p.sheet === 'Disponibilités'; }).forEach(function (p) {
       if (!p.values.etat_validation && !view.sessions[prepared.sessions[p.index].id_cohorte]) p.values.etat_validation = 'Session invalide : vérifier identifiant, formation, date, heures, mode et lieu';
     });
-    return { patches: patches, counter: counter };
+    return { patches: patches, counter: counter, capacity_initializations: capacityInitializations };
   }
-  return { HEADERS: HEADERS, canonical: canonical, fingerprintInput: fingerprintInput, decodeForm: decodeForm, tableRows: tableRows, envelope: envelope, publicCatalogue: publicCatalogue, localToUtc: localToUtc, revisionInput: revisionInput, createService: createService, makeIcs: makeIcs, makeMail: makeMail, prepareAdministration: prepareAdministration, formationIssues: formationIssues, inertCell: inertCell, fault: fault };
+  /** Pure next-state calculation; caller persists while holding the project lock. */
+  function nextRateBudget(saved, addressHash, now) {
+    if (!/^[a-f0-9]{64}$/.test(addressHash) || !Number.isFinite(now)) throw fault('RATE_CONFIG');
+    var window = Math.floor(now / 60000), state = saved;
+    if (state !== null && state !== undefined) {
+      if (!plain(state) || state.version !== 1 || !Number.isSafeInteger(state.window) || !Number.isInteger(state.total) || state.total < 0 || state.total > 30 || !plain(state.addresses)) throw fault('RATE_CONFIG');
+      var keys = Object.keys(state.addresses), total = 0;
+      if (keys.length > 30) throw fault('RATE_CONFIG');
+      keys.forEach(function (key) { var count = state.addresses[key]; if (!/^[a-f0-9]{64}$/.test(key) || !Number.isInteger(count) || count < 1 || count > 3) throw fault('RATE_CONFIG'); total += count; });
+      if (total !== state.total) throw fault('RATE_CONFIG');
+    }
+    if (!state || state.window !== window) state = { version: 1, window: window, total: 0, addresses: {} };
+    if (state.total >= 30 || (state.addresses[addressHash] || 0) >= 3) return { allowed: false, state: state };
+    var next = { version: 1, window: window, total: state.total + 1, addresses: Object.assign({}, state.addresses) };
+    next.addresses[addressHash] = (next.addresses[addressHash] || 0) + 1;
+    return { allowed: true, state: next };
+  }
+  var IMPORT_FIELDS = ['logiciel', 'titre', 'description', 'prerequis', 'contenu', 'resultat', 'duree', 'prix', 'prix_qualificatif', 'places_par_defaut', 'formateurs'];
+  function importFingerprint(row, hash) { return hash(JSON.stringify(IMPORT_FIELDS.map(function (key) { var v = row[key]; return key === 'logiciel' ? ref(v) : (v === undefined || v === null ? '' : v); }))); }
+  /** Editor-only adapter owns journal/counter durability; no destructive update path. */
+  function importCatalogue(manifest, deps) {
+    if (!plain(manifest) || !nonempty(manifest.source_id) || !Array.isArray(manifest.records) || !manifest.records.length || manifest.records.length > 1000) throw fault('IMPORT_MANIFEST');
+    var seen = {};
+    manifest.records.forEach(function (source) { if (!plain(source) || !nonempty(source.source_key) || seen[source.source_key]) throw fault('IMPORT_SOURCE_AMBIGUOUS'); seen[source.source_key] = true; });
+    var result = { imported: 0, resumed: 0, unchanged: 0, conflicts: [] };
+    manifest.records.forEach(function (source) {
+      var data = deps.store.read(), software = data.params.softwares.filter(function (s) { return s.id === ref(source.logiciel) || s.label === source.logiciel; });
+      if (software.length !== 1) { result.conflicts.push({ source_key: source.source_key, code: 'SOFTWARE_AMBIGUOUS' }); return; }
+      var row = {};
+      IMPORT_FIELDS.forEach(function (key) { row[key] = source[key] === undefined || source[key] === null ? '' : text(source[key]); });
+      row.logiciel = software[0].id + ' — ' + software[0].label; row.actif = false;
+      var key = deps.hash(JSON.stringify([manifest.source_id, source.source_key])), journal = deps.importState.get(key), sourceHash = importFingerprint(row, deps.hash);
+      if (journal) {
+        if (journal.version !== 1 || !nonempty(journal.id) || !/^[a-f0-9]{64}$/.test(journal.fingerprint || '') || !['prepared', 'complete'].includes(journal.status)) throw fault('IMPORT_JOURNAL');
+        if (journal.fingerprint !== sourceHash) { result.conflicts.push({ source_key: source.source_key, code: 'SOURCE_CHANGED' }); return; }
+        if (journal.source_metadata !== undefined) {
+          if (!plain(journal.source_metadata) || typeof journal.source_metadata.source_date !== 'string') throw fault('IMPORT_JOURNAL');
+          if (typeof source.source_date === 'string' && journal.source_metadata.source_date !== source.source_date) { result.conflicts.push({ source_key: source.source_key, code: 'SOURCE_METADATA_CHANGED' }); return; }
+        }
+        row.id = journal.id;
+      } else {
+        var prepared = prepareAdministration({ formations: data.formations.concat([Object.assign({ id: '' }, row)]), sessions: [], registrations: data.registrations, params: data.params }, deps, deps.importState.counter());
+        var allocation = prepared.patches.find(function (p) { return p.sheet === 'Formations' && p.index === data.formations.length; });
+        if (!allocation || !allocation.values.id) { result.conflicts.push({ source_key: source.source_key, code: 'SOURCE_INVALID' }); return; }
+        row.id = allocation.values.id;
+        if (Object.keys(formationIssues({ formations: [row], params: data.params })[0]).length || !(row.places_par_defaut === '' || Number.isSafeInteger(row.places_par_defaut) && row.places_par_defaut > 0)) { result.conflicts.push({ source_key: source.source_key, code: 'SOURCE_INVALID' }); return; }
+        deps.importState.setCounter(prepared.counter); // Never reuse a reserved number.
+        journal = { version: 1, id: row.id, fingerprint: sourceHash, status: 'prepared' };
+        if (typeof source.source_date === 'string') journal.source_metadata = { source_date: source.source_date };
+        deps.importState.set(key, journal); // Reserve correspondence before insertion.
+      }
+      var matches = data.formations.filter(function (f) { return f.id === row.id; });
+      if (matches.length > 1) { result.conflicts.push({ source_key: source.source_key, code: 'DESTINATION_AMBIGUOUS' }); return; }
+      if (matches.length) {
+        if (importFingerprint(matches[0], deps.hash) !== sourceHash) { result.conflicts.push({ source_key: source.source_key, code: 'DESTINATION_CHANGED' }); return; }
+        if (journal.status === 'prepared') result.resumed += 1; else result.unchanged += 1;
+      } else {
+        if (journal.status === 'complete') { result.conflicts.push({ source_key: source.source_key, code: 'DESTINATION_MISSING' }); return; }
+        deps.importStore.insertFormation(row); deps.store.flush(); result.imported += 1;
+      }
+      // An explicit compatible replay may enrich old mappings. Provenance is
+      // not a booking condition/fingerprint, and conflicting source or Tema
+      // rows above never receive a metadata rewrite.
+      var saveJournal = journal.status !== 'complete';
+      if (journal.source_metadata !== undefined && (!plain(journal.source_metadata) || typeof journal.source_metadata.source_date !== 'string')) throw fault('IMPORT_JOURNAL');
+      if (journal.source_metadata === undefined && typeof source.source_date === 'string') { journal.source_metadata = { source_date: source.source_date }; saveJournal = true; }
+      if (journal.status !== 'complete') journal.status = 'complete';
+      if (saveJournal) deps.importState.set(key, journal);
+    });
+    return result;
+  }
+  return { nextRateBudget: nextRateBudget, importCatalogue: importCatalogue, HEADERS: HEADERS, canonical: canonical, fingerprintInput: fingerprintInput, decodeForm: decodeForm, tableRows: tableRows, envelope: envelope, publicCatalogue: publicCatalogue, localToUtc: localToUtc, revisionInput: revisionInput, createService: createService, makeIcs: makeIcs, makeMail: makeMail, prepareAdministration: prepareAdministration, formationIssues: formationIssues, inertCell: inertCell, fault: fault };
 }());
 if (typeof module !== 'undefined' && module.exports) module.exports = TemaTrial;
