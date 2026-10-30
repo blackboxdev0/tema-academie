@@ -1,5 +1,10 @@
 # Ressources Google et Vercel — Tema Académie
 
+> **Registre historique TEM-6 (26–28octobre), conservé pour les IDs et les décisions initiales.** Les versions, budgets, statuts et restrictions datés ci-dessous ne sont pas l’état V1 courant. Le GO principal est intervenu le30octobre. État courant vérifié : Google TEST7/HEAD f8689f42a980…,24formations publiques/trois dates fictives, budget8/10inscriptions et16/20destinataires, onEdit conservé/secours au repos12h après contrôle nominal5min. Référence actuelle : [rapport V1](../../../docs/project/acceptance/V1-results.md), [guide Google](../../../docs/project/guide-google.md) et [registre machine](../../../config/project.json). Aucune opération Métier ou nouvelle publication Vercel/FTP pendant la V1.
+
+## Archive de préparation et d’essai
+
+
 Créées et vérifiées par Computer Use le 26 octobre 2026, après connexion de Sofiane. Registre machine correspondant : `config/project.json`. Création initiale suivie du GO explicite d’essai limité TEM-6 le 26 octobre. Prototype TEST exécuté et bilan disponible ; vérifications et arbitrages restants, développement principal non autorisé. Les paragraphes Métier/TEST décrivent les constats du26octobre, non une reconnexion au28octobre ; décisions et publication GitHub actualisées ci-dessous.
 
 ## Google

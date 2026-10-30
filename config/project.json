@@ -283,7 +283,7 @@
     "application_created": true
   },
   "definition": {
-    "status": "architecture_documentation_closed_pending_ux_review",
+    "status": "v1_local_Google_candidate_ready_for_final_owner_recipe",
     "prepared_on": "2026-10-20",
     "spec": "_bmad-output/specs/spec-tema-academie-v1/SPEC.md",
     "ux_design": "_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/DESIGN.md",
@@ -303,7 +303,7 @@
       "scope": "functional-v1",
       "source": "Sofiane, confirmation explicite après relecture consolidée dans le chat"
     },
-    "current_review": "global_plan_and_documentary_checkpoint",
+    "current_review": "final_owner_recipe_after_verified_implementation",
     "visual_direction_approval": {
       "status": "approved",
       "approved_on": "2026-10-24",
