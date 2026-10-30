@@ -1,5 +1,15 @@
 # Fonctionnalités du projet
 
+## État courant — GO V1 du 30 octobre 2026
+
+Sofiane active explicitement par `/goal` la réalisation autonome des cinq blocs / 17 stories, application locale réellement connectée à Google Sheets et Apps Script TEST, jusqu’au candidat prêt pour sa recette finale. Cette instruction remplace les mentions historiques de démarrage différé ci-dessous. Réutiliser prototype et maquettes approuvées ; terminer et versionner la préparation BMAD avant code dépendant. Tests, corrections, revues techniques, revue UX Sally et parcours Computer Use sont inclus, avec délégation utile autorisée. Commits par jalon et push sur `tem-6-technical-trial` ; PR Tema nº1 conservée en brouillon. Aucune fusion/main, publication Vercel/FTP ou production. Les opérations Apps Script TEST nécessaires sont autorisées sans extension de permissions ni remise à zéro des budgets.
+
+Préparation : contradictions résiduelles d’epics UX réconciliées avec les décisions du 29 octobre ; sprint généré (5 epics / 17 stories, deux avertissements de titres de sommaire sans story manquante). Référence Build : `_bmad-output/implementation-artifacts/spec-v1-locale-google.md`. Baseline produit relancée : 61 tests Node et 28 parcours Chromium ordinateur/mobile réussis, build réussi ; Google simulé. Ces succès ne prouvent aucune nouvelle fonction V1. Accès Google : éditeur TEST ouvert et identité Tema confirmée dans le navigateur ChatGPT après connexion humaine. Dia autorisé par Sofiane pour vérifier la réception sur ses boîtes de test. Linear dédié vérifié : workspace tema-academie / équipe TEM ; cinq parents et 17 stories Todo relus.
+
+Carte : checkout existant propre au départ, `tem-6-technical-trial`, HEAD `de43fd01a212a611e066e751ab4ae6d24f1b1f7b`, main distante `8217e5253055e6c669e0a154beee17ef3c4f814b`. Socle BKBX Agentic 1.0.1 / source `48d56f7bab5f5e18dcc0a455784dae77854bcbd5`, BMAD 6.12.4 verrou/routage vérifiés localement ; aucune mise à jour de méthode engagée.
+
+## Contexte antérieur conservé
+
 Spécification fonctionnelle V1 approuvée24octobre2026 ; parcours/dispositions UX25 octobre avec finition graphique différée ; architecture d’ensemble et plan d’essai26 octobre. GO limité TEM-6 reçu et prototype éprouvé, **aucune réalisation V1 principale autorisée**. [Décisions humaines](decisions/index.md) · [reprise](handoff.md).
 
 | Fonctionnalité | Linear | Artefacts | État et suite |

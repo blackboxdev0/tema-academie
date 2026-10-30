@@ -1,7 +1,7 @@
 ---
-status: draft
-validation: structural-checks-passed-owner-review-pending
-principal_development_go: not-granted
+status: approved
+validation: owner-approved-plan-and-design
+principal_development_go: granted-local-google-test-2026-10-30
 stepsCompleted: [step-01-validate-prerequisites, step-02-design-epics, step-03-create-stories, step-04-final-validation]
 inputDocuments:
   - _bmad-output/specs/spec-tema-academie-v1/SPEC.md
@@ -22,7 +22,7 @@ inputDocuments:
 
 ## Overview
 
-Préparation autorisée, **validation finale du découpage en attente, aucun GO principal**. Le 26 octobre, Sofiane délègue la préparation complète et les décisions cohérentes avec le périmètre sans questions à chaque étape ; les menus intermédiaires du workflow sont donc parcourus en autonomie, validation regroupée à la fin. SPEC et compagnons tiennent lieu de PRD dans ce projet ; pas de PRD parallèle. Les décisions humaines actuelles priment sur les états historiques des spines et du bilan.
+Le 30 octobre 2026, le message `/goal` de Sofiane donne explicitement le **GO de réalisation des cinq blocs / 17 stories**, avec cible V1 complète locale réellement connectée aux ressources Google TEST isolées, prête pour sa recette finale. Le plan et la méthode sont validés le 30 octobre, le design global le 29 octobre. SPEC et compagnons tiennent lieu de PRD ; pas de PRD parallèle. Cette autorisation comprend préparation BMAD, code, tests, revues techniques et Sally, opérations Apps Script TEST nécessaires, commits par jalon et push sur la branche de travail. Elle exclut fusion dans main, release publique, Vercel/FTP et production. Les statuts Linear ci-dessous sont les relevés préparatoires historiques ; ils ne prouvent pas leur état courant. Les exigences de remise client/ouverture restent conservées pour leur jalon distinct ; aucune séance, recette humaine ou publication n’est déduite du GO local.
 
 
 This document provides the complete epic and story breakdown for Tema Académie, decomposing the requirements from the PRD, UX Design if it exists, and Architecture requirements into implementable stories.
@@ -36,7 +36,7 @@ FR2: Afficher les formations actives et masquer les inactives avec leurs dates, 
 FR3: Afficher titre, logiciel, durée, programme, prérequis informatifs, résultat attendu et tarif qualifié par participant en CAD hors taxes ; codes formateurs privés. **Source :** CAP-1; AC-01/14
 FR4: Présenter catalogue puis calendrier général avec filtre logiciel commun et ordre réservables, complètes/terminées, sans date ; ordre source à égalité. **Source :** CAP-1/2; AC-03
 FR5: Ouvrir le calendrier général sur le mois courant pertinent sinon le premier mois futur ; différencier mois vide, filtre vide et absence de toute date future. **Source :** CAP-2; AC-03
-FR6: Ouvrir une fiche sur la date explicitement cliquée sinon le mois de la prochaine date réservable ou visible ; aucune sélection implicite du seul mois ; dates avant programme. **Source :** CAP-1/2; AC-03
+FR6: Ouvrir une fiche sur la date explicitement cliquée ; sinon présélectionner la prochaine date réservable avec son récapitulatif, à défaut ouvrir le mois de la prochaine date visible sans inscription active. Une navigation manuelle de mois reste neutre ; présentation, programme, résultat et prérequis avant dates, avec accès rapide Voir les dates. **Source :** CAP-1/2; AC-03
 FR7: Partager mois, données et sélection entre grille ordinateur et liste mobile ; conserver filtre, mois, position et changement de date pendant la visite. **Source :** CAP-2/4; AC-03/18
 FR8: Distinguer open/full/closed : fermée avec confirmé visible Inscriptions terminées, sans confirmé masquée ; complète future consultable ; fermeture au début. **Source :** CAP-2/3; AC-02/16
 FR9: Administrer quatre onglets privés avec en-têtes reconnus par nom, diagnostics de lignes invalides isolées et refus des ambiguïtés de configuration. **Source :** CAP-3; AC-05
@@ -100,10 +100,10 @@ NFR14: GO de développement, fusion, déploiement/achat restent distincts ; comm
 UX-DR1: NavigationAcadémie : logo original + Académie, Catalogue/Calendrier sur accueil, contact textuel et politique ; restauration filtre/mois/position au retour. **Source :** S1/S2
 UX-DR2: FiltreLogiciel : Tous initial puis trois logiciels, filtre commun cartes/calendrier général, état annoncé et vide avec Voir toutes les formations. **Source :** S1/S3
 UX-DR3: CarteFormation : logiciel/titre/durée/prix qualifié/prochaine date et places ou statut, lien fiche ; trois groupes triés sans masquer complète/sans date. **Source :** S1
-UX-DR4: FicheFormation : présentation courte, dates avant programme/objectifs/prérequis complets, adresse présentielle publique et aucun lien visio. **Source :** S2
+UX-DR4: FicheFormation : présentation courte, programme/résultat/prérequis complets sur fond blanc avant dates, accès rapide Voir les dates, adresse présentielle publique et aucun lien visio. **Source :** S2
 UX-DR5: CalendrierMensuel : général et formation partagent source/visibilité, mois pertinent à arrivée, précédent/suivant libres ensuite et libellés de vide. **Source :** S3
 UX-DR6: ListeCohortes : sous760px référence, mêmes dates du mois regroupées par jour ; récapitulatif immédiatement après date sélectionnée. **Source :** S3 mobile
-UX-DR7: SélecteurCohorte : sélection explicite avant action ; date cliquée générale prioritaire, complète/terminée consultable non réservable, état neutre sans sélection. **Source :** S2/S3
+UX-DR7: SélecteurCohorte : date cliquée générale prioritaire, même complète/terminée ; sinon prochaine date réservable présélectionnée avec récapitulatif. Complète/terminée consultable non réservable ; navigation manuelle de mois neutre sans nouvelle sélection. **Source :** S2/S3
 UX-DR8: IndicateurDisponibilité : texte places/Complet/Inscriptions terminées/Dates à venir, fermeture prioritaire, aucune couleur seule ni garantie de stock. **Source :** S1 à S4
 UX-DR9: FormulaireInscription : page dédiée, récapitulatif avant coordonnées, téléphone facultatif, accord puis action ; champs transitoires conservés en changement de date. **Source :** S4
 UX-DR10: ChampSaisie : label persistant, erreurs associées/résumé accessible, correction sans perdre autres valeurs, pas de coordonnées URL/localStorage. **Source :** S4
@@ -116,11 +116,11 @@ UX-DR16: AvisTema : résumé privé et accès Sheet autorisé, échec participan
 UX-DR17: FeuilleAdministration : interfaces Google natives, cases et listes compréhensibles, calculs/IDs/instantanés protégés et diagnostics, statut annulé conservé. **Source :** S8/S9
 UX-DR18: ModeEmploi : tâches ajouter/activer/ouvrir/capacité/vérifier entreprise/annuler/reprogrammer/suivi Gmail/export/nettoyage/récupération ; remise30min. **Source :** S10
 UX-DR19: LienPolitique : accessible avant accord, texte dédié versionné validé par Tema avant ouverture, aucune validation légale présumée. **Source :** S11
-UX-DR20: Identité : conserver logo et rose source #FF008F, action #C6006F, Manrope/Inter ; centraliser tokens de DESIGN sans figer une finition approuvée. **Source :** DESIGN Colors/Typography
+UX-DR20: Identité : conserver logo et rose source #FF008F, action #C6006F, Manrope/Inter ; centraliser les tokens de DESIGN et réaliser les maquettes globalement approuvées le 29 octobre. **Source :** DESIGN Colors/Typography
 UX-DR21: Mise en page : catalogue avant calendrier ;3→2→1 colonnes référence, liste sous760px, formulaire1col mobile et pas de survol indispensable. **Source :** DESIGN Layout
 UX-DR22: Accessibilité : langue FR, titres/focus cohérents, commandes nommées, retours à la ligne/zoom200%, contraste des états et réduction animations. **Source :** EXPERIENCE Accessibility
 UX-DR23: États vides/indisponibles : catalogue vide, filtre vide, mois vide, aucune date, inactive/introuvable, chargement/réseau distincts sans succès fictif. **Source :** EXPERIENCE State Patterns
-UX-DR24: Finition graphique : reprise ciblée en fin de fonctionnalité pour diminuer le rendu générique ; validation visuelle finale distincte et aucune nouvelle piste imposée. **Source :** réserve Sofiane
+UX-DR24: Finition graphique : fidélité aux cinq maquettes courantes globalement approuvées le 29 octobre, revue du produit réalisé avec Sally et corrections ciblées ; choix visuels non bloquants regroupés pour la recette finale, aucune nouvelle piste imposée. **Source :** validation globale Sofiane du 29 octobre et mandat /goal du 30 octobre
 
 ### FR Coverage Map
 
@@ -499,11 +499,11 @@ afin de décider de mon inscription en connaissant lieu, horaire et tarif.
 
 **Given** une fiche est ouverte depuis carte ou date du général,
 **When** son calendrier est affiché,
-**Then** date explicite prioritaire ; sinon mois prochaine réservable, à défaut prochaine visible ; mois seul sans sélection ni bouton actif, dates avant programme/prérequis complets.
+**Then** la date explicitement ciblée garde priorité, même complète ou terminée ; sinon la prochaine date future réservable (`registration_enabled=true`) est présélectionnée avec son récapitulatif. Sans date réservable, ouvrir le mois de la prochaine visible avec raison et inscription désactivée ; la navigation manuelle de mois reste neutre. Présentation, programme, résultat et prérequis précèdent les dates, avec accès rapide Voir les dates.
 
 **AC story 2.3-2**
 
-**Given** une date est explicitement sélectionnée,
+**Given** une date est sélectionnée par ciblage, présélection initiale ou choix du visiteur,
 **When** son récapitulatif est affiché,
 **Then** date/heures/fuseau/format/adresse présentielle/places/tarif concordent ; en mobile le récapitulatif suit cette date ; aucun lien visio public.
 
@@ -883,7 +883,7 @@ afin de comprendre et terminer mon parcours sans obstacle.
 
 **Dépendances antérieures :** 2.3, 3.4
 
-**Réutilisé :** Dispositions approuvées et base rose/logo/Manrope/Inter, sans finition finale approuvée.
+**Réutilisé :** Cinq maquettes courantes et leurs états globalement approuvés par Sofiane le 29 octobre, base rose/logo/Manrope/Inter conservée ; recette du produit réalisé distincte de la validation de maquette.
 
 **Reste à réaliser :** Retouche ciblée des composants partagés, contrastes/focus, zoom, clavier, lecteur écran et petites largeurs.
 
@@ -895,7 +895,7 @@ afin de comprendre et terminer mon parcours sans obstacle.
 
 **Given** les parcours fonctionnels sont complets,
 **When** la finition graphique est ajustée,
-**Then** logo original/rose/base typo conservés, priorité offre et dates avant programme maintenue ; rendu final présenté à Sofiane/Tema sans déclarer les anciens mocks définitivement approuvés.
+**Then** logo original/rose/base typo et maquettes approuvées conservés ; catalogue avant calendrier à l’accueil et programme/résultat/prérequis avant dates sur la fiche. Le produit réalisé est revu avec Sally ; ses contrôles et corrections sont présentés à Sofiane pour sa recette finale, sans rouvrir les choix approuvés ni assimiler maquette et preuve produit.
 
 **AC story 5.1-2**
 
@@ -1059,4 +1059,4 @@ Les contraintes partagées sont désormais consolidées dans la spine et la Spec
 
 Le graphe indique des dépendances réelles, distinctes de l’ordre conseillé des cinq blocs : catalogue et préparation de dates peuvent avancer sans attendre une correction indépendante, finition ne dépend plus du nettoyage/politique. Chaque dépendance reste antérieure ; les tâches gardent leurs IDs et statut Backlog.
 
-La clôture de conception ne valide ni le graphisme final, ni l’estimation, ni le plan global. Aucun GO principal ; prochaine étape documentaire souhaitée : revue UX/UI, puis validation du plan et GO. Les nouveaux critères partagés restent à implémenter/vérifier après autorisation.
+État historique au 28 octobre : la clôture de conception seule ne validait ni le graphisme, ni l’estimation, ni le plan et ne donnait aucun GO principal. Depuis, Sofiane a validé globalement les maquettes le 29 octobre, le plan et l’enveloppe humaine le 30 octobre, puis activé la réalisation par son message `/goal` du 30 octobre. Les nouveaux critères partagés restent à implémenter et à vérifier ; leur préparation documentaire n’est pas une preuve produit. La cible actuelle est locale + Google TEST, sans fusion ni publication, avant recette humaine finale.

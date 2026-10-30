@@ -2,6 +2,8 @@
 
 30 octobre 2026. Sofiane précise la cible souhaitée pendant le point 6 : une application complète pour sa recette finale, testable en local avec Google Sheets, sans release ni ouverture publique. Il souhaite une exécution soutenue et autonome jusqu’au résultat, avec arbitrages courants délégués. Il demande encore un avis sur les capacités, prérequis et modèle ; cette note prépare le lancement et ne l’active pas à elle seule.
 
+**Activation :** Sofiane soumet le `/goal` le 30 octobre 2026 et donne le GO explicite de réalisation sur cette cible. Les mentions de lancement en attente dans la note préparatoire ci-dessous sont historiques.
+
 ## Résultat à remettre
 
 - Toute la V1 fonctionnelle des cinq blocs / 17 stories définis, en réutilisant le prototype et les maquettes approuvées : catalogue et filtres/pagination, calendriers et fiches, inscription/capacité/reprise, courriels/ICS, gestion et historique.

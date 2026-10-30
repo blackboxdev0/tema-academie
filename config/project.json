@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "name": "Tema Académie",
-  "brief": "Plateforme française de présentation et d’inscription aux formations de Tema Solutions : catalogue et calendrier sur un site léger, données administrées dans Google Sheets, inscription avec capacité limitée, confirmation agenda et avis à Tema. Cadrage fondé sur le brief du 19 octobre 2026 et les pièces fournies ; proposition présentée, GO client et développement en attente.",
+  "brief": "Plateforme française de présentation et d’inscription aux formations de Tema Solutions : catalogue et calendrier sur un site léger, données administrées dans Google Sheets, inscription avec capacité limitée, confirmation agenda et avis à Tema. Cadrage fondé sur le brief du 19 octobre 2026 et les pièces fournies ; GO Sofiane du 30 octobre 2026 pour la V1 locale connectée à Google TEST, avant recette finale.",
   "owner": "Sofiane Korbi",
   "timezone": "America/Toronto",
   "communication_language": "Français",
@@ -108,7 +108,7 @@
       "google_backend": "durable_tema_resources"
     },
     "local_acceptance": {
-      "status": "target_defined_execution_confirmation_pending",
+      "status": "implementation_authorized",
       "defined_on": "2026-10-30",
       "target": "complete_V1_local_frontend_connected_to_isolated_Google_Sheets_and_Apps_Script",
       "scope": "5_epics_17_stories_functional_scope_except_public_release",
@@ -139,6 +139,14 @@
       "format": "Conventional Commits",
       "language": "English",
       "assistant_attribution": false
+    },
+    "principal_development_authorization": {
+      "approved_on": "2026-10-30",
+      "source": "Sofiane, demande /goal explicite dans ce chat",
+      "scope": "defined_5_epics_17_stories_local_and_real_Google_TEST",
+      "main_merge_authorized": false,
+      "public_release_authorized": false,
+      "test_apps_script_operations_authorized": true
     }
   },
   "initialized_at": "2026-10-19T17:20:58+00:00",
@@ -539,22 +547,22 @@
       "verified": false
     },
     "development_breakdown": {
-      "status": "plan_and_execution_method_approved_preparation_review_ongoing",
+      "status": "approved_execution_started",
       "prepared_on": "2026-10-26",
       "skill": "bmad-create-epics-and-stories",
       "artifact": "_bmad-output/planning-artifacts/epics.md",
       "plan": "docs/project/planning/plan-developpement-v1.md",
       "readiness": "_bmad-output/planning-artifacts/implementation-readiness.md",
-      "readiness_verdict": "CONCERNS_pending_documentary_closeout_and_start",
+      "readiness_verdict": "PASS_preparation_only",
       "epic_count": 5,
       "story_count": 17,
       "linear_registry": "docs/project/planning/linear-v1.json",
-      "linear_status": "Backlog",
+      "linear_status": "Todo",
       "active_human_effort_remaining_proposal_days": 3,
       "base_days": 2.5,
       "reserve_days": 0.5,
       "estimate_approved": true,
-      "principal_development_authorized": false,
+      "principal_development_authorized": true,
       "preparation_autonomy": "Sofiane delegates preparation through final review without intermediate step confirmations; ask only for genuine blockers",
       "global_review": {
         "status": "architecture_findings_consolidated_pending_ux_and_global_plan_approval",
@@ -604,35 +612,35 @@
       "fifty_two_notification_bookings": "theoretical_max_before_other_account_use_not_guaranteed"
     },
     "principal_development_go": {
-      "status": "execution_deferred_during_preparation_review",
+      "status": "explicit_go_active",
       "approved_on": "2026-10-30",
       "scope": "entire_defined_v1_plan_5_epics_17_stories",
-      "source": "Sofiane valide le plan et la méthode future autonome, puis précise que nous poursuivons les points de préparation sans lancer le développement à ce stade.",
+      "source": "Sofiane, /goal du 30 octobre 2026 : réalisation des cinq blocs et 17 stories jusqu’au candidat local réellement connecté à Google TEST, tests/revues/Sally et rapport avant recette finale.",
       "autonomy": "implement_test_review_without_per_story_human_test_requests",
       "human_validation": "final_candidate_acceptance",
       "open_decisions": "surface material blockers or scope changes; routine decisions delegated",
       "commits_and_pushes": "approved_2026-10-30_within_authorized_scope",
       "merge_deployment_publication": "separate_delivery_gates",
-      "execution_status": "not_started",
-      "start_condition": "complete_the_preparation_review_before_starting",
+      "execution_status": "preparation_closeout",
+      "start_condition": "version_preparation_before_dependent_code",
       "clarified_on": "2026-10-30"
     },
     "delivery_expectation": {
       "discussed_on": "2026-10-30",
       "priority": "sustained_autonomous_work_until_local_Google_candidate_ready",
       "hard_calendar_deadline": null,
-      "automatic_continuation": "persistent_goal_recommended_not_activated",
+      "automatic_continuation": "native_persistent_goal_active",
       "model_selection": "advice_requested_not_changed",
       "principal_start_confirmed_by_this_question": false
     },
     "execution_goal_draft": {
-      "status": "prepared_not_activated",
+      "status": "activated_by_owner",
       "prepared_on": "2026-10-30",
       "requested_by": "Sofiane",
       "artifact": "docs/project/planning/goal-v1-locale-et-google.md",
       "scope": "complete_defined_V1_ready_for_local_and_real_Google_acceptance",
-      "explicit_final_start_confirmation_pending": true,
-      "native_goal_active": false
+      "explicit_final_start_confirmation_pending": false,
+      "native_goal_active": true
     }
   },
   "access_preparation": {
@@ -649,7 +657,8 @@
     },
     "resources_created": true,
     "verified_on": "2026-10-26",
-    "registry": "_bmad-output/specs/spec-tema-academie-v1/ressources-services.md"
+    "registry": "_bmad-output/specs/spec-tema-academie-v1/ressources-services.md",
+    "google_current_access": "TEST_editor_authenticated_as_Tema_2026-10-30"
   },
   "vercel": {
     "workspace_slug": "blackboxsaas-projects",

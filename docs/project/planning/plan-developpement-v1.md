@@ -1,6 +1,6 @@
 # Préparation du développement V1
 
-26 octobre 2026 — préparation déléguée par Sofiane, validation finale regroupée en attente. **Aucun GO de développement principal, de fusion ou de livraison.** Le plan est validé le 30 octobre ; le démarrage V1 reste différé pendant les confirmations préparatoires. Commits par jalon et push sur branche de travail autorisés le 30 octobre. [Découpage BMAD](../../../_bmad-output/planning-artifacts/epics.md).
+Préparation du 26 octobre, plan validé le 30 octobre. **GO V1 explicite activé par le /goal de Sofiane le 30 octobre : cinq blocs / 17 stories, candidat local réellement connecté à Google TEST avant recette finale.** Les mentions de GO en attente plus bas sont historiques. Aucun GO de fusion, publication ou production. Commits par jalon et push sur branche de travail autorisés le 30 octobre. [Découpage BMAD](../../../_bmad-output/planning-artifacts/epics.md).
 
 ## Résultats et ordre
 
