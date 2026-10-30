@@ -29,40 +29,40 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 10-30-2026 15:16
-last_updated: 10-30-2026 15:16
+last_updated: 10-30-2026 17:21
 project: Tema Académie
 project_key: NOKEY
 tracking_system: file-system
 story_location: _bmad-output/implementation-artifacts
 development_status:
-  epic-1: backlog
-  1-1-préparer-le-catalogue-fidèle-et-administrable: backlog
-  1-2-préparer-et-ouvrir-des-dates-avec-capacité-configurable: backlog
-  1-3-actualiser-les-modifications-et-rattraper-un-traitement-manq: backlog
+  epic-1: in-progress
+  1-1-préparer-le-catalogue-fidèle-et-administrable: review
+  1-2-préparer-et-ouvrir-des-dates-avec-capacité-configurable: review
+  1-3-actualiser-les-modifications-et-rattraper-un-traitement-manq: review
   epic-1-retrospective: optional
 
-  epic-2: backlog
-  2-1-consulter-et-filtrer-le-catalogue-des-formations: backlog
-  2-2-parcourir-le-calendrier-général-sur-ordinateur-et-téléphone: backlog
-  2-3-lire-la-fiche-et-sélectionner-explicitement-une-date: backlog
+  epic-2: in-progress
+  2-1-consulter-et-filtrer-le-catalogue-des-formations: review
+  2-2-parcourir-le-calendrier-général-sur-ordinateur-et-téléphone: review
+  2-3-lire-la-fiche-et-sélectionner-explicitement-une-date: review
   epic-2-retrospective: optional
 
-  epic-3: backlog
-  3-1-confirmer-une-inscription-unique-aux-conditions-présentées: backlog
-  3-2-reprendre-un-résultat-incertain-et-reconfirmer-des-condition: backlog
-  3-3-recevoir-confirmation-invitation-et-avis-interne-fidèles: backlog
-  3-4-conserver-la-place-et-un-suivi-honnête-lorsque-l-envoi-échou: backlog
+  epic-3: in-progress
+  3-1-confirmer-une-inscription-unique-aux-conditions-présentées: review
+  3-2-reprendre-un-résultat-incertain-et-reconfirmer-des-condition: review
+  3-3-recevoir-confirmation-invitation-et-avis-interne-fidèles: review
+  3-4-conserver-la-place-et-un-suivi-honnête-lorsque-l-envoi-échou: review
   epic-3-retrospective: optional
 
-  epic-4: backlog
-  4-1-annuler-et-réinscrire-sans-effacer-l-historique: backlog
-  4-2-reprogrammer-une-session-avec-suivi-manuel-des-participants: backlog
-  4-3-consulter-exporter-et-nettoyer-les-données-selon-la-politiqu: backlog
+  epic-4: in-progress
+  4-1-annuler-et-réinscrire-sans-effacer-l-historique: review
+  4-2-reprogrammer-une-session-avec-suivi-manuel-des-participants: review
+  4-3-consulter-exporter-et-nettoyer-les-données-selon-la-politiqu: review
   epic-4-retrospective: optional
 
-  epic-5: backlog
-  5-1-finaliser-une-interface-tema-lisible-et-accessible: backlog
-  5-2-rejouer-les-contrôles-avant-chaque-mise-à-jour: backlog
-  5-3-recetter-la-solution-complète-et-ses-invitations-de-bout-en: backlog
-  5-4-remettre-le-candidat-le-guide-et-les-éléments-de-publication: backlog
+  epic-5: in-progress
+  5-1-finaliser-une-interface-tema-lisible-et-accessible: review
+  5-2-rejouer-les-contrôles-avant-chaque-mise-à-jour: review
+  5-3-recetter-la-solution-complète-et-ses-invitations-de-bout-en: review
+  5-4-remettre-le-candidat-le-guide-et-les-éléments-de-publication: review
   epic-5-retrospective: optional

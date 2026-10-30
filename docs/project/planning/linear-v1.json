@@ -1,6 +1,6 @@
 {
   "prepared_on": "2026-10-26",
-  "status": "approved_for_local_google_v1",
+  "status": "candidate_ready_for_final_owner_recipe",
   "team_id": "b6fe00a9-ac52-42c1-a3ef-d08b3dbd2f8f",
   "project_id": "e6d24474-be36-4ae8-a735-5d002be86579",
   "branch": "tem-6-technical-trial",
@@ -11,7 +11,7 @@
       "uuid": "67eda15b-c871-4dea-9936-b5ee0f63007b",
       "url": "https://linear.app/tema-academie/issue/TEM-7/v1-1-tema-prepare-et-publie-son-offre-depuis-google-sheets",
       "title": "V1 · 1 — Tema prépare et publie son offre depuis Google Sheets",
-      "status": "Todo"
+      "status": "Review"
     },
     {
       "epic": 2,
@@ -19,7 +19,7 @@
       "uuid": "851e51b2-41e3-4cf9-a51c-c303b7dfed10",
       "url": "https://linear.app/tema-academie/issue/TEM-8/v1-2-le-visiteur-trouve-une-formation-et-choisit-sa-date",
       "title": "V1 · 2 — Le visiteur trouve une formation et choisit sa date",
-      "status": "Todo"
+      "status": "Review"
     },
     {
       "epic": 3,
@@ -27,7 +27,7 @@
       "uuid": "2509b579-b719-497d-9cf7-d5011b5d628b",
       "url": "https://linear.app/tema-academie/issue/TEM-9/v1-3-le-participant-reserve-une-place-et-recoit-ses-informations",
       "title": "V1 · 3 — Le participant réserve une place et reçoit ses informations",
-      "status": "Todo"
+      "status": "Review"
     },
     {
       "epic": 4,
@@ -35,7 +35,7 @@
       "uuid": "0b38cc14-dd52-47c1-b6bf-8a819a6f60de",
       "url": "https://linear.app/tema-academie/issue/TEM-10/v1-4-tema-gere-les-inscrits-et-les-changements-en-conservant",
       "title": "V1 · 4 — Tema gère les inscrits et les changements en conservant l’historique",
-      "status": "Todo"
+      "status": "Review"
     },
     {
       "epic": 5,
@@ -43,7 +43,7 @@
       "uuid": "e9550066-3c9b-4aac-b677-4982d09f1d22",
       "url": "https://linear.app/tema-academie/issue/TEM-11/v1-5-tema-recoit-une-solution-verifiee-presentable-et-transmissible",
       "title": "V1 · 5 — Tema reçoit une solution vérifiée, présentable et transmissible",
-      "status": "Todo"
+      "status": "Review"
     }
   ],
   "stories": [
@@ -53,7 +53,7 @@
       "uuid": "ab8cf728-1db3-4623-a65e-5be578c6bed4",
       "url": "https://linear.app/tema-academie/issue/TEM-12/11-preparer-le-catalogue-fidele-et-administrable",
       "title": "1.1 — Préparer le catalogue fidèle et administrable",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-7",
       "depends_on": []
     },
@@ -63,7 +63,7 @@
       "uuid": "5e93d793-9fa3-4ee1-900f-2c92e48d7c0f",
       "url": "https://linear.app/tema-academie/issue/TEM-13/12-preparer-et-ouvrir-des-dates-avec-capacite-configurable",
       "title": "1.2 — Préparer et ouvrir des dates avec capacité configurable",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-7",
       "depends_on": [
         "TEM-12"
@@ -75,7 +75,7 @@
       "uuid": "ec50918a-919c-4864-a8b3-5bc6bf2a425a",
       "url": "https://linear.app/tema-academie/issue/TEM-14/13-actualiser-les-modifications-et-rattraper-un-traitement-manque",
       "title": "1.3 — Actualiser les modifications et rattraper un traitement manqué",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-7",
       "depends_on": [
         "TEM-13"
@@ -87,7 +87,7 @@
       "uuid": "7d64d78e-4608-4a85-848c-c603aa02969a",
       "url": "https://linear.app/tema-academie/issue/TEM-15/21-consulter-et-filtrer-le-catalogue-des-formations",
       "title": "2.1 — Consulter et filtrer le catalogue des formations",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-8",
       "depends_on": [
         "TEM-12"
@@ -99,7 +99,7 @@
       "uuid": "240da6d4-32d9-4cbd-94c9-db0c49b97be7",
       "url": "https://linear.app/tema-academie/issue/TEM-16/22-parcourir-le-calendrier-general-sur-ordinateur-et-telephone",
       "title": "2.2 — Parcourir le calendrier général sur ordinateur et téléphone",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-8",
       "depends_on": [
         "TEM-15",
@@ -112,7 +112,7 @@
       "uuid": "8a34931d-c6ad-486e-906a-4f126eb81ec0",
       "url": "https://linear.app/tema-academie/issue/TEM-17/23-lire-la-fiche-et-selectionner-explicitement-une-date",
       "title": "2.3 — Lire la fiche et sélectionner explicitement une date",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-8",
       "depends_on": [
         "TEM-16"
@@ -124,7 +124,7 @@
       "uuid": "83d69009-b88f-4a03-afea-6dba4d1455dd",
       "url": "https://linear.app/tema-academie/issue/TEM-18/31-confirmer-une-inscription-unique-aux-conditions-presentees",
       "title": "3.1 — Confirmer une inscription unique aux conditions présentées",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-9",
       "depends_on": [
         "TEM-17",
@@ -137,7 +137,7 @@
       "uuid": "80d88d6a-6cb9-4185-bbc2-7a4e8fffc7ac",
       "url": "https://linear.app/tema-academie/issue/TEM-19/32-reprendre-un-resultat-incertain-et-reconfirmer-des-conditions",
       "title": "3.2 — Reprendre un résultat incertain et reconfirmer des conditions modifiées",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-9",
       "depends_on": [
         "TEM-18"
@@ -149,7 +149,7 @@
       "uuid": "619620ac-4afb-4c36-ad54-be40449c79cd",
       "url": "https://linear.app/tema-academie/issue/TEM-20/33-recevoir-confirmation-invitation-et-avis-interne-fideles",
       "title": "3.3 — Recevoir confirmation, invitation et avis interne fidèles",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-9",
       "depends_on": [
         "TEM-18"
@@ -161,7 +161,7 @@
       "uuid": "626b6cb8-d726-4a98-b320-33abfe57f998",
       "url": "https://linear.app/tema-academie/issue/TEM-21/34-conserver-la-place-et-un-suivi-honnete-lorsque-lenvoi-echoue",
       "title": "3.4 — Conserver la place et un suivi honnête lorsque l’envoi échoue",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-9",
       "depends_on": [
         "TEM-19",
@@ -174,7 +174,7 @@
       "uuid": "dc92a365-72b1-4b6a-9e48-f7833e1138e5",
       "url": "https://linear.app/tema-academie/issue/TEM-22/41-annuler-et-reinscrire-sans-effacer-lhistorique",
       "title": "4.1 — Annuler et réinscrire sans effacer l’historique",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-10",
       "depends_on": [
         "TEM-18"
@@ -186,7 +186,7 @@
       "uuid": "d64880f6-bc59-4b85-90b9-1bb2ca9db4bf",
       "url": "https://linear.app/tema-academie/issue/TEM-23/42-reprogrammer-une-session-avec-suivi-manuel-des-participants",
       "title": "4.2 — Reprogrammer une session avec suivi manuel des participants",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-10",
       "depends_on": [
         "TEM-22",
@@ -200,7 +200,7 @@
       "uuid": "fa23b0e4-5c40-4656-a1d6-4157a0d6d58a",
       "url": "https://linear.app/tema-academie/issue/TEM-24/43-consulter-exporter-et-nettoyer-les-donnees-selon-la-politique",
       "title": "4.3 — Consulter, exporter et nettoyer les données selon la politique validée",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-10",
       "depends_on": [
         "TEM-22",
@@ -213,7 +213,7 @@
       "uuid": "8037397c-6a27-4116-b352-55466e3aefdb",
       "url": "https://linear.app/tema-academie/issue/TEM-25/51-finaliser-une-interface-tema-lisible-et-accessible",
       "title": "5.1 — Finaliser une interface Tema lisible et accessible",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-11",
       "depends_on": [
         "TEM-17",
@@ -226,7 +226,7 @@
       "uuid": "b1204dba-ab95-4baf-8f2d-b5f739d4c4d8",
       "url": "https://linear.app/tema-academie/issue/TEM-26/52-rejouer-les-controles-avant-chaque-mise-a-jour",
       "title": "5.2 — Rejouer les contrôles avant chaque mise à jour",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-11",
       "depends_on": [
         "TEM-23",
@@ -240,7 +240,7 @@
       "uuid": "97ef2563-55a1-47e2-b473-1c6e878b8d93",
       "url": "https://linear.app/tema-academie/issue/TEM-27/53-recetter-la-solution-complete-et-ses-invitations-de-bout-en-bout",
       "title": "5.3 — Recetter la solution complète et ses invitations de bout en bout",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-11",
       "depends_on": [
         "TEM-26"
@@ -252,7 +252,7 @@
       "uuid": "62ea0d91-8e01-440e-82b5-5c78c8d0978c",
       "url": "https://linear.app/tema-academie/issue/TEM-28/54-remettre-le-candidat-le-guide-et-les-elements-de-publication",
       "title": "5.4 — Remettre le candidat, le guide et les éléments de publication",
-      "status": "Todo",
+      "status": "Review",
       "parent": "TEM-11",
       "depends_on": [
         "TEM-27"
@@ -260,5 +260,16 @@
     }
   ],
   "architecture_alignment_on": "2026-10-28",
-  "verified_on": "2026-10-30"
+  "verified_on": "2026-10-30",
+  "project_status": "In Progress",
+  "checkpoint": {
+    "code_commit": "c5eca1e1c673f012ca48d716e49eef0c6df0f4f5",
+    "report": "docs/project/acceptance/V1-results.md",
+    "verified_review_issues": 22,
+    "stories": 17,
+    "epics": 5,
+    "done_issues": 0,
+    "human_acceptance": "pending",
+    "scope": "local_and_isolated_Google_TEST_no_public_release"
+  }
 }

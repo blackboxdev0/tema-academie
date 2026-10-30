@@ -72,9 +72,13 @@
     "checks": [
       "cd app && npm run verify"
     ],
-    "acceptance": [],
+    "acceptance": [
+      "docs/project/acceptance/V1-results.md",
+      "docs/project/acceptance/sally-v1-review.md",
+      "docs/project/acceptance/accessibility-v1.md"
+    ],
     "planned_strategy": {
-      "status": "trial_baseline_verified_live_partial_pending_decisions",
+      "status": "passed_local_and_real_Google_candidate_ready_for_owner_recipe",
       "local_gate": "before_application_push",
       "ci_gate": "push_and_pull_request_then_before_integration_or_release",
       "levels": [
@@ -86,14 +90,20 @@
       "real_google_tests": "isolated_fictitious_resources",
       "mail_tests": "simulated_by_default_bounded_real_receipt_checks",
       "trial_command": "cd app && npm run verify",
-      "node_tests_passed": 61,
-      "browser_tests_passed": 28,
-      "ci_status": "not_implemented"
+      "node_tests_passed": 103,
+      "browser_tests_passed": 156,
+      "ci_status": "code_c5eca1e_push_and_pull_request_passed",
+      "ci_run_urls": [
+        "https://github.com/blackboxdev0/tema-academie/actions/runs/41129653830",
+        "https://github.com/blackboxdev0/tema-academie/actions/runs/41129664647"
+      ],
+      "report": "docs/project/acceptance/V1-results.md",
+      "latest_local_candidate_google_sha256": "f8689f42a980ea8d1fecf0eaac47dbf47328dc88cb91ae2c7ba288ec1a9b85ee"
     }
   },
   "delivery": {
-    "target": null,
-    "procedure": null,
+    "target": "local_frontend_and_isolated_Google_TEST_before_owner_recipe",
+    "procedure": "docs/project/guide-google.md",
     "demo_and_client_testing": {
       "target": "Vercel",
       "status": "technical_trial_only_not_client_delivery",
@@ -108,14 +118,18 @@
       "google_backend": "durable_tema_resources"
     },
     "local_acceptance": {
-      "status": "implementation_authorized",
+      "status": "candidate_ready_for_final_owner_recipe",
       "defined_on": "2026-10-30",
       "target": "complete_V1_local_frontend_connected_to_isolated_Google_Sheets_and_Apps_Script",
       "scope": "5_epics_17_stories_functional_scope_except_public_release",
       "final_human_acceptance": "Sofiane_after_development_QA_and_Sally_review",
       "release_required": false,
       "verifiable_finish": "required_features_implemented_relevant_tests_passed_real_Google_evidence_and_final_report",
-      "execution_note": "docs/project/planning/mandat-v1-locale-et-google.md"
+      "execution_note": "docs/project/planning/mandat-v1-locale-et-google.md",
+      "local_url": "http://127.0.0.1:4173",
+      "start_command": "cd app && npm run build && npm run serve",
+      "test_command": "cd app && TEMA_BROWSER_MATRIX=all npm run verify",
+      "report": "docs/project/acceptance/V1-results.md"
     }
   },
   "permissions": {
@@ -169,7 +183,7 @@
     },
     "resource_intent": "durable_operational_account_and_workbook",
     "resources": {
-      "verified_on": "2026-10-26",
+      "verified_on": "2026-10-30",
       "folder": {
         "id": "1x9AdxaiqeF40Jpok8xqTusd5w7YwP2C7",
         "url": "https://drive.google.com/drive/u/0/folders/1x9AdxaiqeF40Jpok8xqTusd5w7YwP2C7"
@@ -204,30 +218,56 @@
           "spreadsheet_access": "private_owner_only",
           "script_runtime": "V8",
           "script_timezone": "America/Toronto",
-          "script_content": "reviewed_trial_candidate_v3",
+          "script_content": "reviewed_V1_candidate_v7",
           "deployment_status": "test_web_app_deployed",
-          "fixtures_status": "one_active_formation_two_closed_sessions_five_registrations",
+          "fixtures_status": "24_active_source_formations_3_open_fictitious_sessions_5_historical_and_4_new_cancelled_registrations",
           "deployment_id": "AKfycbwgMy2rGhfUFgL5kA-nJdHbRek2fmB0eDeVu63UFh16nP5G8xoYcUZDFCi363a_qxCOkw",
-          "deployment_version": 3,
+          "deployment_version": 7,
           "web_app_url": "https://script.google.com/macros/s/AKfycbwgMy2rGhfUFgL5kA-nJdHbRek2fmB0eDeVu63UFh16nP5G8xoYcUZDFCi363a_qxCOkw/exec",
           "execution_identity": "owner",
           "web_app_access": "anyone_owner_confirmed_2026-10-26",
-          "candidate_sha256": "34e7ab30766995dd62e7bb593042f2b514364a79ea673721c4e33049c0c4364c",
+          "candidate_sha256": "f8689f42a980ea8d1fecf0eaac47dbf47328dc88cb91ae2c7ba288ec1a9b85ee",
           "controls_repair": "12_numeric_text_columns_38_warning_protections_0_formation_diagnostics",
           "trigger_count": 2,
           "periodic_trigger_rest_hours": 12,
-          "mail_failure_injection": "removed",
+          "mail_failure_injection": "removed_no_temporary_helpers_in_HEAD",
           "confirmed_registrations": 4,
-          "cancelled_registrations": 1,
-          "mail_budget_registrations": 5,
-          "mail_budget_recipients": 10,
-          "remaining_daily_mail_quota": 92,
-          "last_inspected_at": "2026-10-26T17:17:39-04:00"
+          "cancelled_registrations": 5,
+          "mail_budget_registrations": 8,
+          "mail_budget_recipients": 16,
+          "remaining_daily_mail_quota": 94,
+          "last_inspected_at": "2026-10-30T17:15:24-04:00",
+          "periodic_trigger_minutes": null,
+          "compatible_return": "v7_to_v6_to_v7_verified_without_data_restore_2026_10_30"
         }
       }
     },
     "runtime_authorization_status": "test_read_and_editor_execution_verified",
-    "mail_quota_status": "92_remaining_observed_after_trial_shared_account"
+    "mail_quota_status": "94_remaining_observed_2026_10_30_shared_account_not_guaranteed",
+    "current_inspection": {
+      "observed_at": "2026-10-30T17:15:24-04:00",
+      "environment": "TEST",
+      "formations": 25,
+      "public_formations": 24,
+      "sessions": 5,
+      "public_sessions": 3,
+      "registrations": 9,
+      "confirmed_registrations": 4,
+      "cancelled_registrations": 5,
+      "invalid_formations": 0,
+      "session_diagnostics": 0,
+      "mail_budget_registrations": 8,
+      "mail_budget_recipients": 16,
+      "remaining_daily_quota": 94,
+      "trigger_count": 2,
+      "new_real_mail_registrations_in_campaign": 3,
+      "new_actual_messages_received": 6,
+      "injected_blocked_registration_without_mail": 1,
+      "new_test_rows_retained_cancelled": 4,
+      "historical_rows_strictly_unchanged": 5,
+      "nominal_fallback_minutes_tested": 5,
+      "current_rest_hours": 12
+    }
   },
   "organization": {
     "status": "approved",
@@ -532,9 +572,18 @@
       "normal_target_comparison": "less_than",
       "recovery_interval_minutes": 5,
       "recovery_delay_exception": true,
-      "implementation_status": "not_implemented_or_measured",
+      "implementation_status": "measured_passed_real_google_v7",
       "documentation_status": "architecture_spec_consolidated_2026-10-28",
-      "source": "Sofiane, validation explicite dans le chat : moins de deux minutes en fonctionnement normal et un contrôle de secours toutes les cinq minutes"
+      "source": "Sofiane, validation explicite dans le chat : moins de deux minutes en fonctionnement normal et un contrôle de secours toutes les cinq minutes",
+      "normal_10_edits_max_seconds": 26.677,
+      "unchanged_12_runs_max_ms": 3480,
+      "native_edit_max_seconds": 7.54,
+      "native_fallback_seconds": 4.67,
+      "conservative_reference_fallback_seconds": 5.986,
+      "reference_extrapolated_minutes_per_day": 41.29946666666667,
+      "reference_budget_minutes_per_day": 45,
+      "real_missed_event_recovery_observed_seconds": 284.945,
+      "observed_24_hours": false
     },
     "calendar_compatibility_acceptance": {
       "status": "deferred_to_complete_solution_acceptance",
@@ -547,7 +596,7 @@
       "verified": false
     },
     "development_breakdown": {
-      "status": "approved_execution_started",
+      "status": "implemented_before_final_owner_recipe",
       "prepared_on": "2026-10-26",
       "skill": "bmad-create-epics-and-stories",
       "artifact": "_bmad-output/planning-artifacts/epics.md",
@@ -557,7 +606,7 @@
       "epic_count": 5,
       "story_count": 17,
       "linear_registry": "docs/project/planning/linear-v1.json",
-      "linear_status": "Todo",
+      "linear_status": "Review",
       "active_human_effort_remaining_proposal_days": 3,
       "base_days": 2.5,
       "reserve_days": 0.5,
@@ -602,7 +651,7 @@
       "status": "owner_approved",
       "approved_on": "2026-10-28",
       "behavior": "formation_visible_tariff_to_confirm_registration_disabled",
-      "implementation_status": "not_implemented_or_verified"
+      "implementation_status": "implemented_and_covered_by_regression_tests"
     },
     "google_limit_choice": {
       "status": "owner_accepts_provider_free_account_limits",
@@ -621,9 +670,10 @@
       "open_decisions": "surface material blockers or scope changes; routine decisions delegated",
       "commits_and_pushes": "approved_2026-10-30_within_authorized_scope",
       "merge_deployment_publication": "separate_delivery_gates",
-      "execution_status": "preparation_closeout",
+      "execution_status": "candidate_ready_for_final_owner_recipe",
       "start_condition": "version_preparation_before_dependent_code",
-      "clarified_on": "2026-10-30"
+      "clarified_on": "2026-10-30",
+      "code_commit": "c5eca1e1c673f012ca48d716e49eef0c6df0f4f5"
     },
     "delivery_expectation": {
       "discussed_on": "2026-10-30",
@@ -634,13 +684,13 @@
       "principal_start_confirmed_by_this_question": false
     },
     "execution_goal_draft": {
-      "status": "activated_by_owner",
+      "status": "candidate_ready_for_final_owner_recipe",
       "prepared_on": "2026-10-30",
       "requested_by": "Sofiane",
       "artifact": "docs/project/planning/goal-v1-locale-et-google.md",
       "scope": "complete_defined_V1_ready_for_local_and_real_Google_acceptance",
       "explicit_final_start_confirmation_pending": false,
-      "native_goal_active": true
+      "native_goal_status_reference": "native_goal_tool_is_authoritative"
     }
   },
   "access_preparation": {
@@ -715,6 +765,15 @@
     "source_capacity": "8_for_each_formation_seed_only_remains_configurable_per_session",
     "source_dates": "all_to_come_no_real_session_dates",
     "original_workbook_modified": false,
-    "google_import_executed": false
+    "google_import_executed": true,
+    "google_import_result": {
+      "created": 24,
+      "last_replay_created": 0,
+      "last_replay_unchanged": 24,
+      "conflicts": 0,
+      "compared_source_fields": 216,
+      "source_dates_preserved": 24,
+      "historical_registrations_unchanged": 5
+    }
   }
 }
