@@ -29,18 +29,18 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 10-30-2026 15:16
-last_updated: 10-30-2026 17:21
+last_updated: 10-30-2026 20:22
 project: Tema Académie
 # Contre-audit 2026-10-30 : réserves ouvertes dans acceptance/independent-audit-2026-10-30.md.
-# Correctifs locaux vérifiés ; Google réel/recette restent en cours, frontend en Review ; UX différée.
+# Correctifs déployés TEST8 et contrôlés ; Safari lecture/formulaire et Apple import/export vérifiés. Recette finale en cours ; UX différée.
 project_key: NOKEY
 tracking_system: file-system
 story_location: _bmad-output/implementation-artifacts
 development_status:
   epic-1: in-progress
-  1-1-préparer-le-catalogue-fidèle-et-administrable: in-progress
-  1-2-préparer-et-ouvrir-des-dates-avec-capacité-configurable: in-progress
-  1-3-actualiser-les-modifications-et-rattraper-un-traitement-manq: in-progress
+  1-1-préparer-le-catalogue-fidèle-et-administrable: review
+  1-2-préparer-et-ouvrir-des-dates-avec-capacité-configurable: review
+  1-3-actualiser-les-modifications-et-rattraper-un-traitement-manq: review
   epic-1-retrospective: optional
 
   epic-2: in-progress

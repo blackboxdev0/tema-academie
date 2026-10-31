@@ -102,7 +102,7 @@
     },
     "independent_audit": {
       "performed_on": "2026-10-30",
-      "status": "local_corrections_verified_real_google_and_native_acceptance_open",
+      "status": "corrected_deployed_Google_TEST_verified_owner_acceptance_open",
       "report": "docs/project/acceptance/corrections-2026-10-30.md",
       "reviewed_head": "0f3249feab56161a90f31984115683885f94e44d",
       "product_code_changed": true,
@@ -111,8 +111,8 @@
       "known_administration_regression_assertions_failed": 0,
       "browser_tests_discovered": 184,
       "browser_tests_executed": 184,
-      "safari_native": "blocked_computer_use_access",
-      "apple_calendar_import": "blocked_computer_use_access",
+      "safari_native": "passed_real_google_read_filter_calendar_form_required_privacy_return",
+      "apple_calendar_import": "passed_native_winter_summer_roundtrip_uid_times_location",
       "github_remote_reverified": true,
       "correction_authorization": {
         "date": "2026-10-30",
@@ -127,7 +127,7 @@
           "R9",
           "R11"
         ],
-        "status": "implemented_locally_reviewed_and_verified",
+        "status": "implemented_reviewed_deployed_and_verified_Google_TEST",
         "ux_ui": "deferred_visual_report_only",
         "decision": "docs/project/decisions/2026-10-30-correctifs-et-ux-differee.md"
       },
@@ -140,12 +140,20 @@
         "browser_tests_passed": 184,
         "browser_tests_skipped": 0,
         "bundle_sha256": "b0737bb59743af0216eb62a83a1143ec10570872c0e8c636343a7334df61f447",
-        "real_google_changed": false,
+        "real_google_changed": true,
         "real_google_read_only_smoke": "passed_24_formations_detail_form_privacy_return",
-        "safari_native": "blocked_computer_use_access",
-        "apple_calendar_import": "blocked_computer_use_access",
+        "safari_native": "passed_real_google_read_filter_calendar_form_required_privacy_return",
+        "apple_calendar_import": "passed_native_winter_summer_roundtrip_uid_times_location",
         "ux_ui": "visual_report_only_not_implemented",
-        "optional_R2": "known_failure_outside_approved_nine"
+        "optional_R2": "known_failure_outside_approved_nine",
+        "google_deployment_version": 8,
+        "google_native_checks_passed": 13,
+        "google_tables_strictly_unchanged": true,
+        "real_google_replay": "REPLAY_cancelled_no_mail_budget_change",
+        "latest_verified_on": "2026-10-30",
+        "unchanged_reconciliations": 12,
+        "unchanged_max_ms": 2751,
+        "targeted_reconciliation_max_ms": 4188
       },
       "initial_audit": {
         "report": "docs/project/acceptance/independent-audit-2026-10-30.md",
@@ -281,15 +289,15 @@
           "spreadsheet_access": "private_owner_only",
           "script_runtime": "V8",
           "script_timezone": "America/Toronto",
-          "script_content": "reviewed_V1_candidate_v7",
+          "script_content": "reviewed_V1_candidate_v8_nine_corrective_fixes",
           "deployment_status": "test_web_app_deployed",
           "fixtures_status": "24_active_source_formations_3_open_fictitious_sessions_5_historical_and_4_new_cancelled_registrations",
           "deployment_id": "AKfycbwgMy2rGhfUFgL5kA-nJdHbRek2fmB0eDeVu63UFh16nP5G8xoYcUZDFCi363a_qxCOkw",
-          "deployment_version": 7,
+          "deployment_version": 8,
           "web_app_url": "https://script.google.com/macros/s/AKfycbwgMy2rGhfUFgL5kA-nJdHbRek2fmB0eDeVu63UFh16nP5G8xoYcUZDFCi363a_qxCOkw/exec",
           "execution_identity": "owner",
           "web_app_access": "anyone_owner_confirmed_2026-10-26",
-          "candidate_sha256": "f8689f42a980ea8d1fecf0eaac47dbf47328dc88cb91ae2c7ba288ec1a9b85ee",
+          "candidate_sha256": "b0737bb59743af0216eb62a83a1143ec10570872c0e8c636343a7334df61f447",
           "controls_repair": "12_numeric_text_columns_38_warning_protections_0_formation_diagnostics",
           "trigger_count": 2,
           "periodic_trigger_rest_hours": 12,
@@ -299,7 +307,7 @@
           "mail_budget_registrations": 8,
           "mail_budget_recipients": 16,
           "remaining_daily_mail_quota": 94,
-          "last_inspected_at": "2026-10-30T17:15:24-04:00",
+          "last_inspected_at": "2026-10-30T20:18:40-04:00",
           "periodic_trigger_minutes": null,
           "compatible_return": "v7_to_v6_to_v7_verified_without_data_restore_2026_10_30"
         }
@@ -308,7 +316,7 @@
     "runtime_authorization_status": "test_read_and_editor_execution_verified",
     "mail_quota_status": "94_remaining_observed_2026_10_30_shared_account_not_guaranteed",
     "current_inspection": {
-      "observed_at": "2026-10-30T17:15:24-04:00",
+      "observed_at": "2026-10-30T20:18:40-04:00",
       "environment": "TEST",
       "formations": 25,
       "public_formations": 24,
@@ -329,7 +337,9 @@
       "new_test_rows_retained_cancelled": 4,
       "historical_rows_strictly_unchanged": 5,
       "nominal_fallback_minutes_tested": 5,
-      "current_rest_hours": 12
+      "current_rest_hours": 12,
+      "corrective_campaign_new_mail_attempts": 0,
+      "all_nine_rows_strictly_unchanged": true
     }
   },
   "organization": {

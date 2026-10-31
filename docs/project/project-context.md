@@ -1,8 +1,8 @@
 # Contexte du projet — Tema Académie
 
-**État courant après correction (30 octobre) :** neuf correctifs réalisés, revue et vérification locale terminées : 103 tests Node, 21 régressions administratives, 2 transitions VM, 9 contrôles bundle/ICS et 184 parcours navigateur réussis. Google TEST non mis à jour ; Safari/Calendrier Apple non vérifiés. Les propositions UX sont uniquement illustrées. [Rapport courant](acceptance/corrections-2026-10-30.md) · [Rapport visuel](acceptance/ux-options-2026-10-30.html). Les résultats de réalisation/audit ci-dessous sont historiques lorsqu’ils diffèrent de ce checkpoint.
+**État courant — Google TEST corrigé (30 octobre, 20 h 18 Montréal) :** neuf correctifs déployés en version 8, bundle `b0737bb59743…`, code `096772d`. 13 assertions Google réelles, intégrité des quatre onglets, rejeu annulé, 103 Node / 21 régressions / 2 VM / 9 bundle-ICS / 184 parcours navigateur réussis. Safari installé vérifié pour lecture/formulaire/politique ; Calendrier Apple hiver/été importé et réexporté avec UID/heures/lieux conservés. Budgets inchangés 8/10 et 16/20, deux inscriptions avec envoi laissées à Sofiane. UX seulement illustrée. [Rapport courant](acceptance/corrections-2026-10-30.md). Recette humaine et autres supports restent ouverts ; aucun main/PROD/Vercel/FTP. Les preuves plus anciennes ci-dessous gardent leur date et leur portée.
 
-## Réserve de qualité après contre-revue
+## Historique du contre-audit avant correctifs
 
 Le 30 octobre, Sofiane demande une vérification indépendante poussée du développement, de l’UX et des essais manquants, notamment Safari et Calendrier Apple. Le [contre-audit](acceptance/independent-audit-2026-10-30.md) documente les défauts découverts, tests rouges, contrôles supplémentaires réussis et refus d’accès natifs. Il prime sur une lecture sans réserve de « prêt pour recette ». Aucune correction produit ou préférence UX nouvelle appliquée ; état/commandes et suites ouvertes dans le handoff. Les confirmations, tests Google et validations antérieures conservent leur date et leur portée.
 

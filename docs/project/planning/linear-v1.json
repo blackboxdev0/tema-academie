@@ -1,6 +1,6 @@
 {
   "prepared_on": "2026-10-26",
-  "status": "candidate_ready_for_final_owner_recipe",
+  "status": "corrective_TEST8_ready_for_owner_recipe",
   "team_id": "b6fe00a9-ac52-42c1-a3ef-d08b3dbd2f8f",
   "project_id": "e6d24474-be36-4ae8-a735-5d002be86579",
   "branch": "tem-6-technical-trial",
@@ -240,7 +240,7 @@
       "uuid": "97ef2563-55a1-47e2-b473-1c6e878b8d93",
       "url": "https://linear.app/tema-academie/issue/TEM-27/53-recetter-la-solution-complete-et-ses-invitations-de-bout-en-bout",
       "title": "5.3 — Recetter la solution complète et ses invitations de bout en bout",
-      "status": "Review",
+      "status": "In Progress",
       "parent": "TEM-11",
       "depends_on": [
         "TEM-26"
@@ -263,13 +263,19 @@
   "verified_on": "2026-10-30",
   "project_status": "In Progress",
   "checkpoint": {
-    "code_commit": "c5eca1e1c673f012ca48d716e49eef0c6df0f4f5",
-    "report": "docs/project/acceptance/V1-results.md",
-    "verified_review_issues": 22,
+    "code_commit": "096772d03772012752dcc1b7948004318b3e3ad8",
+    "report": "docs/project/acceptance/corrections-2026-10-30.md",
+    "verified_review_issues": 21,
     "stories": 17,
     "epics": 5,
     "done_issues": 0,
     "human_acceptance": "pending",
-    "scope": "local_and_isolated_Google_TEST_no_public_release"
+    "scope": "local_and_isolated_Google_TEST_no_public_release",
+    "verified_in_progress_issues": [
+      "TEM-27"
+    ],
+    "google_deployment_version": 8,
+    "safari_native": "read_form_privacy_return_passed",
+    "apple_calendar_native": "winter_summer_import_export_passed"
   }
 }
