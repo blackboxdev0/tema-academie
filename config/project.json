@@ -216,6 +216,14 @@
       "main_merge_authorized": false,
       "public_release_authorized": false,
       "test_apps_script_operations_authorized": true
+    },
+    "corrective_google_test_authorization": {
+      "date": "2026-10-30",
+      "source": "Sofiane : appliquer les correctifs à Google TEST et refaire les tests avant sa recette",
+      "candidate_commit": "096772d03772012752dcc1b7948004318b3e3ad8",
+      "scope": "existing_Google_TEST_version_update_and_targeted_acceptance",
+      "preserve_mail_budget_for_owner": true,
+      "production_authorized": false
     }
   },
   "initialized_at": "2026-10-19T17:20:58+00:00",

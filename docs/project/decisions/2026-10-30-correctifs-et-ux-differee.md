@@ -9,3 +9,7 @@ Les trois propositions facultatives (densité du formulaire mobile, accès à la
 Les tests de non-régression et la revue portent sur le code corrigé. Les résultats historiques, simulations, navigateurs automatisés, Safari installé et import Calendrier Apple gardent leurs preuves distinctes. Aucune garantie d’absence de défaut ne remplace la recette. Les budgets Google TEST et les deux inscriptions avec envoi réservées à Sofiane sont conservés.
 
 Cette décision autorise le développement de ce lot. Elle ne donne aucun nouveau GO de fusion/main, déploiement, publication ou production. Les autorisations de commits/push de branche déjà en vigueur restent applicables.
+
+## GO Google TEST complémentaire
+
+Sofiane demande ensuite explicitement d’appliquer les correctifs à Google TEST et de refaire les tests avant sa recette. Le candidat autorisé est le code096772d (bundle b0737bb59743af0216eb62a83a1143ec10570872c0e8c636343a7334df61f447), avec mise à jour de la version TEST existante, garde TEST et accès inchangés. Les essais ciblés doivent conserver l’historique, les budgets et les deux envois réservés à Sofiane. Cela n’autorise ni Métier/PROD, ni main, Vercel ou FTP.
