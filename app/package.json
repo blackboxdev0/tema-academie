@@ -1,0 +1,28 @@
+{
+  "name": "tema-academie",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tema Académie — V1 statique connectée à Google TEST",
+  "engines": {
+    "node": ">=22.9.0"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "build": "node scripts/build.cjs",
+    "serve": "node scripts/serve.cjs",
+    "test:e2e": "playwright test",
+    "test:browsers": "TEMA_BROWSER_MATRIX=all playwright test",
+    "test:a11y": "playwright test tests/browser/accessibility.spec.cjs",
+    "test:artifact": "node --test tests/audit/calendar-bundle.test.cjs",
+    "test:audit-regressions": "node --test tests/audit/known-regressions.test.cjs && node tests/audit/ui-state-proof.cjs",
+    "test:audit-optional": "node --test tests/audit/optional-regressions.test.cjs",
+    "security": "node scripts/security.cjs",
+    "verify": "npm test && npm run build && npm run security && npm run test:artifact && npm run test:audit-regressions && npm run test:e2e",
+    "fingerprint": "node scripts/fingerprint.cjs",
+    "test:real": "node scripts/real-read.cjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.64.1"
+  }
+}

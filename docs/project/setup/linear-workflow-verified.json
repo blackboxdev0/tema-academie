@@ -1,0 +1,41 @@
+{
+  "status": "verified",
+  "team": {
+    "id": "b6fe00a9-ac52-42c1-a3ef-d08b3dbd2f8f",
+    "name": "Tema",
+    "key": "TEM",
+    "workspace_url_key": "tema-academie"
+  },
+  "mapping": {
+    "backlog": {
+      "id": "d822c9c3-931b-4e36-a06f-25b54181ff9b",
+      "name": "Backlog",
+      "type": "backlog"
+    },
+    "ready": {
+      "id": "fcd9fc4e-9762-459b-a78c-a06099810cc9",
+      "name": "Todo",
+      "type": "unstarted"
+    },
+    "in_progress": {
+      "id": "64a7eb89-01f7-4f02-b47d-a642810c2881",
+      "name": "In Progress",
+      "type": "started"
+    },
+    "review": {
+      "id": "8c09dcc2-bf3c-4c8c-a004-f555c23f3bab",
+      "name": "Review",
+      "type": "started"
+    },
+    "done": {
+      "id": "da795c0d-300a-4ec3-bfeb-c4621debdc50",
+      "name": "Done",
+      "type": "completed"
+    }
+  },
+  "creates": [],
+  "confirmed_changes": [],
+  "verified_at": "2026-10-19T17:21:16+00:00",
+  "board_layout": "not_verified",
+  "github_integration": "not_verified"
+}

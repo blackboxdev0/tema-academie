@@ -1,0 +1,13 @@
+# Portable team defaults. Project initialization updates identity here.
+[core]
+project_name = "unconfigured"
+user_name = "Project owner"
+communication_language = "Français"
+document_output_language = "English"
+output_folder = "_bmad-output"
+
+[modules.bmm]
+user_skill_level = "intermediate"
+planning_artifacts = "{project-root}/_bmad-output/planning-artifacts"
+implementation_artifacts = "{project-root}/_bmad-output/implementation-artifacts"
+project_knowledge = "{project-root}/docs/project"

@@ -113,3 +113,16 @@ python3 scripts/test_method.py -v
 ```
 
 `doctor` indique les prérequis et éléments encore à configurer ; il ne vérifie aucun accès externe et n'exécute aucune commande du produit. Les tests de méthode utilisent uniquement les fichiers déclarés, des configurations vierges, des copies temporaires et un serveur local. Les tests et parcours du produit restent à définir puis exécuter séparément.
+
+## 29 octobre 2026 — Candidat modèle 1.0.1
+
+Correction de la version initiale 1.0.0, avec règle de cycle de vie des worktrees, changelog et passation enrichie. Aucun fichier BMAD natif ni script applicatif modifié. `VERSION` et `CHANGELOG.md` sont déclarés dans l’inventaire de méthode pour être contrôlés et conservés dans les copies de test.
+
+- `python3 scripts/check.py` : réussi, ressources BMAD 6.12.4 et références documentaires cohérentes.
+- `git diff --check` : réussi.
+- `python3 scripts/project.py doctor` : Python/Git/BMAD vérifiés, état `template` attendu ; diagnostic global non réussi car `uv` absent du PATH de cette session. Aucun accès externe produit vérifié. Aucun outil installé pour masquer cette limite.
+- `python3 scripts/test_method.py -v` : 89 tests réussis en 39,627 secondes. Les copies de méthode et la reprise après initialisation restent vérifiées avec les nouveaux fichiers VERSION/CHANGELOG et la passation enrichie.
+
+Le numéro concerne un candidat de branche, pas une release publiée. Aucun tag, intégration dans main ou propagation vers un projet existant n’est annoncé.
+
+Le numéro a été corrigé de 1.0.0 à 1.0.1 après précision de Sofiane, qui autorise aussi la fusion de la PR du maître dans main. Le contrôle de méthode et whitespace est relancé pour cette correction documentaire ; les 89 tests précédents couvrent les mêmes scripts et comportements, inchangés par le numéro. La fusion est vérifiée séparément sur GitHub avant le bilan.
