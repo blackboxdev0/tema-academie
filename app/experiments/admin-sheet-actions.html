@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    *{box-sizing:border-box}body{margin:0;padding:24px;font:14px Arial,sans-serif;color:#20212B;background:#FAF9F7}h1{font-size:25px;line-height:1.2;margin:0 0 9px}.intro{color:#666A76;line-height:1.5;margin:0 0 22px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.full{grid-column:1/-1}label{display:block;font-weight:600;font-size:13px;margin-bottom:7px}input,select,textarea{font:inherit;color:inherit;width:100%;border:1px solid #CACCD3;border-radius:5px;background:#fff;padding:11px;min-height:42px}textarea{resize:vertical;min-height:80px}input:focus,select:focus,textarea:focus{outline:2px solid #365AA7;outline-offset:2px}.check{display:flex;gap:10px;align-items:flex-start;font-weight:400;line-height:1.5;margin-top:20px}.check input{width:17px;min-height:17px;margin:2px 0}.actions{display:flex;gap:10px;align-items:center;margin-top:24px}button{font:600 14px Arial,sans-serif;border:0;border-radius:5px;cursor:pointer;padding:12px 18px;background:#20212B;color:white;min-height:42px}button.secondary{background:white;color:#20212B;border:1px solid #CACCD3}button:focus-visible{outline:2px solid #365AA7;outline-offset:3px}button:disabled{opacity:.65;cursor:wait}.small{font-size:12px;color:#666A76;line-height:1.5}.error{background:#FFF0F2;border-left:3px solid #A7203B;padding:12px;color:#8E1830;margin-bottom:16px}.dates{margin-top:20px}.date{background:#fff;border:1px solid #DFE0E4;border-radius:7px;padding:16px;margin-bottom:14px}.date-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.date-head strong{font-size:15px}.remove{background:transparent;color:#666A76;padding:4px 8px;min-height:28px;font-size:12px}.date .grid{grid-template-columns:1fr 1fr 1fr;gap:12px}.date .half{grid-column:span 1}.date .venue{grid-column:span 2}details{margin-top:22px}summary{cursor:pointer;font-weight:600;padding:10px 0}details .grid{margin-top:10px}.success{padding:20px 0}.success p{line-height:1.6}.accent{height:4px;width:42px;background:#FF008F;margin-bottom:18px}[hidden]{display:none!important}
+  </style>
+</head>
+<body>
+<main>
+  <div class="accent"></div><h1 id="heading"></h1><p class="intro" id="intro"></p>
+  <div id="error" class="error" role="alert" hidden></div>
+  <form id="form">
+    <fieldset id="fields" style="border:0;padding:0;margin:0;min-width:0">
+      <section id="formationFields" hidden>
+        <div class="grid">
+          <div><label for="software">Logiciel</label><select id="software" name="software" required><option value="">Choisir un logiciel</option></select></div>
+          <div><label for="duration">Durée</label><input id="duration" name="duration" maxlength="120" placeholder="Ex. : 1 jour" required></div>
+          <div class="full"><label for="title">Nom de la formation</label><input id="title" name="title" maxlength="240" required></div>
+          <div><label for="price">Tarif par participant ($ CAD)</label><input id="price" name="price" type="number" min="0" step="0.01" placeholder="Laisser vide si à confirmer"></div>
+          <div><label for="priceQualifier">Précision sur le tarif (facultatif)</label><input id="priceQualifier" name="priceQualifier" maxlength="240" placeholder="Ex. : à partir de"></div>
+        </div>
+        <details><summary>Contenu de la fiche (facultatif)</summary><div class="grid">
+          <div class="full"><label for="description">Description</label><textarea id="description" name="description" maxlength="5000"></textarea></div>
+          <div class="full"><label for="prerequisites">Prérequis</label><textarea id="prerequisites" name="prerequisites" maxlength="5000"></textarea></div>
+          <div class="full"><label for="content">Programme</label><textarea id="content" name="content" maxlength="20000"></textarea></div>
+          <div class="full"><label for="outcome">Résultats attendus</label><textarea id="outcome" name="outcome" maxlength="5000"></textarea></div>
+          <div class="full"><label for="trainers">Formateurs</label><input id="trainers" name="trainers" maxlength="500"></div>
+        </div></details>
+        <label class="check"><input id="published" name="published" type="checkbox"><span>Publier cette formation<br><span class="small">Vous pourrez ensuite lui ajouter des sessions. Sinon, elle restera en brouillon.</span></span></label>
+      </section>
+      <section id="sessionFields" hidden>
+        <label for="formationId">Formation publiée</label><select id="formationId" name="formationId" required><option value="">Choisir une formation</option></select>
+        <p class="small" id="noFormation" hidden>Aucune formation publiée. Créez et publiez d’abord sa fiche.</p>
+        <div id="dates" class="dates"></div>
+        <button id="addDate" type="button" class="secondary">Ajouter une autre date</button>
+        <label class="check"><input id="open" name="open" type="checkbox"><span>Ouvrir les inscriptions pour ces dates<br><span class="small">Sinon, les sessions seront enregistrées avec les inscriptions fermées.</span></span></label>
+      </section>
+      <div class="actions"><button id="submit" type="submit"></button><button id="cancel" type="button" class="secondary">Annuler</button><span id="pending" class="small" role="status"></span></div>
+    </fieldset>
+  </form>
+  <section id="success" class="success" role="status" hidden><h2 id="successTitle"></h2><p id="successText"></p><p id="notice" class="small"></p><div class="actions"><button id="close" type="button" class="secondary">Fermer</button></div></section>
+</main>
+<template id="dateTemplate"><article class="date"><div class="date-head"><strong></strong><button type="button" class="remove">Retirer</button></div><div class="grid">
+  <div><label>Date</label><input data-key="date" type="date" required></div>
+  <div><label>Début</label><input data-key="start" type="time" required></div>
+  <div><label>Fin</label><input data-key="end" type="time" required></div>
+  <div><label>Capacité</label><input data-key="capacity" type="number" min="1" step="1" required></div>
+  <div class="venue"><label>Format</label><select data-key="mode" required><option value="">Choisir</option><option value="en_ligne">En ligne</option><option value="presentiel">En présentiel</option></select></div>
+  <div class="full"><label>Lieu ou lien (facultatif en ligne)</label><input data-key="venue" maxlength="1000"></div>
+</div></article></template>
+<script>
+  'use strict';
+  const BOOT = /*__TEMA_BOOT__*/null;
+  const $ = id => document.getElementById(id);
+  const requestId = crypto.randomUUID();
+  let dateSequence = 0, pending = false;
+  function addDate(focus = true) {
+    if ($('dates').children.length >= 12) return;
+    const node = $('dateTemplate').content.firstElementChild.cloneNode(true); dateSequence++;
+    node.querySelectorAll('[data-key]').forEach(input => { input.id = 'date-' + dateSequence + '-' + input.dataset.key; input.previousElementSibling.htmlFor = input.id; });
+    node.querySelector('.remove').onclick = () => { const index = [...$('dates').children].indexOf(node); node.remove(); renumber(); const next = $('dates').children[Math.min(index, $('dates').children.length - 1)]; if (next) next.querySelector('[data-key="date"]').focus(); };
+    node.querySelector('[data-key="mode"]').onchange = event => { node.querySelector('[data-key="venue"]').required = event.target.value === 'presentiel'; };
+    $('dates').append(node); renumber(); if (focus) node.querySelector('[data-key="date"]').focus();
+  }
+  function renumber() {
+    [...$('dates').children].forEach((node, i) => { node.querySelector('strong').textContent = 'Session ' + (i + 1); node.querySelector('.remove').hidden = $('dates').children.length === 1; });
+    $('addDate').disabled = $('dates').children.length >= 12;
+  }
+  function payload() {
+    const data = { requestId, kind: BOOT.kind };
+    if (BOOT.kind === 'formation') {
+      ['software','duration','title','price','priceQualifier','description','prerequisites','content','outcome','trainers'].forEach(k => { data[k] = $(k).value; });
+      data.published = $('published').checked;
+    } else {
+      data.formationId = $('formationId').value; data.open = $('open').checked;
+      data.dates = [...$('dates').children].map(node => Object.fromEntries([...node.querySelectorAll('[data-key]')].map(input => [input.dataset.key,input.value])));
+    }
+    return data;
+  }
+  function failure(error) { pending = false; $('fields').disabled = false; $('pending').textContent = ''; $('error').textContent = error && error.message || 'L’ajout a échoué. Réessayez avec ce formulaire.'; $('error').hidden = false; $('error').tabIndex = -1; $('error').focus(); }
+  $('form').onsubmit = event => {
+    event.preventDefault(); if (pending || !$('form').reportValidity()) return;
+    const data = payload(); pending = true; $('fields').disabled = true; $('error').hidden = true; $('pending').textContent = 'Enregistrement…';
+    google.script.run.withSuccessHandler(result => {
+      pending = false; $('form').hidden = true; $('intro').hidden = true; $('success').hidden = false;
+      $('successTitle').textContent = result.kind === 'formation' ? 'Formation ajoutée' : result.count > 1 ? 'Sessions ajoutées' : 'Session ajoutée';
+      $('successText').textContent = result.kind === 'formation' ? 'La fiche est enregistrée dans la section ' + result.software + (result.published ? ' et publiée.' : ', en brouillon.') : result.count + (result.count > 1 ? ' sessions sont enregistrées' : ' session est enregistrée') + ' dans la section ' + result.software + '.';
+      $('notice').textContent = result.notice || ''; $('close').focus();
+    }).withFailureHandler(failure).enregistrerAjoutTema(data);
+  };
+  $('cancel').onclick = $('close').onclick = () => google.script.host.close();
+  $('addDate').onclick = () => addDate();
+  const formation = BOOT.kind === 'formation';
+  $('heading').textContent = formation ? 'Une nouvelle formation' : 'Programmer des sessions';
+  $('intro').textContent = formation ? 'Créez la fiche une seule fois. Vous pourrez lui associer autant de dates que nécessaire.' : 'Chaque date possède ses propres horaires et sa propre capacité. Heure de Montréal.';
+  $('submit').textContent = formation ? 'Ajouter une formation' : 'Ajouter les sessions';
+  $('formationFields').hidden = !formation; $('sessionFields').hidden = formation;
+  $('formationFields').querySelectorAll('input,select,textarea').forEach(input => { input.disabled = !formation; });
+  $('sessionFields').querySelectorAll('input,select').forEach(input => { input.disabled = formation; });
+  BOOT.softwares.forEach(software => {
+    const option = document.createElement('option'); option.value = software.code; option.textContent = software.label; $('software').append(option);
+    const group = document.createElement('optgroup'); group.label = software.label;
+    software.formations.forEach(item => { const option = document.createElement('option'); option.value = item.id; option.textContent = item.title; group.append(option); });
+    if (group.children.length) $('formationId').append(group);
+  });
+  if (!formation) { addDate(false); $('formationId').value = BOOT.selected || ''; $('noFormation').hidden = $('formationId').options.length > 1; }
+</script>
+</body>
+</html>

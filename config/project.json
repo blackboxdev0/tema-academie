@@ -69,6 +69,38 @@
     }
   },
   "verification": {
+    "copy_site_integration": {
+      "date": "2026-11-04",
+      "status": "connected_real_recipe_completed_with_mail_and_native_checks_open",
+      "spec": "_bmad-output/implementation-artifacts/spec-raccordement-copie-site.md",
+      "report": "docs/project/acceptance/copy-site-2026-11-04.md",
+      "real_google_connection_verified": true,
+      "copy_mail_limits": "authorized_13_registrations_26_recipients_total_existing_allowlist_only",
+      "old_test_and_production_unchanged": true,
+      "node_tests_passed": 117,
+      "experiment_tests_passed": 170,
+      "browser_cases_passed": 276,
+      "browser_known_contrast_failures": 8,
+      "native_copy_backup_verified": true,
+      "real_copy_admissions": 3,
+      "real_copy_http_posts_verified": true,
+      "copy_deployment_version": 9,
+      "copy_canonical_sha256": "374c25f5ab146e2f71611bcedf45804ddfd829c44aa6f63d7cbd91ad5b8df095",
+      "copy_mail_registrations_reserved": 7,
+      "copy_mail_recipients_reserved": 13,
+      "copy_mail_budget_exhausted": false,
+      "copy_received_messages_verified": 5,
+      "copy_received_external_message_pending": true,
+      "received_ics_content_and_import_verified": false,
+      "initial_source_business_integrity_verified": true,
+      "real_google_browser_profiles_passed": 4,
+      "human_acceptance_pending": true,
+      "view_source_versions_acknowledged": true,
+      "original_filters_restored": true,
+      "copy_mail_budget_unchanged_after_cleanup": true,
+      "copy_mail_last_verified_on": "2026-11-09",
+      "copy_mail_extension_report": "docs/project/acceptance/copy-mail-extension-2026-11-09.md"
+    },
     "checks": [
       "cd app && npm run verify"
     ],
@@ -162,6 +194,265 @@
         "browser_tests_executed": 0,
         "linear_read_only_review_issues": 22
       }
+    },
+    "sheets_batchget_prototype": {
+      "performed_on": "2026-11-02",
+      "status": "historical_prototype_followed_by_authorized_durable_integration",
+      "report": "docs/project/acceptance/sheets-batchget-prototype-2026-11-02.md",
+      "measurements": 20,
+      "local_tests_passed": 5,
+      "first_visit_median_ms": {
+        "native": 3383,
+        "batch": 1333
+      },
+      "subsequent_visit_median_ms": {
+        "native": 3280,
+        "batch": 1057
+      },
+      "full_public_contract_equal": true,
+      "application_cache_used": false,
+      "batch_api_calls_per_read": 1,
+      "google_test_restored_version": 11,
+      "google_head_and_manifest_restored_exact": true,
+      "product_implementation_authorized": true
+    },
+    "durable_catalogue": {
+      "performed_on": "2026-11-02",
+      "status": "local_and_real_TEST_verified_owner_recipe_open",
+      "report": "docs/project/acceptance/durable-catalogue-2026-11-02.md",
+      "node_tests_passed": 110,
+      "real_browser_reads": 3,
+      "real_metadata_read": "correct_sheet_true_grid_present_true_1000_format_rows",
+      "application_cache_used": false,
+      "browser_tests_passed": 192,
+      "browser_profiles": [
+        "chromium",
+        "mobile-chromium",
+        "firefox",
+        "webkit"
+      ]
+    },
+    "public_cache": {
+      "performed_on": "2026-11-03",
+      "ttl_hours": 24,
+      "real_first_cards_ms": 1831,
+      "real_return_cards_ms": 38,
+      "real_return_fresh_ms": 1345,
+      "real_posts": 0,
+      "report": "docs/project/acceptance/public-cache-2026-11-03.md",
+      "fresh_google_required_for_confirmation": true,
+      "form_draft_allowed_while_verifying": true
+    },
+    "seamless_refresh": {
+      "performed_on": "2026-11-03",
+      "status": "local_and_real_TEST_verified_owner_recipe_open",
+      "report": "docs/project/acceptance/seamless-refresh-2026-11-03.md",
+      "cached_cards_real_ms": 43,
+      "real_get_intentionally_delayed_for_ui_check": true,
+      "real_posts": 0,
+      "backend_changed": false,
+      "node_tests_passed": 110,
+      "browser_cases_discovered": 256,
+      "full_initial_browser_passed": 254,
+      "full_initial_assertion_failures": 2,
+      "targeted_browser_passed_after_test_correction": 72,
+      "history_checks_passed": 4,
+      "administration_passed": 21,
+      "vm_passed": 2,
+      "portable_bundle_ics_passed": 7,
+      "private_ics_skipped": 2
+    },
+    "motion": {
+      "performed_on": "2026-11-03",
+      "status": "corrected_and_verified_2026_11_10_owner_acceptance_open",
+      "report": "docs/project/acceptance/motion-2026-11-03.md",
+      "duration_ms": 240,
+      "real_google_flow": "detail_dates_form_privacy_return_read_only_passed",
+      "real_posts": 0,
+      "known_contrast": "small_white_text_on_pink_3.71_preexisting_visual_choice",
+      "backend_changed": false,
+      "node_tests_passed": 110,
+      "administration_passed": 21,
+      "vm_passed": 2,
+      "portable_bundle_ics_passed": 7,
+      "private_ics_skipped": 2,
+      "full_browser_discovered": 280,
+      "full_browser_passed": 272,
+      "full_browser_contrast_failures": 8,
+      "motion_cases_passed_after_final_patch": 28,
+      "keyboard_reflow_replays_passed": 12,
+      "keyboard_policy_regressions_passed": 8,
+      "correction_report": "docs/project/acceptance/contrast-motion-2026-11-10.md"
+    },
+    "copy_mail_visual": {
+      "date": "2026-11-09",
+      "deployment_version": 6,
+      "canonical_sha256": "a031423a6e6e46997bca8f0c1189968f775639f0c89834467b628149200a337c",
+      "owner_visual_accepted": true,
+      "google_native_code_readback_verified": true,
+      "google_manifest_unchanged": true,
+      "test_messages_sent": 2,
+      "test_participant_sent_copy_gmail_render_verified": true,
+      "test_tema_inbox_received_verified": true,
+      "external_participant_receipt_verified": false,
+      "ics_download_bytes_verified": true,
+      "business_sources_unchanged": true,
+      "public_read_verified": true,
+      "report": "docs/project/acceptance/mail-visual-deployment-2026-11-09.md"
+    },
+    "copy_mail_logo": {
+      "date": "2026-11-09",
+      "deployment_version": 7,
+      "canonical_sha256": "4fbb19238dcfd3bcbfa5deafa70f93b94f109e2163cf6b17d054300acce6a796",
+      "source": "app/web/assets/logo-tema.png",
+      "inline_cid": "temaLogo",
+      "source_bytes_preserved": true,
+      "gmail_sent_render_verified": true,
+      "gmail_natural_dimensions": [
+        400,
+        146
+      ],
+      "gmail_display_width": 160,
+      "external_receipt_verified": false,
+      "single_test_sent": true,
+      "business_sources_unchanged": true,
+      "report": "docs/project/acceptance/mail-logo-2026-11-09.md"
+    },
+    "copy_registration_cancellation": {
+      "date": "2026-11-09",
+      "status": "copy_v8_native_cancellation_and_final_manual_recovery_verified",
+      "report": "docs/project/acceptance/registration-cancellation-2026-11-09.md",
+      "deployment_version": 8,
+      "canonical_sha256": "b21b5344e5c8f84362db654583e3caac8cdc640255223fbbd8c6bff9f44f8007",
+      "node_tests_passed": 132,
+      "experiment_tests_passed": 228,
+      "native_no_preserves_registration": true,
+      "native_yes_cancels_and_recalculates": true,
+      "emails_sent": 0,
+      "mail_budget_preserved": true
+    },
+    "copy_code_configuration": {
+      "date": "2026-11-10",
+      "status": "copy_v9_without_parameters_verified",
+      "report": "docs/project/acceptance/code-config-copy-2026-11-10.md",
+      "deployment_version": 9,
+      "canonical_sha256": "374c25f5ab146e2f71611bcedf45804ddfd829c44aa6f63d7cbd91ad5b8df095",
+      "node_tests_passed": 132,
+      "experiment_tests_passed": 238,
+      "business_values_and_types_unchanged": true,
+      "protected_properties_unchanged": true,
+      "real_replay_verified": true,
+      "new_admission_and_mail_simulated_only": true,
+      "real_emails_sent": 0,
+      "parameters_tab_removed": true
+    },
+    "copy_full_recipe": {
+      "verified_on": "2026-11-10",
+      "status": "business_journeys_passed_browser_reservations_open",
+      "evidence": "docs/project/acceptance/full-copy-recipe-2026-11-10.md",
+      "real_google": {
+        "formation_added": 1,
+        "manual_sessions_added": 3,
+        "registrations_added": 2,
+        "registrations_cancelled": 2,
+        "existing_sources_unchanged": true,
+        "parameters_absent": true,
+        "mail_sent": 0,
+        "mail_limits_restored": true,
+        "mail_budget_unchanged": true,
+        "head_restored": "v9"
+      },
+      "standard_passed": 132,
+      "copy_passed": 238,
+      "browser_executed": 284,
+      "browser_passed": 275,
+      "browser_failed": 9,
+      "open_findings": [
+        "8 known contrast checks",
+        "Firefox reduced-motion scroll stop: 2 failures in 3 targeted repetitions"
+      ],
+      "private_ics_skipped": 2,
+      "human_acceptance": "pending",
+      "followup_resolving_browser_failures": "docs/project/acceptance/contrast-motion-2026-11-10.md"
+    },
+    "contrast_motion_correction": {
+      "verified_on": "2026-11-10",
+      "status": "owner_restored_original_pink_known_contrast_failure_returns",
+      "report": "docs/project/acceptance/contrast-motion-2026-11-10.md",
+      "date_background": "#FF008F",
+      "date_text": "#FFFFFF",
+      "contrast_ratio": 3.71,
+      "standard_passed": 132,
+      "copy_passed": 238,
+      "browser_passed": 292,
+      "browser_failed": 0,
+      "browser_profiles": [
+        "chromium",
+        "mobile-chromium",
+        "firefox",
+        "webkit"
+      ],
+      "motion_passed": 36,
+      "firefox_original_repetitions_passed": 10,
+      "artifact_passed": 9,
+      "artifact_skipped_after_fixture_recovery": 0,
+      "audit_passed": 21,
+      "vm_passed": 2,
+      "build": "passed",
+      "security": "passed",
+      "independent_review": "three_findings_fixed_followup_no_concrete_defect",
+      "google_writes": 0,
+      "mail_sent": 0,
+      "committed": false,
+      "deployed": false,
+      "latest_visual_decision": "Sofiane explicitly requests original pink; prior green matrix applies to darker background"
+    },
+    "processing_demo": {
+      "verified_on": "2026-11-12",
+      "status": "async_google_verified_page_closed_mail_sent_recipe_open",
+      "report": "docs/project/acceptance/processing-demo-2026-11-12.md",
+      "google_deployment_version": 14,
+      "canonical_sha256": "38e93d5ea8cf97edf6844b01daa91fc6c3a69c361d029184d1faf3903fe39ea9",
+      "admissions_mode": "demo",
+      "mail_brand": "Tema Académie",
+      "browser_executed": 316,
+      "browser_passed": 308,
+      "known_contrast_failures": 8,
+      "standard_passed": 132,
+      "copy_passed": 288,
+      "artifact_passed": 9,
+      "real_post_duration_seconds": 3.135,
+      "real_registration": "recipe_fixture_cancelled_capacity_restored",
+      "real_participant_mail": "SENT",
+      "real_tema_mail": "SENT",
+      "async_worker": "verified_real_scheduled_after_page_closed",
+      "vercel_changed": false,
+      "real_confirmation_observed_seconds": 3.739,
+      "targeted_browser_passed": 24,
+      "audit_passed": 21,
+      "audit_vm_passed": 2,
+      "previous_registrations_unchanged": 19,
+      "mail_registrations_reserved": 10,
+      "mail_recipients_reserved": 19,
+      "mail_limits": {
+        "registrations": 13,
+        "recipients": 26
+      },
+      "view_clean": true,
+      "counters_pending": false,
+      "admin_maintenance_pending": false,
+      "human_acceptance_pending": false,
+      "human_acceptance": {
+        "verified_on": "2026-11-12",
+        "scope": "modified_registration_flow",
+        "confirmed": [
+          "fast_confirmation_without_blocking",
+          "active_email_duplicate_refused",
+          "participant_emails_received_about_one_minute_accepted"
+        ],
+        "public_release_approved": false
+      },
+      "mail_budget_snapshot_scope": "last_verified_before_owner_final_manual_test"
     }
   },
   "delivery": {
@@ -181,7 +472,7 @@
       "google_backend": "durable_tema_resources"
     },
     "local_acceptance": {
-      "status": "local_corrections_verified_google_update_and_owner_recipe_pending",
+      "status": "durable_catalogue_local_and_TEST_verified_owner_recipe_open",
       "defined_on": "2026-10-30",
       "target": "complete_V1_local_frontend_connected_to_isolated_Google_Sheets_and_Apps_Script",
       "scope": "5_epics_17_stories_functional_scope_except_public_release",
@@ -192,10 +483,24 @@
       "local_url": "http://127.0.0.1:4173",
       "start_command": "cd app && npm run build && npm run serve",
       "test_command": "cd app && TEMA_BROWSER_MATRIX=all npm run verify",
-      "report": "docs/project/acceptance/corrections-2026-10-30.md"
+      "report": "docs/project/acceptance/corrections-2026-10-30.md",
+      "latest_report": "docs/project/acceptance/motion-2026-11-03.md"
     }
   },
   "permissions": {
+    "copy_site_integration_authorization": {
+      "date": "2026-11-04",
+      "source": "Sofiane, session vocale : relier la copie au site internet puis lancer une batterie de tests approfondis",
+      "scope": "local_site_connection_to_administrable_copy_and_isolated_recipe",
+      "spreadsheet_id": "10-aTYKJq3Idxc1eAM4hevNnZMT0jnKRCVMwaY9pFwj8",
+      "apps_script_id": "1fuzTMzZZ4F-0Bn5SIqRuYAmM1ef6rXNNp_s4q9sgyd3wSe1-8H3tpMnA",
+      "google_access_expansion": "explicitly_confirmed_by_Sofiane_2026_11_04_for_COPY_at_activation",
+      "new_real_mail_envelope": "explicitly_authorized_3_registrations_with_send_6_emails_max_existing_allowlist_only",
+      "public_site_release_authorized": false,
+      "old_test_or_production_mutation_authorized": false,
+      "git_commits_authorized": false,
+      "git_pushes_authorized": false
+    },
     "development": "explicit_go",
     "commits": "milestones_within_authorized_scope",
     "working_branch_pushes": "within_authorized_scope",
@@ -211,8 +516,8 @@
       "delivery_authorized": false
     },
     "current_commit_instruction": {
-      "source": "Sofiane, réponse explicite au point 3 le 30 octobre 2026 ; remplace la consigne restrictive AGENTS fournie précédemment dans le chat.",
-      "status": "milestone_commits_and_working_branch_pushes_authorized",
+      "source": "Instruction humaine du chat en cours : ne commit jamais sans que je te le demande",
+      "status": "no_commit_without_explicit_request",
       "format": "Conventional Commits",
       "language": "English",
       "assistant_attribution": false
@@ -232,6 +537,32 @@
       "scope": "existing_Google_TEST_version_update_and_targeted_acceptance",
       "preserve_mail_budget_for_owner": true,
       "production_authorized": false
+    },
+    "copy_mail_extension_authorization": {
+      "date": "2026-11-09",
+      "source": "Sofiane : augmenter la limite dans la copie uniquement vers les boîtes déjà autorisées et renvoyer les courriels de son inscription identifiée",
+      "registrations_limit_total": 13,
+      "recipients_limit_total": 26,
+      "existing_allowlist_unchanged": true,
+      "counters_reset_authorized": false,
+      "scope": "COPY_only"
+    },
+    "copy_mail_visual_deployment_authorization": {
+      "date": "2026-11-09",
+      "source": "Sofiane valide le visuel puis demande de réaliser intégration dans la copie Google et test d’envoi",
+      "scope": "existing_COPY_deployment_update_and_two_test_mails_existing_allowlist_only",
+      "new_registration": false,
+      "other_environments_authorized": false,
+      "git_commit_push_authorized": false
+    },
+    "copy_mail_logo_authorization": {
+      "date": "2026-11-09",
+      "source": "Sofiane : logo du site dans les courriels de la copie et un test vers sa boîte déjà autorisée",
+      "scope": "existing_COPY_deployment_and_one_participant_test",
+      "new_recipients": false,
+      "new_registration": false,
+      "other_environments": false,
+      "git_commit_push": false
     }
   },
   "initialized_at": "2026-10-19T17:20:58+00:00",
@@ -289,15 +620,15 @@
           "spreadsheet_access": "private_owner_only",
           "script_runtime": "V8",
           "script_timezone": "America/Toronto",
-          "script_content": "reviewed_V1_candidate_v8_nine_corrective_fixes",
+          "script_content": "V1_fresh_grouped_catalogue_no_snapshot_no_browser_cache",
           "deployment_status": "test_web_app_deployed",
           "fixtures_status": "24_active_source_formations_3_open_fictitious_sessions_5_historical_and_4_new_cancelled_registrations",
           "deployment_id": "AKfycbwgMy2rGhfUFgL5kA-nJdHbRek2fmB0eDeVu63UFh16nP5G8xoYcUZDFCi363a_qxCOkw",
-          "deployment_version": 8,
+          "deployment_version": 14,
           "web_app_url": "https://script.google.com/macros/s/AKfycbwgMy2rGhfUFgL5kA-nJdHbRek2fmB0eDeVu63UFh16nP5G8xoYcUZDFCi363a_qxCOkw/exec",
           "execution_identity": "owner",
           "web_app_access": "anyone_owner_confirmed_2026-10-26",
-          "candidate_sha256": "b0737bb59743af0216eb62a83a1143ec10570872c0e8c636343a7334df61f447",
+          "candidate_sha256": "a2009f22df3417ca459dd0e5fd59022d7f43244feec32131ebcc72cfa0321ee2",
           "controls_repair": "12_numeric_text_columns_38_warning_protections_0_formation_diagnostics",
           "trigger_count": 2,
           "periodic_trigger_rest_hours": 12,
@@ -309,7 +640,49 @@
           "remaining_daily_mail_quota": 94,
           "last_inspected_at": "2026-10-30T20:18:40-04:00",
           "periodic_trigger_minutes": null,
-          "compatible_return": "v7_to_v6_to_v7_verified_without_data_restore_2026_10_30"
+          "compatible_return": "v7_to_v6_to_v7_verified_without_data_restore_2026_10_30",
+          "optimized_preview": {
+            "authorized_on": "2026-11-02",
+            "source": "Sofiane demande de pouvoir tester la version optimisée",
+            "status": "superseded_by_durable_grouped_catalogue_2026_11_02",
+            "local_url": "http://127.0.0.1:4173/",
+            "resource": "availability-preview",
+            "standard_route": "original_complete_catalogue",
+            "form_entry": "complete_read_before_selection",
+            "real_writes_performed": false,
+            "last_real_check": {
+              "cards_ms": 197,
+              "availability_ms": 3519,
+              "form_preflight_ms": 3882,
+              "session_places": [
+                1,
+                3,
+                12
+              ]
+            },
+            "recovery_version": 8,
+            "recovery_sha256": "b0737bb59743af0216eb62a83a1143ec10570872c0e8c636343a7334df61f447",
+            "source_file": "app/experiments/availability-preview.gs"
+          },
+          "durable_catalogue": {
+            "authorized_on": "2026-11-02",
+            "source": "Sofiane : Go après proposition d’intégration du prototype lecture groupée",
+            "status": "deployed_TEST_verified_owner_recipe_open",
+            "local_url": "http://127.0.0.1:4173/",
+            "report": "docs/project/acceptance/durable-catalogue-2026-11-02.md",
+            "reader": "app/apps-script/catalogue.js",
+            "canonical_api_calls": 1,
+            "numeric_temporal_cells_api_calls": 2,
+            "bundled_catalogue": false,
+            "persistent_browser_cache": true,
+            "real_fresh_browser_cards_ms": [
+              2333,
+              1819,
+              1837
+            ],
+            "real_posts_performed": 0,
+            "recovery_version": 11
+          }
         }
       }
     },

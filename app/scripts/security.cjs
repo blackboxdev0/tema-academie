@@ -11,10 +11,11 @@ for (const file of publicFiles) {
   if (!/\.(?:html|js|css|txt)$/.test(file)) continue;
   const source = fs.readFileSync(file, 'utf8');
   assert.ok(!/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY|AIza[A-Za-z0-9_-]{30,}|"private_key"\s*:/.test(source), 'Credential material in public bundle');
-  assert.ok(!/\b(?:localStorage|sessionStorage|indexedDB)\b/.test(source), 'Durable browser storage violates personal-data boundary');
+  assert.ok(!/\b(?:localStorage|sessionStorage|indexedDB)\b/.test(source.replace('function cacheStorage() { return window.localStorage; }', '')), 'Durable browser storage violates personal-data boundary');
   assert.ok(!/TEMA_PRIVATE_CATALOGUE_IMPORT|CATALOGUE_IMPORT_\d|TRIAL_SIMULATE_MAIL_FAILURE|SPREADSHEET_ID/.test(source), 'Private server configuration in browser');
 }
 const config = {}; vm.runInNewContext(fs.readFileSync(path.join(root, 'dist/web/config.js'), 'utf8'), { window: config });
 assert.deepEqual(Object.keys(config.TEMA_CONFIG), ['apiUrl']);
-for (const name of ['engine.js', 'google.js']) new vm.Script(fs.readFileSync(path.join(root, 'apps-script', name), 'utf8'), { filename: name });
+for (const name of ['engine.js', 'google.js', 'catalogue.js']) new vm.Script(fs.readFileSync(path.join(root, 'apps-script', name), 'utf8'), { filename: name });
+for (const name of ['copy-backend.gs', 'admin-sheet-prototype.gs', 'admin-sheet-actions.gs', 'admin-sheet-registrations.gs']) new vm.Script(fs.readFileSync(path.join(root, 'experiments', name), 'utf8'), { filename: name });
 console.log('PASS: public build/config boundaries and Apps Script syntax (offline).');

@@ -17,13 +17,18 @@ async function setup(page, baseURL, controls = {}) {
     if (request.method() === 'GET') { const cat = h.service.catalogue(); if (controls.catalogue) controls.catalogue(cat); await route.fulfill({ json: cat }); return; }
     const command = TemaTrial.decodeForm(Object.fromEntries(new URLSearchParams(request.postData())));
     if (controls.drop) { await route.abort('failed'); return; }
+    if (controls.beforeReply) await controls.beforeReply();
     await route.fulfill({ json: controls.reply ? controls.reply(command) : h.service.submit(command) });
   });
   await page.goto('/'); await expect(page.locator('#formations')).toContainText('Essai');
   return { h, external };
 }
 async function scan(page, state, info) {
+  const view = { processing: 'processing', catalogue: 'catalogue', 'catalogue-pagine': 'catalogue', fiche: 'detail', formulaire: 'registration', confidentialite: 'privacy', confirmation: 'result', 'erreur-champ': 'registration', 'resultat-inconnu': 'registration' }[state];
+  await expect(page.locator('#' + view)).toBeVisible();
   await page.evaluate(() => document.fonts.ready);
+  // Auditer l’écran stabilisé, après les transitions d’entrée finies ou annulées.
+  await page.evaluate(() => Promise.all(document.getAnimations().map(animation => animation.finished.catch(() => {}))));
   const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   const summary = { state, violations: result.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.map(n => ({ target: n.target, failure: n.failureSummary })) })), incomplete: result.incomplete.map(v => ({ id: v.id, targets: v.nodes.map(n => n.target) })) };
   await info.attach(`axe-${state}`, { body: JSON.stringify(summary, null, 2), contentType: 'application/json' });
@@ -126,4 +131,13 @@ test('A11Y — contraste des limites de champs et de leur focus', async ({ page,
   await page.locator('#prenom').focus(); const focused = await borderContrast();
   expect(focused.inside, `focus ${focused.color} sur blanc`).toBeGreaterThanOrEqual(3);
   expect(focused.outside, `focus ${focused.color} sur fond de page`).toBeGreaterThanOrEqual(3);
+});
+
+
+test('A11Y : écran de suivi pendant une réponse retenue',async({page,baseURL},info)=>{
+ let release;const gate=new Promise(resolve=>release=resolve);const {external}=await setup(page,baseURL,{beforeReply:()=>gate});
+ try{await openForm(page);await fillForm(page);await page.locator('#submit').click();await expect(page.locator('#processing-title')).toBeFocused();await scan(page,'processing',info);
+ await page.setViewportSize({width:320,height:800});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await expect(page.getByRole('heading',{level:1})).toHaveCount(1);
+ }finally{release();}
+ await expect(page.locator('#result-title')).toBeFocused();expect(external).toEqual([]);
 });

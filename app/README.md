@@ -1,5 +1,7 @@
 # Tema Académie — V1 locale et Google TEST
 
+> Copie privée, 10 novembre : l’onglet Paramètres est retiré. Sa configuration est dans `app/experiments/copy-config.gs` (depuis la racine du dépôt) et les lectures portent sur trois tables métier. Les procédures Paramètres ci-dessous restent celles de l’ancien TEST. Voir le rapport `docs/project/acceptance/code-config-copy-2026-11-10.md`. Ne pas installer le backend TEST dans la copie.
+
 Site français statique et moteur partagé Node/Google, sans serveur applicatif ni réécriture de routes. Le même fichier `apps-script/engine.js` est chargé sans transformation par Node et concaténé dans `dist/apps-script/Code.gs`. Cible courante : V1 locale reliée au Google TEST isolé, avant recette finale Sofiane. Les preuves Google réelles restent distinctes des simulations. Voir le [guide Google](../docs/project/guide-google.md).
 
 ## Rejouer localement
@@ -27,7 +29,7 @@ La prévisualisation est sur `http://127.0.0.1:4173`. Le build configure par dé
 
 Ne charger que le projet **Tema Académie — TEST**, ID fixé dans `google.js`. Le classeur métier est inaccessible au candidat : les trois contrôles environnement/ID classeur/ID script doivent correspondre. Toute sélection de destination et toute fonction d’administration sont absentes de l’interface HTTP. Les fonctions terminées par `_` sont privées à l’éditeur et ne sont pas proposées via RPC.
 
-1. Générer le build. Dans l’éditeur Apps Script TEST, remplacer le squelette par `dist/apps-script/Code.gs`. Afficher le manifeste dans les paramètres et utiliser `dist/apps-script/appsscript.json`. Ne pas dupliquer le moteur dans un autre fichier du projet.
+1. Générer le build. Dans l’éditeur Apps Script TEST, remplacer le squelette par `dist/apps-script/Code.gs`. Afficher le manifeste dans les paramètres et utiliser `dist/apps-script/appsscript.json`. Ne pas dupliquer le moteur dans un autre fichier du projet. Le manifeste déclare le service avancé Sheets APIv4, nécessaire à la lecture publique groupée ; son activation dans TEST a été approuvée et réalisée le 2 novembre 2026. Conserver la configuration webapp existante lors d’une mise à jour.
 2. Configurer les propriétés du script en privé. `ENVIRONMENT=TEST` et `SPREADSHEET_ID` existent déjà ; leur ID est vérifié contre le registre. Ajouter `CONTACT_EMAIL`, `TEMA_EMAIL` et `ALLOWED_RECIPIENTS_JSON` (tableau JSON de toutes les boîtes participantes autorisées **et** du destinataire de l’avis interne). Ne copier aucune adresse privée dans Git, Linear, une capture livrée ou ce document. Une nouvelle demande hors liste est refusée avant toute écriture/avis ; le rejeu d’une demande déjà enregistrée garde sa priorité.
 3. Examiner les autorisations affichées avec Sofiane : accès Sheets, envoi par MailApp et gestion des déclencheurs. Le manifeste ne demande pas la lecture de Gmail ni de Drive. Cette notice ne remplace pas la confirmation requise pour une nouvelle permission Google sensible.
 4. Exécuter `installTrial` une seule fois depuis la liste Run de l’éditeur : uniquement si les trois tables de données sont vides. Elle conserve `Paramètres` et ses colonnes natives `cle/valeur/description` et `id/label/choix`, remplace les valeurs de contact/avis depuis la configuration privée, pose une politique fictive TEST-1, ajoute une formation inactive et deux dates fermées (hiver/été de l’année suivante). Les quatre onglets restent conformes au contrat. Aucun effacement d’inscription, aucun reset de compteur.
@@ -84,3 +86,33 @@ Le [rapport du 30 octobre](../docs/project/acceptance/independent-audit-2026-10-
 `npm run test:audit-regressions` vérifie désormais les corrections autorisées : notes humaines préservées, listes devenues vides, capacité invalide, diagnostics logiciels et libellés homonymes de propriétés JavaScript. Elle est intégrée à `verify`, avec deux assertions de transitions UI sur le vrai script dans une VM/DOM simulé. Les contrôles d’historique, de focus ordinateur/mobile, de reconfirmation immédiate et les expirations GET15s/POST45s s’exécutent aussi dans Playwright ; ce sont des réseaux Google simulés, distincts des applications natives.
 
 `npm run test:audit-optional` conserve le test **R2 hors périmètre**, toujours rouge : réparer le seul affichage calculé `Paramètres.choix` après modification manuelle. Cette commande n’appartient pas à `verify` ; l’assertion n’est ni ignorée ni assouplie. Le défaut et son triage restent dans le rapport. Pour préserver un serveur de recette sur4173, utiliser `TEMA_TEST_PORT=4184 TEMA_BROWSER_MATRIX=all npm run verify`.
+## Recette de la copie administrable
+
+Le site local est raccordé à la copie et la campagne Google du 4 novembre est exécutée. Le plafond de trois inscriptions/six destinataires est épuisé ; lecture seule sans nouvelle enveloppe explicite. [État et limites](../docs/project/acceptance/copy-site-2026-11-04.md). Les commandes ci-dessous ne valent pas preuve d’installation ou de réception de courriels.
+
+`npm run verify` inclut désormais `npm run test:copy` : backend COPY, administration, suivi et construction, entièrement simulés. Le constructeur utilise la dépendance de développement verrouillée `sharp`, sans dépendre d’un cache personnel.
+
+Après sauvegarde native actuelle du code, du manifeste et des sources, préparer le candidat privé :
+
+```sh
+node experiments/build-copy-backend.cjs --backup-code /chemin/prive/native-before.gs --backup-manifest /chemin/prive/manifest-before.json
+```
+
+Le constructeur affiche son répertoire privé et ses empreintes ; il ne modifie pas Google. Installer seulement dans le projet lié COPY indiqué dans le rapport, après les confirmations requises par Google. Ne pas installer le backend TEST de référence dans la copie. Sous profil COPY, celui-ci est explicitement nommé `dist/apps-script-TEST-reference` et reste utilisé par les contrôles historiques hors réseau.
+
+Après vérification native du déploiement COPY :
+
+```sh
+node scripts/local-profile.cjs copy <URL_EXEC_COPY_VERIFIEE>
+npm run build
+```
+
+Le choix est persistant hors dépôt ; une variable contradictoire fait échouer le build. Retour explicite : `node scripts/local-profile.cjs test`, puis `npm run build`. Le cache du site est isolé par URL du service.
+
+Le pilote consigne séparément le relevé natif du déploiement dans `~/.config/tema-academie/copy-deployment-verified.json` : `version:1`, `method:"native-google-deployment-ui"`, `apiUrl`, `spreadsheetId`, `scriptId`, `deploymentVersion`, `verifiedAt` et `canonicalSha256` lu dans le code natif. Le hash doit correspondre au candidat privé courant. La commande de choix du profil ne crée jamais ce relevé.
+
+Le runner `scripts/real-copy-browser.cjs` utilise des navigateurs neufs et aucun réseau intercepté. Fournir `TEMA_COPY_RECIPE_PATH` vers un fichier privé hors dépôt contenant `apiUrl`, `formationId`, trois `sessionIds` et, pour l’écriture, un participant fictif autorisé. La formation doit être marquée ESSAI ou RECETTE. Par défaut, lecture seule ; `--submit` exige le relevé indépendant et effectue une admission navigateur puis un rejeu HTTP. `TEMA_BROWSER_MATRIX=all` ajoute Firefox/WebKit. Les ID de corrélation sont conservés à côté du fichier privé ; seules des mesures et des états sortent dans la console. Les exports source/vue et les courriels reçus demandent leur preuve distincte.
+
+Le budget mail COPY reste nul avant accord spécifique, sans reset des compteurs. L’ancien TEST et PROD restent inchangés.
+
+Le runner sauvegarde le POST exact dans le fichier privé `.post.private.txt` dès son émission, avant la réponse. Si cet artefact existe déjà, `--submit` refuse de lancer un navigateur : corréler d’abord la source et rejouer exclusivement le payload/UUID conservé. Ne pas supprimer cette preuve pour générer une nouvelle demande. Un rejeu ne renvoie pas les courriels. Pour une nouvelle campagne, prévoir des fixtures et un fichier privé distincts ainsi qu’une nouvelle autorisation d’envoi ; ne jamais remettre les compteurs à zéro.

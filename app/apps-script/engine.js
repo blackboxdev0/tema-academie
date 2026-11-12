@@ -241,17 +241,25 @@ var TemaTrial = (function () {
       });
     }
     function sendChannel(id, channel) {
+      if (deps.canStartMail && !deps.canStartMail()) return;
       var attempt;
       try {
         deps.guard();
         attempt = deps.withLock(function () {
           var data = deps.store.read(), row = data.registrations.find(function (r) { return r.id_inscription === id; });
           if (!row || row['mail_' + channel + '_etat'] !== 'PENDING') return null;
-          var view = dataView(data, deps), v = view.sessions[row.id_cohorte], patch = {}, prefix = 'mail_' + channel + '_';
+          var patch = {}, prefix = 'mail_' + channel + '_';
+          if (deps.suppressCancelledMail && row.statut === 'annulee') {
+            patch[prefix + 'etat'] = 'SUPPRESSED'; patch[prefix + 'error_code'] = 'CANCELLED';
+            deps.store.patch(id, patch); deps.store.flush(); return null;
+          }
+          var view = dataView(data, deps), v = view.sessions[row.id_cohorte];
           if (channel === 'participant' && (row.statut === 'annulee' || !v || !checked(v.formation.actif) || v.revision !== row.session_revision)) {
             patch[prefix + 'etat'] = row.statut === 'annulee' ? 'SUPPRESSED' : 'BLOCKED'; patch[prefix + 'error_code'] = row.statut === 'annulee' ? 'CANCELLED' : 'SESSION_CHANGED';
             deps.store.patch(id, patch); deps.store.flush(); return null;
           }
+          // Deadline guards only a new claim; once claimed, finish without resetting it.
+          if (deps.canStartMail && !deps.canStartMail()) return null;
           var to = channel === 'participant' ? row.courriel : view.params.courriel_avis_tema;
           var budgetError = deps.reserveMail(id, channel, to);
           if (budgetError) { patch[prefix + 'etat'] = 'BLOCKED'; patch[prefix + 'error_code'] = budgetError; deps.store.patch(id, patch); deps.store.flush(); return null; }
@@ -296,20 +304,58 @@ var TemaTrial = (function () {
   function makeIcs(row) {
     var f = JSON.parse(row.formation_snapshot), place = JSON.parse(row.lieu_snapshot);
     if (place.mode === 'en_ligne' && place.lien_visio && !url(place.lien_visio)) throw fault('CONFIG');
-    var location = place.mode === 'presentiel' ? place.adresse_presentiel : place.lien_visio || 'En ligne — lien à venir';
+    var location = place.mode === 'presentiel' ? place.adresse_presentiel : place.lien_visio || 'En ligne : lien à venir';
     var description = place.mode === 'en_ligne' && !place.lien_visio ? 'Le lien de connexion vous sera envoyé dans les jours précédant la formation.' : 'Formation Tema Académie.';
     function stamp(v) { if (!validIso(v)) throw fault('CONFIG'); return v.replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z'); }
     return ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Tema Academie//TEM-6 Trial//FR', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'BEGIN:VEVENT', 'UID:' + icsEscape(row.id_inscription + '@tema-academie.test'), 'DTSTAMP:' + stamp(row.horodatage), 'DTSTART:' + stamp(row.debut_snapshot), 'DTEND:' + stamp(row.fin_snapshot), 'SUMMARY:' + icsEscape(f.titre), 'DESCRIPTION:' + icsEscape(description), 'LOCATION:' + icsEscape(location)].concat(place.mode === 'en_ligne' && place.lien_visio ? ['URL:' + place.lien_visio] : []).concat(['END:VEVENT', 'END:VCALENDAR', '']).map(foldLine).join('\r\n');
   }
   function makeMail(row, params, channel, to, deps) {
     var f = JSON.parse(row.formation_snapshot), place = JSON.parse(row.lieu_snapshot);
-    var location = place.mode === 'presentiel' ? place.adresse_presentiel : place.lien_visio || 'En ligne — lien à venir';
+    function clean(value) {
+      // Les tirets éditoriaux se retirent ; une adresse reste un identifiant exact.
+      return String(value === undefined || value === null ? '' : value).split(/([^\s<>@"']+@[^\s<>@"']+)/g).map(function (part, i) { return i % 2 ? part : part.replace(/\s*[\u2013\u2014]\s*/g, ' : '); }).join('');
+    }
+    function escape(value) { return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+    function html(value) { return escape(clean(value)).replace(/\r\n|\r|\n/g, '<br>'); }
+    function localParts(value) {
+      if (!validIso(value)) throw fault('CONFIG');
+      var local = deps.formatLocal(Date.parse(value)), match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(local);
+      if (!match) throw fault('CONFIG');
+      var months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+      return { day: local.slice(0, 10), date: Number(match[3]) + ' ' + months[Number(match[2]) - 1] + ' ' + match[1], time: Number(match[4]) + ' h' + (match[5] === '00' ? '' : ' ' + match[5]) };
+    }
+    var start = localParts(row.debut_snapshot), end = localParts(row.fin_snapshot);
+    var schedule = (start.day === end.day ? start.date + ', de ' + start.time + ' à ' + end.time : 'Du ' + start.date + ' à ' + start.time + ' au ' + end.date + ' à ' + end.time) + ' (heure de Montréal)';
+    var location = place.mode === 'presentiel' ? place.adresse_presentiel : place.lien_visio || 'En ligne (lien à venir)';
     var pricing = typeof f.prix === 'number' ? (f.prix_qualificatif ? f.prix_qualificatif + ' ' : '') + f.prix + ' $ CAD par participant, taxes en sus' : 'Tarif à confirmer';
-    var logistics = f.titre + '\n' + f.duree + '\n' + pricing + '\n' + deps.formatLocal(Date.parse(row.debut_snapshot)) + ' à ' + deps.formatLocal(Date.parse(row.fin_snapshot)).slice(11) + ' (' + ZONE + ')\n' + location;
+    var logistics = f.titre + '\n' + f.duree + '\n' + pricing + '\n' + schedule + '\n' + (place.mode === 'en_ligne' && place.lien_visio ? location.replace(/[\u2013\u2014]/g, encodeURIComponent) : location);
     var missingLink = place.mode === 'en_ligne' && !place.lien_visio;
     var participantState = row.mail_participant_etat;
-    var body = channel === 'participant' ? 'Votre place est réservée.\n\n' + logistics + '\n\n' + (missingLink ? 'Le lien de connexion vous sera envoyé dans les jours précédant la formation.\n\n' : '') + 'Pour toute question, annulation ou modification : ' + params.courriel_contact : 'Inscription ' + row.id_inscription + ' — statut ' + row.statut + '\n' + row.prenom + ' ' + row.nom + '\n' + row.entreprise + '\n' + row.courriel + '\n' + row.telephone + '\n\n' + logistics + '\n\nConfirmation participant : ' + participantState + (participantState === 'SENT' ? ' (acceptée par le service ; réception non garantie)' : ' — vérifier le suivi et contacter manuellement dans Gmail si nécessaire.') + (missingLink ? '\nLien de connexion à communiquer manuellement aux inscrits.' : '') + (deps.privateSheetUrl ? '\nSuivi privé dans Google Sheets : ' + deps.privateSheetUrl : '');
-    return { to: to, subject: (channel === 'participant' ? '[TEST] Confirmation — ' : '[TEST] Inscription — ') + f.titre.replace(/[\r\n]/g, ' '), body: body, name: String(params.nom_expediteur || 'Tema Académie').replace(/[\r\n]/g, ' '), ics: channel === 'participant' ? makeIcs(row) : null };
+    var mailStates = { PENDING: 'En attente', SENDING: 'En cours d’envoi', SENT: 'Envoyé', FAILED: 'Échec de l’envoi', UNKNOWN: 'Envoi incertain', BLOCKED: 'Envoi bloqué', SUPPRESSED: 'Envoi désactivé' };
+    var participantNotice = 'Confirmation du participant : ' + (mailStates[participantState] || 'À vérifier') + (participantState === 'SENT' ? '' : '. Vérifiez le suivi avant tout nouvel envoi.');
+    var contact = 'Pour toute question, annulation ou modification, écrivez-nous à ' + params.courriel_contact + '.';
+    var body = channel === 'participant' ? 'Bonjour ' + row.prenom + ',\n\nVotre place est réservée.\n\n' + logistics + '\n\n' + (missingLink ? 'Le lien de connexion vous sera envoyé dans les jours précédant la formation.\n\n' : '') + 'Un fichier calendrier est joint à ce courriel pour ajouter la session à votre agenda.\n\n' + contact + '\n\nÀ bientôt,\nTema Académie' : 'Nouvelle inscription confirmée\n\n' + row.prenom + ' ' + row.nom + '\n' + row.entreprise + '\n' + row.courriel + (row.telephone ? '\n' + row.telephone : '') + '\n\n' + logistics + '\n\n' + participantNotice + (missingLink ? '\nLien de connexion à communiquer manuellement aux inscrits.' : '') + (deps.privateSheetUrl ? '\nSuivi privé dans Google Sheets : ' + deps.privateSheetUrl : '') + '\nRéférence : ' + row.id_inscription;
+    function paragraph(content) { return '<p style="margin:0 0 20px;color:#62636F;font-size:15px;line-height:1.7">' + content + '</p>'; }
+    function detail(label, value) { return '<tr><td style="padding:12px 0;border-bottom:1px solid #DEDDDF"><div style="color:#62636F;font-size:12px;line-height:1.5">' + html(label) + '</div><div style="color:#20212B;font-size:15px;line-height:1.6;font-weight:bold;overflow-wrap:anywhere;word-break:break-word">' + value + '</div></td></tr>'; }
+    var locationHtml = html(location);
+    if (place.mode === 'en_ligne' && place.lien_visio && url(place.lien_visio)) locationHtml = '<a href="' + escape(place.lien_visio) + '" style="color:#C6006F;text-decoration:underline">Rejoindre la formation en ligne</a>';
+    var details = '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">' + detail('Date et horaire', html(schedule)) + detail('Format', place.mode === 'presentiel' ? 'Présentiel' : 'En ligne') + detail(place.mode === 'presentiel' ? 'Lieu' : 'Connexion', locationHtml) + detail('Durée', html(f.duree)) + detail('Tarif', html(pricing)) + '</table>';
+    var content = channel === 'participant' ? paragraph('Bonjour ' + html(row.prenom) + ',<br>Votre inscription est confirmée. Nous avons hâte de vous retrouver.') : paragraph('Une nouvelle personne vient de réserver sa place.') + '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse">' + detail('Participant', html(row.prenom + ' ' + row.nom)) + detail('Entreprise', html(row.entreprise)) + detail('Courriel', html(row.courriel)) + (row.telephone ? detail('Téléphone', html(row.telephone)) : '') + '</table><br>';
+    content += '<div style="padding:24px;background:#F8F7F5;border-radius:8px"><p style="margin:0 0 8px;color:#62636F;font-size:12px;font-weight:bold;letter-spacing:1px">VOTRE FORMATION</p><h2 style="margin:0 0 16px;color:#20212B;font-size:24px;line-height:1.3;overflow-wrap:anywhere">' + html(f.titre) + '</h2>' + details + '</div><br>';
+    if (missingLink) content += paragraph(channel === 'participant' ? 'Le lien de connexion vous sera envoyé dans les jours précédant la formation.' : 'Le lien de connexion reste à communiquer manuellement aux inscrits.');
+    if (channel === 'participant') {
+      content += paragraph('Ajoutez cette session à votre agenda à l’aide du fichier calendrier joint à ce courriel.') + paragraph('Une question ou un changement à votre inscription ?');
+      if (email(params.courriel_contact)) content += '<p style="margin:0 0 24px"><a href="mailto:' + encodeURIComponent(params.courriel_contact) + '" style="display:inline-block;background:#20212B;color:#FFFFFF;padding:14px 22px;text-decoration:none;border-radius:4px;font-size:14px;font-weight:bold">Nous contacter</a></p>';
+      content += paragraph(html(contact)) + paragraph('À bientôt,<br><strong style="color:#20212B">L’équipe Tema Académie</strong>');
+    } else {
+      content += paragraph(html(participantNotice));
+      if (deps.privateSheetUrl && url(deps.privateSheetUrl)) content += paragraph('<a href="' + escape(deps.privateSheetUrl) + '" style="color:#C6006F;text-decoration:underline">Consulter le suivi privé des inscriptions</a>');
+      content += paragraph('Référence : ' + html(row.id_inscription));
+    }
+    var title = channel === 'participant' ? 'Votre place est réservée.' : 'Nouvelle inscription.';
+    var brand = deps.mailLogo ? '<table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:collapse"><tr><td style="background:#FFFFFF"><img src="cid:temaLogo" alt="Tema Solutions" width="160" height="58" style="display:block;width:160px;max-width:100%;height:auto;border:0"></td><td style="padding-left:16px;color:#20212B;font-size:15px;vertical-align:middle">Académie</td></tr></table>' : '<span style="font-size:28px;color:#62636F;letter-spacing:2px">TEMA</span><span style="color:#20212B;font-size:16px">&nbsp; Académie</span>';
+    var htmlBody = '<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + title + '</title></head><body style="margin:0;padding:0;background:#F8F7F5;font-family:Arial,sans-serif"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;background:#F8F7F5"><tr><td align="center" style="padding:24px 12px"><!--[if mso]><table role="presentation" width="600" cellpadding="0" cellspacing="0"><tr><td><![endif]--><table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;border-collapse:collapse;background:#FFFFFF"><tr><td style="padding:26px 24px;border-top:4px solid #FF008F;border-bottom:1px solid #DEDDDF;background:#FFFFFF">' + brand + '</td></tr><tr><td style="padding:32px 24px"><p style="margin:0 0 12px;color:#C6006F;font-size:12px;font-weight:bold;letter-spacing:1px">' + (channel === 'participant' ? 'INSCRIPTION CONFIRMÉE' : 'SUIVI DES INSCRIPTIONS') + '</p><h1 style="margin:0 0 24px;color:#20212B;font-size:30px;line-height:1.2">' + title + '</h1>' + content + '</td></tr><tr><td style="padding:20px 24px;border-top:1px solid #DEDDDF;color:#62636F;font-size:12px;line-height:1.6">Tema Académie<br>Formations Divalto, Dimo et MoovApps</td></tr></table><!--[if mso]></td></tr></table><![endif]--></td></tr></table></body></html>';
+    return { to: to, subject: clean((channel === 'participant' ? '[TEST] Confirmation de votre inscription : ' : '[TEST] Nouvelle inscription : ') + f.titre).replace(/[\r\n]/g, ' '), body: clean(body), htmlBody: htmlBody, name: clean(params.nom_expediteur || 'Tema Académie').replace(/[\r\n]/g, ' '), ics: channel === 'participant' ? makeIcs(row) : null };
   }
   function prepareAdministration(data, deps, nextCounter) {
     var patches = [], capacityInitializations = [], counter = nextCounter === undefined ? 0 : nextCounter;
@@ -435,6 +481,6 @@ var TemaTrial = (function () {
     });
     return result;
   }
-  return { nextRateBudget: nextRateBudget, importCatalogue: importCatalogue, HEADERS: HEADERS, canonical: canonical, fingerprintInput: fingerprintInput, decodeForm: decodeForm, tableRows: tableRows, envelope: envelope, publicCatalogue: publicCatalogue, localToUtc: localToUtc, revisionInput: revisionInput, createService: createService, makeIcs: makeIcs, makeMail: makeMail, prepareAdministration: prepareAdministration, formationIssues: formationIssues, inertCell: inertCell, fault: fault };
+  return { validUrl: url, nextRateBudget: nextRateBudget, importCatalogue: importCatalogue, HEADERS: HEADERS, canonical: canonical, fingerprintInput: fingerprintInput, decodeForm: decodeForm, tableRows: tableRows, envelope: envelope, publicCatalogue: publicCatalogue, localToUtc: localToUtc, revisionInput: revisionInput, createService: createService, makeIcs: makeIcs, makeMail: makeMail, prepareAdministration: prepareAdministration, formationIssues: formationIssues, inertCell: inertCell, fault: fault };
 }());
 if (typeof module !== 'undefined' && module.exports) module.exports = TemaTrial;

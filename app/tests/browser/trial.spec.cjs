@@ -27,7 +27,9 @@ async function fill(page) {
 test('AC-06/10/14/15 — inscription accessible, confirmation place/email distincts, no PII URL/storage', async ({ page }) => {
   const { h } = await setup(page); await fill(page); await page.getByRole('button', { name: 'Confirmer mon inscription', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Votre place est réservée' })).toBeVisible(); await expect(page.locator('#mail-message')).toContainText('service d’envoi'); expect(h.data.registrations.length).toBe(1);
-  expect(page.url()).not.toContain('participant'); expect(await page.evaluate(() => localStorage.length + sessionStorage.length)).toBe(0);
+  const storedPublic = await page.evaluate(() => JSON.stringify({...localStorage, ...sessionStorage}));
+  for (const privateValue of ['participant@example.invalid', 'Entreprise essai', 'id_inscription', 'mail_participant']) expect(storedPublic).not.toContain(privateValue);
+  expect(page.url()).not.toContain('participant'); expect(await page.evaluate(() => Object.keys(localStorage).filter(k => !k.startsWith('tema-public-v2:')).length + sessionStorage.length)).toBe(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 test('AC-07 — date devenue complète garde les coordonnées et propose un changement de date', async ({ page }) => {
@@ -75,10 +77,12 @@ test('audit R8 — reconfirmation après renommage aligne le titre et le récapi
   await expect(page.locator('#form-title')).toHaveText('Inscription à Nouveau titre fictif');
 });
 test('AC-08 — réponse perdue puis reprise conserve la même demande sans doublon/envoi', async ({ page }) => {
-  const { h, commands } = await setup(page, { drop: true }); await fill(page); await page.getByRole('button', { name: 'Confirmer mon inscription', exact: true }).click();
+  let attempts = 0, releaseRetry; const retryGate = new Promise(resolve => { releaseRetry = resolve; });
+  const { h, commands } = await setup(page, { drop: true, beforeReply: async () => { if (++attempts === 2) await retryGate; } }); await fill(page); await page.getByRole('button', { name: 'Confirmer mon inscription', exact: true }).click();
   await expect(page.locator('#form-status')).toContainText('inconnu'); await expect(page.locator('#prenom')).toBeDisabled();
   await page.goBack(); await expect(page.locator('#registration')).toBeVisible(); await expect(page.locator('#retry')).toBeVisible();
-  await page.getByRole('button', { name: 'Reprendre mon inscription' }).click(); await expect(page.getByRole('heading', { name: 'Votre place est réservée' })).toBeVisible();
+  try { await page.getByRole('button', { name: 'Reprendre mon inscription' }).click(); await expect(page.locator('#processing-title')).toBeFocused(); await expect(page.locator('#registration')).toBeHidden(); await expect(page.locator('#result')).toBeHidden(); await expect.poll(() => commands.length).toBe(2); expect(commands[0]).toEqual(commands[1]); } finally { releaseRetry(); }
+  await expect(page.getByRole('heading', { name: 'Votre place est réservée' })).toBeVisible();
   expect(commands[0]).toEqual(commands[1]); expect(h.data.registrations.length).toBe(1); expect(h.messages.length).toBe(2);
 });
 test('AC-08 — réponse lente à vingt secondes reste en cours puis confirme sans reprise ni renvoi', async ({ page }) => {
@@ -89,7 +93,7 @@ test('AC-08 — réponse lente à vingt secondes reste en cours puis confirme sa
   await fill(page); await page.locator('#submit').click(); await replyHeld;
   try {
     await page.clock.fastForward(20000);
-    await expect(page.locator('#form-status')).toHaveText('Enregistrement en cours…');
+    await expect(page.locator('#processing')).toBeVisible(); await expect(page.locator('#processing-title')).toHaveText('Nous enregistrons votre inscription'); await expect(page.locator('#result')).toBeHidden(); await expect(page.locator('#registration')).toBeHidden();
     await expect(page.locator('#retry')).toBeHidden(); await expect(page.locator('#submit')).toBeDisabled(); await expect(page.locator('#prenom')).toBeDisabled();
     expect(commands).toHaveLength(1); expect(h.data.registrations).toHaveLength(1); expect(h.messages).toHaveLength(2);
   } finally { releaseReply(); }
@@ -125,8 +129,8 @@ test('AC-13 — conditions modifiées demandent relecture puis nouvel accord/nou
 });
 test('AC-02/14 — fermeture/inactivation visibles à l’actualisation, HTML inerte', async ({ page }) => {
   const { h } = await setup(page); h.data.formations[0].titre = '<img src=x onerror="window.XSS=1">'; h.data.sessions[0].inscriptions_ouvertes = false;
-  await page.getByRole('button', { name: 'Actualiser les dates' }).click(); await expect(page.locator('#formations')).toContainText('<img src=x'); expect(await page.evaluate(() => window.XSS)).toBeUndefined(); expect(await page.locator('#formations img').count()).toBe(0); await expect(page.locator('#formations a')).toHaveCount(1);
-  h.data.formations[0].actif = false; await page.getByRole('button', { name: 'Actualiser les dates' }).click(); await expect(page.locator('#catalogue-status')).toContainText('Aucune formation disponible');
+  await page.evaluate(() => window.dispatchEvent(new Event('focus'))); await expect(page.locator('#formations')).toContainText('<img src=x'); expect(await page.evaluate(() => window.XSS)).toBeUndefined(); expect(await page.locator('#formations img').count()).toBe(0); await expect(page.locator('#formations a')).toHaveCount(1);
+  h.data.formations[0].actif = false; await page.evaluate(() => window.dispatchEvent(new Event('focus'))); await expect(page.locator('#catalogue-status')).toContainText('Aucune formation disponible');
 });
 for (const [name, corrupt] of [
   ['erreur null', (result, command) => ({ ...require('../../apps-script/engine.js').envelope('INVALID', command), errors: [null] })],

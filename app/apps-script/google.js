@@ -151,13 +151,14 @@ function trialDependencies_() {
       var injected = PropertiesService.getScriptProperties().getProperty('TRIAL_SIMULATE_MAIL_FAILURE');
       if (injected === 'ALL' || injected === 'PARTICIPANT' && message.ics) throw TemaTrial.fault('SIMULATED_MAIL_FAILURE');
       var options = { to: message.to, subject: message.subject, body: message.body, name: message.name };
+      if (message.htmlBody) options.htmlBody = message.htmlBody;
       if (message.ics) options.attachments = [Utilities.newBlob(message.ics, 'text/calendar; charset=UTF-8', 'formation.ics')];
       MailApp.sendEmail(options);
     } }
   };
 }
 function trialJson_(value) { return ContentService.createTextOutput(JSON.stringify(value)).setMimeType(ContentService.MimeType.JSON); }
-function doGet(e) { return trialJson_(TemaTrial.createService(trialDependencies_()).catalogue()); }
+function doGet(e) { return trialJson_(trialGroupedCatalogue_()); }
 function doPost(e) {
   var command;
   try {

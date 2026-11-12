@@ -1,10 +1,18 @@
 # Exploiter Tema Académie — Google TEST
 
+> Copie privée, 10 novembre : l’onglet Paramètres est retiré. Sa configuration est dans `app/experiments/copy-config.gs` (depuis la racine du dépôt) et les lectures portent sur trois tables métier. Les procédures Paramètres ci-dessous restent celles de l’ancien TEST. Voir le rapport `docs/project/acceptance/code-config-copy-2026-11-10.md`. Ne pas installer le backend TEST dans la copie.
+
+## Copie administrable — raccordement préparé le 4 novembre
+
+Le GO de raccordement/recette est reçu ; le candidat est prêt localement mais pas encore installé dans Google. [Rapport](acceptance/copy-site-2026-11-04.md) et [commandes](../../app/README.md). Ne pas appliquer les installateurs/réparateurs plats décrits plus bas à la copie par sections. Utiliser exclusivement son constructeur et son projet lié dédiés. Les paragraphes suivants décrivent l’ancien TEST, qui reste préservé.
+
+Depuis le2novembre2026, le lecteur public normal utilise Sheets APIv4 (service avancé déclaré dans le manifeste, activation TEST approuvée explicitement). Importer le manifeste complet du build et préserver la configuration webapp existante ; une future activation dans un autre projet conserve son accord propre. Les quatre tables restent nécessaires pour la validation/recomptage. Dates texte canoniques : un appel groupé ; dates/heures natives numériques : second appel conditionnel de formats. Aucun catalogue statique ni cache navigateur à régénérer. [Rapport courant](acceptance/durable-catalogue-2026-11-02.md).
+
 La cible courante est locale + Google TEST. Fusion/main, Métier, démonstration Vercel et bascule FTP ont leurs GO propres. Les dates de recette sont fictives ; « à venir » dans le classeur client ne crée aucune vraie session. Les données privées et les preuves nominatives restent hors dépôt et Linear.
 
 ## État de recette remis le30octobre2026
 
-Le candidat courant est installé : version TEST8 et HEAD identique, bundle b0737bb59743… (neuf correctifs revus),24formations source publiques, trois dates2027 fictives ouvertes, ancienne fixture masquée. Les quatre réservations nouvelles de la campagne ont été annulées sans supprimer les lignes ; les cinq historiques sont préservées. Budget persistant8/10inscriptions avec tentative et16/20destinataires : deux tentatives avec envoi restent pour Sofiane, uniquement vers les boîtes déjà autorisées ; relire `inspectTrial` avant de les utiliser. Aucun reset implicite avec le quota quotidien.
+Le candidat courant est installé : version TEST14 et HEAD identique, bundle a2009f22df34… (lecture groupée fraîche, sans copie du catalogue),24formations source publiques, trois dates2027 fictives ouvertes, ancienne fixture masquée. Les quatre réservations nouvelles de la campagne ont été annulées sans supprimer les lignes ; les cinq historiques sont préservées. Budget persistant8/10inscriptions avec tentative et16/20destinataires : deux tentatives avec envoi restent pour Sofiane, uniquement vers les boîtes déjà autorisées ; relire `inspectTrial` avant de les utiliser. Aucun reset implicite avec le quota quotidien.
 
 onEdit reste actif ; le secours a été testé à cinq minutes puis remis au repos12heures. Pour recetter à nouveau le secours, exécuter `installV1TrialTriggers` avant l’essai borné. La lecture du site et l’admission restent fondées sur les valeurs courantes ; les éditions ordinaires passent par onEdit. Ne pas rejouer `installTrial` ou réimporter pour démarrer la recette. [Résultats, candidat et limites](acceptance/V1-results.md).
 

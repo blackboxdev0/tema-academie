@@ -116,12 +116,12 @@ test('AC-02/ET-05: inactive formation prevents registration and preserves histor
 });
 test('AC-10/ET-06: participant first, Tema second, snapshots/ICS used; mail accepted does not imply reception', () => {
   const h = harness(), c = h.command(); const r = h.service.submit(c);
-  assert.equal(r.mail_status, 'SENT'); assert.equal(h.messages.length, 2); assert.ok(h.messages[0].ics); assert.equal(h.messages[1].ics, null); assert.ok(h.messages[1].body.includes('SENT'));
+  assert.equal(r.mail_status, 'SENT'); assert.equal(h.messages.length, 2); assert.ok(h.messages[0].ics); assert.equal(h.messages[1].ics, null); assert.ok(h.messages[1].body.includes('Envoyé') && !h.messages[1].body.includes('réception non garantie'));
   assert.ok(h.messages[0].body.includes('PRIVATE_VIDEO')); assert.ok(h.messages[0].ics.includes('URL:https://example.invalid/PRIVATE_VIDEO'));
 });
 test('AC-10/ET-06: no online link still records, ICS without URL, Tema manual follow-up', () => {
   const h = harness(); h.data.sessions[0].lieu_ou_lien = ''; h.service.submit(h.command());
-  assert.ok(h.messages[0].body.includes('jours précédant')); assert.ok(h.messages[0].ics.includes('En ligne — lien à venir')); assert.ok(!h.messages[0].ics.includes('\r\nURL:')); assert.ok(h.messages[1].body.includes('communiquer manuellement'));
+  assert.ok(h.messages[0].body.includes('jours précédant')); assert.ok(h.messages[0].ics.includes('En ligne : lien à venir')); assert.ok(!h.messages[0].ics.includes('\r\nURL:')); assert.ok(h.messages[1].body.includes('communiquer manuellement'));
 });
 test('AC-10/ET-06: in-person address identical in public and mail snapshots', () => {
   const h = harness(), cat = h.service.catalogue(), s = cat.sessions[1];
@@ -142,7 +142,7 @@ test('AC-11/ET-07: RFC5545 CRLF, UTF-8 octet folding, escaped text, stable UID, 
 });
 test('AC-12/ET-08: participant detected failure keeps place; only Tema alert attempted next', () => {
   const h = harness({ failParticipant: true }), c = h.command(); const r = h.service.submit(c);
-  assert.equal(r.recording_status, 'recorded'); assert.equal(r.mail_status, 'FAILED'); assert.equal(h.data.registrations[0].statut, 'confirmee'); assert.equal(h.messages.length, 2); assert.ok(h.messages[1].body.includes('FAILED'));
+  assert.equal(r.recording_status, 'recorded'); assert.equal(r.mail_status, 'FAILED'); assert.equal(h.data.registrations[0].statut, 'confirmee'); assert.equal(h.messages.length, 2); assert.ok(h.messages[1].body.includes('Échec de l’envoi'));
   h.service.submit(c); assert.equal(h.messages.length, 2);
 });
 test('AC-12/ET-08: global failure stops after two attempts, no recursive third alert', () => {
@@ -163,7 +163,7 @@ test('AC-12/ET-08: cancellation/changed conditions before initial send suppress/
 });
 test('AC-14/ET-10: formula and HTML inputs inert in Sheet values/plain mail/ICS and no CRLF subject injection', () => {
   const h = harness(); h.service.submit(h.command({ prenom: '=SUM(1,2)', entreprise: '<script>alert(1)</script>' }));
-  assert.equal(T.inertCell(h.data.registrations[0].prenom), "'=SUM(1,2)"); assert.ok(h.messages[1].body.includes('<script>')); assert.ok(!h.messages[0].subject.includes('\n')); assert.equal(h.messages[0].htmlBody, undefined);
+  assert.equal(T.inertCell(h.data.registrations[0].prenom), "'=SUM(1,2)"); assert.ok(h.messages[1].body.includes('<script>')); assert.ok(!h.messages[0].subject.includes('\n')); assert.ok(h.messages[1].htmlBody.includes('&lt;script&gt;')); assert.ok(!h.messages[1].htmlBody.includes('<script>'));
 });
 test('AC-04/ET-09: one generator for paste/import, inactive/closed defaults, monotonic IDs and no reallocation', () => {
   const data = fixture(); data.formations.push({ id: '', logiciel: 'DIV — Divalto', titre: 'Érgonomie !', actif: '' }); data.sessions.push({ id_cohorte: '', inscriptions_ouvertes: '', places_max: 4 });

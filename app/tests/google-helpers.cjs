@@ -54,7 +54,23 @@ function googleContext(empty = false, options = {}) {
     Utilities: { getUuid: () => crypto.randomUUID(), formatDate: (date, zone, pattern) => { const t = formatLocal(date.getTime()); return pattern === 'yyyy-MM-dd' ? t.slice(0, 10) : pattern === 'HH:mm' ? t.slice(11) : t; }, computeDigest: (algorithm, str) => [...crypto.createHash('sha256').update(str).digest()].map(n => n > 127 ? n - 256 : n), DigestAlgorithm: { SHA_256: 'SHA_256' }, Charset: { UTF_8: 'UTF_8' }, newBlob: (content, type, name) => ({ content, type, name }) },
     ContentService: { createTextOutput: str => ({ text: str, setMimeType() { return this; } }), MimeType: { JSON: 'application/json' } }
   });
-  const scripts = options.bundlePath ? [options.bundlePath] : ['engine.js', 'google.js'].map(name => path.join(__dirname, '..', 'apps-script', name));
+  context.Sheets = { Spreadsheets: {
+    Values: { batchGet(id, options) {
+      assert.equal(id, properties.get('SPREADSHEET_ID')); events.push('batchread');
+      return { valueRanges: options.ranges.map(range => {
+        const name = range.split('!')[0].replaceAll("'", ''); const tab = tabs[name];
+        return { values: tab.values.map(line => line.map((value, column) => {
+          if (!(value instanceof Date)) return value;
+          const local = formatLocal(value.getTime()), key = tab.values[0][column];
+          if (key === 'date') return (Date.parse(local.slice(0,10)+'T00:00:00Z')-Date.UTC(1899,11,30))/86400000;
+          if (key === 'heure_debut' || key === 'heure_fin') return (Number(local.slice(11,13))*60+Number(local.slice(14,16)))/1440;
+          return value.toISOString();
+        })) };
+      }) };
+    } },
+    get() { const tab=tabs['Disponibilités']; return {sheets:[{properties:{title:'Disponibilités'},data:[{rowData:tab.values.map(line=>({values:line.map((value,column)=>({effectiveFormat:{numberFormat:{type:value instanceof Date?(tab.values[0][column]==='date'?'DATE':'TIME'):'NUMBER'}}}))}))}]}]}; }
+  } };
+  const scripts = options.bundlePath ? [options.bundlePath] : ['engine.js', 'google.js', 'catalogue.js'].map(name => path.join(__dirname, '..', 'apps-script', name));
   for (const file of scripts) vm.runInContext(fs.readFileSync(file, 'utf8'), context, { filename: file });
   return { context, properties, tabs, sent, events, validations, logs, mutations, setQuota: n => { quota = n; }, setAcquire: v => { acquire = v; } };
 }

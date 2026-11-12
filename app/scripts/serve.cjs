@@ -12,4 +12,4 @@ http.createServer((req, res) => {
   const file = path.join(root, name);
   try { const contents = fs.readFileSync(file); res.writeHead(200, { 'Content-Type': asset || (name.endsWith('.js') ? 'text/javascript; charset=utf-8' : name.endsWith('.css') ? 'text/css; charset=utf-8' : 'text/html; charset=utf-8'), 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer' }); res.end(contents); }
   catch (_) { res.writeHead(404); res.end('Build the static site first.'); }
-}).listen(port, '127.0.0.1', () => console.log(`Static TEST preview: http://127.0.0.1:${port}`));
+}).listen(port, '127.0.0.1', () => console.log(`Static local preview: http://127.0.0.1:${port}`));

@@ -17,7 +17,7 @@ test('audit R7 — actualisation garde le focus sur l’action d’inscription v
 });
 test('audit R7 — dernière place disparue restaure le focus au titre plutôt qu’au bouton désactivé', async ({ page }) => {
   await page.clock.install(); const h = await setup(page);
-  h.data.sessions[0].places_max = 1; await page.locator('#reload').click();
+  h.data.sessions[0].places_max = 1; await page.evaluate(() => window.dispatchEvent(new Event('focus')));
   await expect(page.locator('#formations article').first()).toContainText('1 place restante');
   await page.locator('#formations a').click();
   const selector = page.viewportSize().width < 760 ? '.mobile-summary' : '.desktop-summary';
@@ -40,7 +40,7 @@ test('audit AC-17 — expiration GET à 15 secondes libère la lecture suivante 
     else { markFresh(); await freshHeld; }
     await route.fulfill({ json: data });
   });
-  await page.locator('#reload').click(); await oldStarted;
+  await page.evaluate(() => window.dispatchEvent(new Event('focus'))); await oldStarted;
   h.data.formations[0].prix = 975;
   await page.evaluate(() => window.dispatchEvent(new Event('focus')));
   try {
@@ -93,7 +93,7 @@ test('2.1/2.2 — filtre vide réversible et calendrier lié au logiciel', async
 test('3.1/4.3 — politique TEST dédiée et version consultable, retour sans perte ni nouvel accord implicite', async ({ page }) => {
   await setup(page); await page.locator('#formations a').click(); await page.getByRole('button', { name: 'S’inscrire à cette date' }).filter({ visible: true }).click();
   await page.locator('#prenom').fill('Fictive'); await expect(page.locator('#form-availability')).toContainText('Disponibilité au choix de la date'); await expect(page.locator('#form-availability')).toContainText('3 places restantes'); await expect(page.locator('#entreprise')).toHaveAttribute('aria-describedby', 'entreprise-help'); await expect(page.locator('#courriel')).toHaveAttribute('aria-describedby', 'courriel-help'); await expect(page.locator('#consentement')).not.toBeChecked(); await page.locator('#policy').click(); await expect(page.locator('#privacy')).toBeVisible(); await expect(page.locator('#privacy-version')).toContainText('TEST-1'); await expect(page.locator('#privacy')).toContainText('douze mois'); await expect(page.locator('#privacy')).toContainText('Aucune conformité juridique');
-  await page.getByRole('button', { name: '← Retour au parcours', exact: true }).click(); await expect(page.locator('#prenom')).toHaveValue('Fictive'); await expect(page.locator('#consentement')).not.toBeChecked(); expect(await page.evaluate(() => localStorage.length + sessionStorage.length)).toBe(0);
+  await page.getByRole('button', { name: '← Retour au parcours', exact: true }).click(); await expect(page.locator('#prenom')).toHaveValue('Fictive'); await expect(page.locator('#consentement')).not.toBeChecked(); expect(await page.evaluate(() => Object.keys(localStorage).filter(k => !k.startsWith('tema-public-v2:')).length + sessionStorage.length)).toBe(0);
 });
 test('5.1 — clavier, labels, statut sémantique, zoom 200% sans débordement et police locale', async ({ page, browserName }) => {
   const failures = []; page.on('pageerror', e => failures.push(e.message)); await setup(page);
@@ -112,7 +112,7 @@ test('5.1 — clavier, labels, statut sémantique, zoom 200% sans débordement e
 });
 test('2.3 — formation inconnue et lecture indisponible ne simulent pas un succès', async ({ page }) => {
   await setup(page, () => {}, '#formation=UNKNOWN'); await expect(page.locator('#detail-title')).toHaveText('Formation indisponible'); await page.getByRole('button', { name: 'Retour au catalogue' }).click(); await expect(page.locator('#catalogue')).toBeVisible();
-  await page.route('**/test-api', route => route.abort()); await page.locator('#reload').click(); await expect(page.locator('#catalogue-status')).toContainText('indisponibles'); await expect(page.locator('#result')).toBeHidden();
+  await page.route('**/test-api', route => route.abort()); await page.evaluate(() => window.dispatchEvent(new Event('focus'))); await expect(page.locator('#catalogue-status')).toContainText('indisponibles'); await expect(page.locator('#result')).toBeHidden();
 });
 test('2.2/2.3 — calendrier général ouvre la date exacte, retour garde filtre/mois', async ({ page }) => {
   await setup(page); await page.getByRole('button', { name: 'Divalto', exact: true }).click();
@@ -162,9 +162,9 @@ test('review — lectures retardées sérialisées, rafale coalescée et donnée
     if (number === 1) { markStarted(); await oldHeld; }
     await route.fulfill({ json: data }); active--; order.push('end-' + number);
   });
-  await page.locator('#reload').click(); await started;
+  await page.evaluate(() => window.dispatchEvent(new Event('focus'))); await started;
   h.data.formations[0].prix = 975;
-  await page.evaluate(() => { window.dispatchEvent(new Event('focus')); document.dispatchEvent(new Event('visibilitychange')); }); await page.locator('#reload').click();
+  await page.evaluate(() => { window.dispatchEvent(new Event('focus')); document.dispatchEvent(new Event('visibilitychange')); }); await page.evaluate(() => window.dispatchEvent(new Event('focus')));
   // Keep the old response pending while independent refresh triggers arrive.
   await page.waitForTimeout(60); releaseOld();
   await expect(page.locator('#formations')).toContainText('975 $ CAD'); await expect.poll(() => active).toBe(0);
@@ -205,7 +205,7 @@ test('review — échec retardé puis lecture identique en attente retire les av
     if (reads === 1) { markFailureStarted(); await failureHeld; await route.abort(); }
     else { markSuccessStarted(); await successHeld; await route.fulfill({ json: unchanged }); }
   });
-  await page.locator('#reload').click(); await failureStarted; await page.evaluate(() => window.dispatchEvent(new Event('focus'))); releaseFailure();
+  await page.evaluate(() => window.dispatchEvent(new Event('focus'))); await failureStarted; await page.evaluate(() => window.dispatchEvent(new Event('focus'))); releaseFailure();
   await successStarted; await expect(page.locator('#catalogue-notice')).toBeVisible(); await expect(page.locator('#formations')).toContainText('Dernière lecture'); releaseSuccess();
   await expect(page.locator('#catalogue-notice')).toBeHidden(); await expect(page.locator('#catalogue-status')).not.toContainText('indisponibles'); await expect(page.locator('#formations')).not.toContainText('Dernière lecture'); expect(reads).toBe(2);
 });

@@ -1,6 +1,14 @@
 {
   "timeZone": "America/Toronto",
-  "dependencies": {},
+  "dependencies": {
+    "enabledAdvancedServices": [
+      {
+        "userSymbol": "Sheets",
+        "version": "v4",
+        "serviceId": "sheets"
+      }
+    ]
+  },
   "exceptionLogging": "NONE",
   "runtimeVersion": "V8",
   "oauthScopes": [

@@ -34,7 +34,8 @@ function toronto(stamp) {
 function admitted(mutator = () => {}) { const h = harness({ now: Date.parse('2026-12-01T12:00:00Z') }); mutator(h.data); assert.equal(h.service.register(h.command()).code, 'RECORDED'); return h.data.registrations[0]; }
 
 test('generated Code.gs exposes doGet/doPost and preserves one booking/two simulated messages on replay', () => {
-  const bundlePath = path.resolve(__dirname, '../../dist/apps-script/Code.gs');
+  const folder = require('../../scripts/local-profile.cjs').resolve().environment === 'COPY' ? 'apps-script-TEST-reference' : 'apps-script';
+  const bundlePath = path.resolve(__dirname, '../../dist', folder, 'Code.gs');
   const g = googleContext(false, { bundlePath });
   assert.equal(typeof g.context.doGet, 'function'); assert.equal(typeof g.context.doPost, 'function');
   const cat = JSON.parse(g.context.doGet({}).text);
@@ -75,7 +76,7 @@ test('calendar online link and missing-link variants preserve the actual destina
   const row = admitted();
   const online = readIcs(T.makeIcs(row)); assert.equal(online.get('URL'), 'https://example.invalid/PRIVATE_VIDEO'); assert.equal(online.get('LOCATION'), online.get('URL'));
   row.lieu_snapshot = JSON.stringify({ mode: 'en_ligne', adresse_presentiel: null, lien_visio: null });
-  const absent = readIcs(T.makeIcs(row)); assert.equal(absent.has('URL'), false); assert.equal(unescapeText(absent.get('LOCATION')), 'En ligne — lien à venir'); assert.match(unescapeText(absent.get('DESCRIPTION')), /jours précédant/);
+  const absent = readIcs(T.makeIcs(row)); assert.equal(absent.has('URL'), false); assert.equal(unescapeText(absent.get('LOCATION')), 'En ligne : lien à venir'); assert.match(unescapeText(absent.get('DESCRIPTION')), /jours précédant/);
 });
 
 for (const [name, start, end] of [['winter', '2027-01-15 09:00', '2027-01-15 12:00'], ['summer', '2027-07-15 09:30', '2027-07-15 12:00']]) {
