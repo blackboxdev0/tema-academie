@@ -29,36 +29,42 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 10-30-2026 15:16
-last_updated: 10-30-2026 20:22
+last_updated: 11-12-2026
 project: Tema Académie
 # Contre-audit 2026-10-30 : réserves ouvertes dans acceptance/independent-audit-2026-10-30.md.
 # Correctifs déployés TEST8 et contrôlés ; Safari lecture/formulaire et Apple import/export vérifiés. Recette finale en cours ; UX différée.
+# Checkpoint 2026-11-12 : démo acceptée par Sofiane, fusion humaine et publication Vercel ; nettoyage vérifié24/3/0.
+# Correctif inscription-arriere-plan-demo done ; recette client ouverte (TEM-27 In Progress).
+# Réconciliation autorisée et relue dans Linear :17 Done,6 Review,1 In Progress sur TEM-5 à TEM-28.
+# Epics1 à3 et stories1.1 à4.2 done ; epic4 reste in-progress à cause de4.3.
+# Epic5 ouvert pour accessibilité/CI, recette et remise ; aucune réserve de contraste effacée.
+# Preuves courantes : docs/project/acceptance/vercel-demo-2026-11-12.md et processing-demo-2026-11-12.md.
 project_key: NOKEY
 tracking_system: file-system
 story_location: _bmad-output/implementation-artifacts
 development_status:
-  epic-1: in-progress
-  1-1-préparer-le-catalogue-fidèle-et-administrable: review
-  1-2-préparer-et-ouvrir-des-dates-avec-capacité-configurable: review
-  1-3-actualiser-les-modifications-et-rattraper-un-traitement-manq: review
+  epic-1: done
+  1-1-préparer-le-catalogue-fidèle-et-administrable: done
+  1-2-préparer-et-ouvrir-des-dates-avec-capacité-configurable: done
+  1-3-actualiser-les-modifications-et-rattraper-un-traitement-manq: done
   epic-1-retrospective: optional
 
-  epic-2: in-progress
-  2-1-consulter-et-filtrer-le-catalogue-des-formations: review
-  2-2-parcourir-le-calendrier-général-sur-ordinateur-et-téléphone: review
-  2-3-lire-la-fiche-et-sélectionner-explicitement-une-date: review
+  epic-2: done
+  2-1-consulter-et-filtrer-le-catalogue-des-formations: done
+  2-2-parcourir-le-calendrier-général-sur-ordinateur-et-téléphone: done
+  2-3-lire-la-fiche-et-sélectionner-explicitement-une-date: done
   epic-2-retrospective: optional
 
-  epic-3: in-progress
-  3-1-confirmer-une-inscription-unique-aux-conditions-présentées: review
-  3-2-reprendre-un-résultat-incertain-et-reconfirmer-des-condition: review
-  3-3-recevoir-confirmation-invitation-et-avis-interne-fidèles: review
-  3-4-conserver-la-place-et-un-suivi-honnête-lorsque-l-envoi-échou: review
+  epic-3: done
+  3-1-confirmer-une-inscription-unique-aux-conditions-présentées: done
+  3-2-reprendre-un-résultat-incertain-et-reconfirmer-des-condition: done
+  3-3-recevoir-confirmation-invitation-et-avis-interne-fidèles: done
+  3-4-conserver-la-place-et-un-suivi-honnête-lorsque-l-envoi-échou: done
   epic-3-retrospective: optional
 
   epic-4: in-progress
-  4-1-annuler-et-réinscrire-sans-effacer-l-historique: review
-  4-2-reprogrammer-une-session-avec-suivi-manuel-des-participants: review
+  4-1-annuler-et-réinscrire-sans-effacer-l-historique: done
+  4-2-reprogrammer-une-session-avec-suivi-manuel-des-participants: done
   4-3-consulter-exporter-et-nettoyer-les-données-selon-la-politiqu: review
   epic-4-retrospective: optional
 

@@ -453,6 +453,36 @@
         "public_release_approved": false
       },
       "mail_budget_snapshot_scope": "last_verified_before_owner_final_manual_test"
+    },
+    "demo_data_cleanup_20261112": {
+      "status": "completed_real_google_and_public_site_verified",
+      "formations_retained": 24,
+      "sessions_retained": 3,
+      "registrations_remaining": 0,
+      "private_backup_verified": true,
+      "retained_business_data_unchanged": true,
+      "mail_budgets_unchanged": true,
+      "native_code_restored_exactly": true,
+      "report": "docs/project/acceptance/vercel-demo-2026-11-12.md"
+    },
+    "linear_reconciliation_20261112": {
+      "status": "applied_and_read_back",
+      "scope": "TEM-5_to_TEM-28",
+      "done": 17,
+      "review": 6,
+      "in_progress": 1,
+      "open_issues": [
+        "TEM-10",
+        "TEM-11",
+        "TEM-24",
+        "TEM-25",
+        "TEM-26",
+        "TEM-27",
+        "TEM-28"
+      ],
+      "report": "docs/project/acceptance/etat-projet-2026-11-12.md",
+      "bmad_registry": "docs/project/planning/linear-v1.json",
+      "owner_authorized": true
     }
   },
   "delivery": {
@@ -1042,7 +1072,7 @@
       "verified": false
     },
     "development_breakdown": {
-      "status": "implemented_before_final_owner_recipe",
+      "status": "owner_accepted_demo_integrated_client_handover_open",
       "prepared_on": "2026-10-26",
       "skill": "bmad-create-epics-and-stories",
       "artifact": "_bmad-output/planning-artifacts/epics.md",
@@ -1052,7 +1082,7 @@
       "epic_count": 5,
       "story_count": 17,
       "linear_registry": "docs/project/planning/linear-v1.json",
-      "linear_status": "Review",
+      "linear_status": "17_Done_6_Review_1_In_Progress_including_definition_and_trial",
       "active_human_effort_remaining_proposal_days": 3,
       "base_days": 2.5,
       "reserve_days": 0.5,
@@ -1164,18 +1194,23 @@
     "project_id": "prj_mUzZpB1WZnx2FNg0G23lYFpnWUqw",
     "project_url": "https://vercel.com/blackboxsaas-projects/tema-academie",
     "repository_visible_for_import": true,
-    "git_connection_status": "not_connected",
-    "build_configuration_status": "static_drop_trial_only",
-    "deployment_status": "test_static_prototype_deployed",
-    "commercial_plan_compatibility": "unresolved_before_client_deployment",
-    "verified_on": "2026-10-26",
-    "deployment_id": "5zNTif7SBSon5aEMm3RMoeEPb8Gf",
+    "git_connection_status": "connected_by_owner_2026-11-12",
+    "build_configuration_status": "explicit_copy_profile_public_web_only",
+    "deployment_status": "demo_main_deployed_verified_anonymous_assets",
+    "commercial_plan_compatibility": "unresolved_before_client_distribution",
+    "verified_on": "2026-11-12",
+    "deployment_id": "2ZWqzafykN5gjdunSoh3p6xs4Y4j",
     "deployment_url": "https://tema-academie-r2kx88gqs-blackboxsaas-projects.vercel.app",
     "site_url": "https://project-w1j1x.vercel.app/",
-    "source": "Vercel Drop static4files",
+    "source": "GitHub main after owner merge",
     "deployment_environment_label": "production_label_on_empty_project_used_only_for_authorized_TEST",
     "frontend_app_sha256": "1a03fd30e453f29f1008672918d1fdddf4f30488062cd7ecb1ff2a6a1b5a18e5",
-    "rollback_and_restore": "test_verified"
+    "rollback_and_restore": "test_verified",
+    "git_commit": "8cbe9e044c7c661ea1085d8a0c10e82b11d6b453",
+    "production_branch": "main",
+    "preview_url": "https://tema-academie-38b1ohf8w-blackboxsaas-projects.vercel.app/",
+    "preview_requires_vercel_auth": true,
+    "report": "docs/project/acceptance/vercel-demo-2026-11-12.md"
   },
   "agentic_foundation": {
     "name": "BKBX Agentic",
