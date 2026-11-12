@@ -2,6 +2,10 @@
 
 Une méthode de travail réutilisable : **décrire le projet, cadrer ensemble, réaliser avec BMAD, suivre dans Linear et conserver les décisions d'une fonctionnalité à l'autre**. Aucun langage, architecture, type d'application ou hébergeur n'est imposé.
 
+## Version du modèle
+
+**Version du modèle : 1.0.1**, définie dans [VERSION](VERSION). Voir [l’historique et la convention de versions](CHANGELOG.md). Ce numéro identifie les règles et outils du socle, indépendamment de la version BMAD et des versions des produits. Une branche porte un candidat jusqu’à intégration/publication vérifiée. Les projets existants adoptent les changements explicitement à un checkpoint ; aucun updater automatique.
+
 ## Commencer
 
 Créer un nouveau dépôt depuis ce modèle, ou cloner ce dépôt dans le dossier de travail du nouveau projet. Ouvrir ce dossier avec un agent qui lit `AGENTS.md` et découvre les skills locaux, puis expliquer naturellement :

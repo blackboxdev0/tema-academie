@@ -61,3 +61,11 @@ La trace de publication est documentaire et ne modifie ni le code validé, ni le
 Les connecteurs assurent le travail courant. Le helper Linear couvre uniquement la création des statuts non exposée par le connecteur disponible ; il utilise l'API GraphQL officielle, avec plan en lecture seule, configuration additive et relecture. Il n'installe pas une synchronisation permanente ni une intégration GitHub globale.
 
 La configuration visuelle d'un board, les droits et l'intégration native doivent être constatés réellement avant de les annoncer disponibles. Le modèle local et les tests isolés prouvent leur propre fonctionnement ; une validation externe reste distincte.
+
+## 2026-10-29 — Cycle de vie des worktrees et version explicite
+
+Sofiane demande de corriger l’accumulation de dossiers de travail, de préserver intégralement l’historique documentaire et de versionner cette règle dans le maître avec un commit. La décision est de réutiliser avant de créer, maintenir le checkout habituel sur la branche principale et inclure la sauvegarde vérifiée et l’archivage dans la fin de chantier. Les travaux actifs, adaptations locales, preuves utiles et protections de propriété restent préservés. La règle complète vit dans le workflow commun ; aucune suppression automatique n’est installée.
+
+Le dépôt était décrit comme V1, sans fichier de version ni tag Git constaté après rafraîchissement. Sofiane précise que cette version initiale est `1.0.0` et que la correction actuelle doit porter `1.0.1`. Cette précision remplace la proposition initiale de numéroter la correction 1.0.0 ; aucun tag historique n’est créé rétroactivement. `VERSION` et `CHANGELOG.md` tracent les évolutions du modèle ; BMAD reste une dépendance versionnée séparément. Les projets dérivés conservent leur contexte et adoptent une révision à un checkpoint vérifié. Un numéro ou un commit sur une branche ne prouve ni publication ni propagation.
+
+Le périmètre présent est documentaire : instructions communes, workflow, passation, changelog et inventaire des fichiers distribués. Aucun script de suppression, modification BMAD native, profil produit, objet Linear fictif, intégration à main ou déploiement n’est inclus.

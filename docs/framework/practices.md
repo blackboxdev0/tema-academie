@@ -19,6 +19,8 @@ Cette matrice vérifie la couverture de l'extraction. Les coordonnées privées 
 | Réutilisation des composants, conventions et choix existants | `AGENTS.md`, contexte propre au projet |
 | Commits de progression, push sur branches de travail et PR en brouillon dans le périmètre autorisé ; conventions anglaises et GO de fusion/livraison | `AGENTS.md`, `docs/workflow.md`, `scripts/project.py` |
 | Dépôts multiples ou unique, PR selon les changements réels | profil du projet, `docs/workflow.md` |
+| Réutilisation et fermeture vérifiée des worktrees, propriétaires et sauvegardes | `AGENTS.md`, `docs/workflow.md`, `templates/handoff.md` |
+| Version du modèle distincte de BMAD, changelog et adoption vérifiée | `VERSION`, `CHANGELOG.md`, `docs/context.md` |
 | Candidat identifiable, compatibilité, ordre et récupération | `docs/workflow.md` |
 | Contrôles de livraison avant clôture du livrable de livraison | `docs/workflow.md` |
 | Contexte de feature en feature, décisions conservées et reliées | `docs/context.md`, `docs/project/` après initialisation |

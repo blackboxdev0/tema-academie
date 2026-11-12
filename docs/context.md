@@ -44,3 +44,9 @@ Ces sources sont à lire lorsqu'elles sont pertinentes, y compris avec un autre 
 Un lien historique devenu indisponible reste identifié comme tel ; ne pas recréer silencieusement un ticket supprimé ou attribuer un ancien identifiant à un nouveau besoin. La source de la décision peut rester dans les artefacts malgré l'absence du ticket.
 
 Une erreur dans le contexte se corrige à sa source, avec la raison si elle influence des décisions. La passation est un état courant concis, pas une copie complète des documents.
+
+## Version du modèle et carte de travail
+
+Le handoff identifie la version du modèle présente (`VERSION`) et la révision source adoptée lorsqu’elle est connue ; la version BMAD et les versions du produit sont distinctes. Conserver une carte concise des worktrees et la raison de ceux laissés ouverts, selon [leur cycle de vie](workflow.md#cycle-de-vie-des-worktrees). Ne pas recopier tous les fichiers ni une conversation.
+
+Une mise à jour du dépôt maître n’actualise pas ses projets dérivés. Comparer le changelog, les fichiers de méthode et les adaptations locales, adopter à un checkpoint cohérent, exécuter les contrôles de méthode et ceux du projet concernés, puis consigner la version/révision réellement adoptée. Un simple changement du numéro `VERSION` ne prouve pas l’adoption des règles. Ne pas écraser le contexte produit ni mettre à jour une story en cours à son insu.

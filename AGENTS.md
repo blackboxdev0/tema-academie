@@ -1,5 +1,13 @@
 # Travailler dans ce dépôt
 
+## Consignes humaines propres à Tema Académie
+
+- Le 30 octobre 2026, Sofiane autorise explicitement les commits de la préparation actuelle puis les commits par jalon et les push sur les branches de travail du périmètre autorisé, sans nouvelle demande à chaque opération. Il retire la restriction « ne jamais commiter sans demande ». Messages en anglais, au format Conventional Commits, sans attribution à un assistant. Aucune fusion ou push direct sur `main`, aucun déploiement ni publication sans leur GO propre.
+- Le cadrage et l'initialisation sont autorisés. Sofiane a validé le 20 octobre 2026 le dépôt unique avec socle à la racine et futur code dans `app/web`, `app/apps-script`, `app/tests`, puis demandé la spécification, les parcours UX, l'architecture et le plan d'essai. Spécification, UX fonctionnelle, architecture et plan d’essai ont ensuite été approuvés. Le 26 octobre 2026, Sofiane donne explicitement le GO de l’essai technique isolé TEM-6, prototype et tests TEST dans les limites du plan. Le 30 octobre, le plan et la méthode future autonome sont validés, mais le démarrage V1 reste différé pendant les confirmations préparatoires. Les autorisations Git ne constituent pas ce démarrage ; voir config/project.json et le handoff pour l’état courant.
+- Le 26 octobre 2026, Sofiane délègue la préparation complète et les décisions cohérentes avec le périmètre sans validations à chaque étape. Avancer jusqu’au résultat reviewable ; poser une question uniquement si un vrai blocage exige sa réponse. Regrouper la revue finale ; cette autonomie de préparation ne vaut pas GO de développement principal ni livraison.
+- Lire le profil et les documents de Tema dans `docs/project/`. Les artefacts historiques du socle présents ailleurs dans `_bmad-output/` ne constituent pas des fonctionnalités de Tema.
+- La connexion locale `linear_tema` utilise le Trousseau macOS. Le connecteur Linear général peut pointer sur Pink Gossip : vérifier le workspace `tema-academie` et l'équipe `TEM` avant toute écriture. Ne conserver aucun secret dans les fichiers du projet.
+
 Ce dépôt fournit une méthode de développement fondée sur **les vrais skills BMAD**, Linear et un contexte de projet durable. L'utilisateur décrit son besoin naturellement ; l'agent choisit et exécute les skills utiles. Aucun nom de skill ni menu n'est à apprendre.
 
 ## À chaque démarrage ou reprise
@@ -40,6 +48,11 @@ Exécuter intégralement le parcours choisi et ses checkpoints. Les règles loca
 - Préparer des PR uniquement dans les dépôts ayant des changements. Si des PR de la livraison précédente restent ouvertes, les résoudre selon la décision de conservation ou d'abandon avant la livraison suivante ; préserver les travaux indépendants. Une fusion reste soumise à son autorisation.
 - Conserver dans le dépôt les **connaissances utiles au projet** : état des fonctionnalités, décisions et raisons, contraintes, preuves synthétiques et points ouverts. Suivre [la continuité du contexte](docs/context.md) aux décisions et jalons, avant une remise et avant la fin d'une session. Ne pas exporter les conversations, ni créer un journal de chaque geste.
 - Aucun secret, donnée utilisateur, sauvegarde, log brut ou capture temporaire dans le code ou les livrables. Garder les éléments volumineux dans un emplacement prévu et référencer les preuves utiles. Ne pas exposer les dispositifs de simulation au système réel.
+
+## Worktrees et version du modèle
+
+- Appliquer le [cycle de vie des worktrees](docs/workflow.md#cycle-de-vie-des-worktrees) : checkout habituel sur la branche principale, réutiliser avant de créer, un dossier par chantier ayant besoin d’isolation, puis sauvegarde vérifiée et archivage à sa clôture. Une conversation ne justifie pas automatiquement un nouveau worktree. Préserver les travaux actifs et signaler les protections qui empêchent un rangement.
+- Lire `VERSION` pour la version du modèle présent et [CHANGELOG.md](CHANGELOG.md) pour ses évolutions. La version BMAD est indépendante. Une modification du modèle met à jour ces deux fichiers ; une copie existante ne s’actualise pas automatiquement. Consigner sa version/révision dans le handoff et adopter les mises à jour à un checkpoint hors travail actif, après comparaison des adaptations locales et vérifications.
 
 ## Références à charger selon le travail
 

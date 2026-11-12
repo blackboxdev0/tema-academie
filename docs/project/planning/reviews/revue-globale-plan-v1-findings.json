@@ -1,0 +1,135 @@
+[
+  {
+    "lens": "adversarial",
+    "location": "Plan — consolidation ; epics —1.1 à1.3",
+    "trigger_condition": "La consolidation des contrats n’est explicite qu’en préalable1.3, alors que1.1/1.2 les utilisent.",
+    "guard_snippet": "Consolider avant la première story dépendante, y compris1.1.",
+    "potential_consequence": "Le premier développement peut suivre une règle obsolète."
+  },
+  {
+    "lens": "adversarial",
+    "location": "Plan — compléments d’essai et GO",
+    "trigger_condition": "Des prérequis antérieurs au développement sont répartis dans des stories sans premier lot autorisable précis.",
+    "guard_snippet": "Proposer un premier GO borné et ses vérifications, sans waiver des autres ET.",
+    "potential_consequence": "Boucle de prérequis ou dérogation générale involontaire aux tests incomplets."
+  },
+  {
+    "lens": "adversarial",
+    "location": "Epics —1.3, critère1.3-3",
+    "trigger_condition": "Charge représentative et marge de quota ne sont pas définies.",
+    "guard_snippet": "Fixer volume de données/éditions, nombre de mesures et marge avant conclusion.",
+    "potential_consequence": "Une séquence légère peut masquer une charge non soutenable."
+  },
+  {
+    "lens": "adversarial",
+    "location": "Plan — dimensionnement ; epics —3.3/5.4",
+    "trigger_condition": "Aucun volume quotidien de demandes/destinataires attendu n’est posé.",
+    "guard_snippet": "Demander le pic d’inscriptions prévu et vérifier son budget de destinataires partagé.",
+    "potential_consequence": "Réservations correctes mais courriels régulièrement limités par le compte."
+  },
+  {
+    "lens": "adversarial",
+    "location": "Epics —NFR11 et3.1",
+    "trigger_condition": "L’acceptation anti-abus se limite à documenter la protection.",
+    "guard_snippet": "Ajouter scénario de rafale, limite attendue, refus sans mutation/envoi et reprise.",
+    "potential_consequence": "Clôture possible sans efficacité observée contre les abus."
+  },
+  {
+    "lens": "adversarial",
+    "location": "Epics —1.1, import",
+    "trigger_condition": "Aucun critère de relance de l’import après interruption ou modification client.",
+    "guard_snippet": "Exiger une reprise sans doublon, ID conservés et sans écrasement silencieux.",
+    "potential_consequence": "Doublons ou références/formations modifiées par une réexécution."
+  },
+  {
+    "lens": "adversarial",
+    "location": "Registre Linear et epics —4.3/5.1/5.2",
+    "trigger_condition": "La chaîne stricte bloque finition et contrôles derrière politique/export/nettoyage.",
+    "guard_snippet": "Distinguer ordre conseillé et dépendances techniques réelles.",
+    "potential_consequence": "Une attente externe bloque du travail indépendant."
+  },
+  {
+    "lens": "adversarial",
+    "location": "Epics —1.1 et5.4, configuration",
+    "trigger_condition": "La promotion TEST→Métier n’a pas de critère de configuration complet.",
+    "guard_snippet": "Vérifier destination fixe, un écrivain, destinataires, absence de pannes/reset publics et maintien de la garde TEST.",
+    "potential_consequence": "Restrictions TEST conservées en métier ou protections TEST retirées trop largement."
+  },
+  {
+    "lens": "adversarial",
+    "location": "Plan —estimation humaine",
+    "trigger_condition": "Les jours de personnes différentes ne sont pas distingués d’une disponibilité de Sofiane.",
+    "guard_snippet": "Définir jours-personnes cumulés et répartition indicative Sofiane/Tema.",
+    "potential_consequence": "L’enveloppe peut être interprétée comme trois journées personnelles de Sofiane."
+  },
+  {
+    "lens": "adversarial",
+    "location": "Epics —5.3, supports",
+    "trigger_condition": "Téléphone/système et règle de version navigateur sont indéterminés.",
+    "guard_snippet": "Définir une matrice courte de supports réellement disponibles et versions ciblées.",
+    "potential_consequence": "Compatibilité étendue tardivement ou déclarée sur un autre support."
+  },
+  {
+    "lens": "adversarial",
+    "location": "Plan —Done ; epics —5.4",
+    "trigger_condition": "La cible convenue des différentes catégories de tâches reste non nommée.",
+    "guard_snippet": "Définir intégration de code, candidat Vercel de recette et cible de remise, sans autorisation de fusion déduite.",
+    "potential_consequence": "Tickets ouverts sans fin ou clos sur un simple commit local."
+  },
+  {
+    "lens": "adversarial",
+    "location": "Plan —attentes externes ; epics —4.3/5.4",
+    "trigger_condition": "Interlocuteur client et disponibilité des validations politique/prix/identité/actifs non organisés.",
+    "guard_snippet": "Regrouper un paquet de validation Tema avant le jalon concerné, relayé par Sofiane.",
+    "potential_consequence": "Produit terminé mais non ouvrable faute de données validées."
+  },
+  {
+    "lens": "edge-case-hunter",
+    "location": "Epics —1.1:248-264",
+    "trigger_condition": "Import relancé après interruption ou modifications Tema.",
+    "guard_snippet": "Importer sur vide ou reprendre de façon idempotente, conserver IDs/modifications/lignes.",
+    "potential_consequence": "Doublons ou écrasement des références métier."
+  },
+  {
+    "lens": "edge-case-hunter",
+    "location": "Epics —5.3/5.4:960-1042",
+    "trigger_condition": "Recette distante commence avant la publication prévue après recette.",
+    "guard_snippet": "Publier un candidat de recette autorisé avant5.3, promotion distincte après acceptation.",
+    "potential_consequence": "La recette dépend implicitement de sa propre conclusion."
+  },
+  {
+    "lens": "edge-case-hunter",
+    "location": "Epics —4.3, critère4.3-1",
+    "trigger_condition": "Un texte ressemblant à une formule est exporté puis ouvert dans Excel.",
+    "guard_snippet": "Tester que les valeurs libres commençant par =,+,-,@ restent du texte dans l’export.",
+    "potential_consequence": "Valeur inerte dans Sheets réinterprétée comme formule dans Excel."
+  },
+  {
+    "lens": "edge-case-hunter",
+    "location": "Epics —FR3,2.1/2.3",
+    "trigger_condition": "Une nouvelle formation active a un prix nullable absent.",
+    "guard_snippet": "Définir affichage et éligibilité à l’inscription sans convertir le prix absent en zéro.",
+    "potential_consequence": "Tarif invalide ou réservation aux conditions tarifaires indéterminées."
+  },
+  {
+    "lens": "edge-case-hunter",
+    "location": "Epics —5.3:990-1006",
+    "trigger_condition": "Un contrôle requis reste indisponible et reçoit seulement une limite explicite.",
+    "guard_snippet": "Maintenir la recette ouverte sauf dérogation humaine explicite pour ce contrôle.",
+    "potential_consequence": "Clôture malgré compatibilité ou parcours requis non vérifié."
+  },
+  {
+    "lens": "author-verification",
+    "location": "Plan —phrase CI ; app/package.json et absence de workflow produit",
+    "trigger_condition": "Le plan dit que le socle CI existant est câblé alors que seul le socle local existe.",
+    "guard_snippet": "Employer le futur : câbler la CI dès le premier jalon autorisé ; distinguer installation et exécution.",
+    "potential_consequence": "Un lecteur peut croire qu’un contrôle GitHub protège déjà les changements."
+  },
+  {
+    "lens": "author-verification",
+    "location": "Epics —2.2/2.3/3.1/5.4 ; app/scripts/serve.cjs",
+    "trigger_condition": "Les futures vues sont transférées vers un hébergement FTP sans règle d’URL/rafraîchissement.",
+    "guard_snippet": "Prévoir URLs compatibles hébergement statique et tester accès direct/refresh sans réécriture serveur.",
+    "potential_consequence": "Les liens profonds peuvent fonctionner dans une navigation puis renvoyer404 après transfert."
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "profile_sha256": "a9e2baefce9b39c66521a2ca519019502c4bfde8f4c0743fd0add33fa8f66840",
+  "configurations": {
+    "_bmad/custom/config.toml": {
+      "archive": "docs/project/setup/bmad-config-before-init.toml",
+      "source_sha256": "79ff723c69e3648344f3caa9de288dd0a90ab08fa05018159a3d2cbcd9704fd3",
+      "expected_sha256": "4d8d6ece844c43f25997a1ee0a89bbe3f0f44cfb2f3128f731a2d888de986cab"
+    },
+    "_bmad/bmm/config.yaml": {
+      "archive": "docs/project/setup/bmad-bmm-config-before-init.yaml",
+      "source_sha256": "c903fa6730cae8e72bbc9fbec9605b08f4e1f647acf547254d5fb4d71d0e0157",
+      "expected_sha256": "03aa1336c16a386ba034d0495fcaa80c40c42e5cf7b6196df8a1eec30ec6a599"
+    },
+    "_bmad/core/config.yaml": {
+      "archive": "docs/project/setup/bmad-core-config-before-init.yaml",
+      "source_sha256": "4833b67e3e6d29ee4a903e20a6a9eeff44aae9bf516d3b0761347f9d3aa78fb0",
+      "expected_sha256": "556e46359fba4db9b31f083d72c0061388a0d2c69efbd190a5670c2552e24462"
+    }
+  }
+}

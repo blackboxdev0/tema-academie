@@ -1,0 +1,5 @@
+{
+  "timeZone": "America/Toronto",
+  "runtimeVersion": "V8",
+  "oauthScopes": ["https://www.googleapis.com/auth/spreadsheets.currentonly", "https://www.googleapis.com/auth/script.container.ui"]
+}

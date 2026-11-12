@@ -1,0 +1,22 @@
+{
+  "observed_on": "2026-10-24",
+  "site": "https://www.temasolutions.ca/",
+  "logo_source": "https://www.temasolutions.ca/wp-content/uploads/2021/05/TEMA-logo-rose2.png",
+  "css_source": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap",
+  "fonts": [
+    {
+      "family": "Manrope",
+      "font_path": "/Users/sofiane/Software/tema/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/.working/tema-assets/manrope-latin.woff2",
+      "source": "https://fonts.gstatic.com/s/manrope/v20/xn7gYHE41ni1AdIRggexSvfedN4.woff2",
+      "bytes": 24576,
+      "license_source": "https://raw.githubusercontent.com/google/fonts/main/ofl/manrope/OFL.txt"
+    },
+    {
+      "family": "Inter",
+      "font_path": "/Users/sofiane/Software/tema/_bmad-output/planning-artifacts/ux-designs/ux-tema-academie-2026-10-20/.working/tema-assets/inter-latin.woff2",
+      "source": "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2",
+      "bytes": 48432,
+      "license_source": "https://raw.githubusercontent.com/google/fonts/main/ofl/inter/OFL.txt"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "source": "brief",
+    "path": "/Users/sofiane/.codex/attachments/c10b22db-7158-4744-9b21-448e6fbf3539/Texte collé.txt",
+    "sha256": "c73c2ad5906cb4ddb517b7f3ff76cf3b783a6aeb3d23da5382d1597347fe27d0",
+    "reviewed_on": "2026-10-19"
+  },
+  {
+    "source": "catalogue",
+    "path": "/Users/sofiane/Downloads/Académie - Programmes pour le Pré Lancement.xlsx",
+    "sha256": "e672bfdd6a10e57f3ba9dabecd919d240930842845771b92b7e73fb28d78bce7",
+    "reviewed_on": "2026-10-19"
+  },
+  {
+    "source": "proposition",
+    "path": "/Users/sofiane/Downloads/Tema Académie · Proposition bkbx.pdf",
+    "sha256": "a427f765b01ba5e2e96d32b2ab0b5e7fc692092a252b0956092cc44a9dd3b4a1",
+    "reviewed_on": "2026-10-19"
+  }
+]
