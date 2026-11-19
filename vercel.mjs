@@ -4,6 +4,4 @@ const candidatePreview = process.env.VERCEL_ENV === 'preview' &&
 export const config = candidatePreview ? {
   buildCommand: 'node app/scripts/build-vercel-preview.cjs',
   outputDirectory: 'app/dist/web',
-} : {
-  git: { deploymentEnabled: { 'docs/production-release-20261119': false } },
-};
+} : {};
