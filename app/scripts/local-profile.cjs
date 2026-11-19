@@ -3,6 +3,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const PROJECT = require('../../config/project.json');
+const { validateTarget } = require('./production-target.cjs');
 const COPY = Object.freeze({ spreadsheet: '10-aTYKJq3Idxc1eAM4hevNnZMT0jnKRCVMwaY9pFwj8', script: '1fuzTMzZZ4F-0Bn5SIqRuYAmM1ef6rXNNp_s4q9sgyd3wSe1-8H3tpMnA' });
 const URL_PATTERN = /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/;
 const profilePath = () => process.env.TEMA_LOCAL_PROFILE_PATH || path.join(os.homedir(), '.config', 'tema-academie', 'local-profile.json');
@@ -17,6 +18,13 @@ function read() {
   return validate(JSON.parse(fs.readFileSync(profilePath(), 'utf8')));
 }
 function resolve() {
+  if (process.env.TEMA_PRODUCTION_PROFILE_PATH !== undefined) {
+    if (!process.env.TEMA_PRODUCTION_PROFILE_PATH || process.env.TEMA_TEST_API_URL !== undefined || process.env.TEMA_COPY_API_URL !== undefined) throw new Error('PRODUCTION must use its own explicit profile without TEST/COPY overrides.');
+    const selected = JSON.parse(fs.readFileSync(process.env.TEMA_PRODUCTION_PROFILE_PATH, 'utf8'));
+    const production = validateTarget(selected), saved = read();
+    if (saved && saved.apiUrl === production.apiUrl && production.apiUrl) throw new Error('PRODUCTION deployment conflicts with the saved demo profile.');
+    return production;
+  }
   const saved = read();
   // An active COPY profile cannot be accidentally replaced by an old TEST
   // shell variable. Switching requires the explicit profile command below.

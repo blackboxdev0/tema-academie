@@ -1,7 +1,7 @@
 ---
 title: Écran de suivi immédiat et nettoyage des tirets éditoriaux
 created: '2026-11-12'
-status: in-progress
+status: done
 route: oneshot
 ---
 <frozen-after-approval>
@@ -22,3 +22,7 @@ Décision complémentaire Sofiane : phrases naturelles et lignes séparées, san
 - Harness d’attente : avancer l’horloge serveur de fixture avant admission ; ne pas interpréter un INVALID artificiel lié à now figé comme une régression produit.
 
 Validation locale complète :132tests standard/241COPY,9artefacts,21audit+2VM ;316browserexécutés,308PASS et8contrastes connus. La recette Google a révélé un traitementPOST66,963s et un mail participantPENDING ; l’écran rend honnêtement le dépassement de45s et le replay récupère la réservation. L’acceptation réelle est bloquée sur la correction serveur, autorisée et suivie par spec-inscription-arriere-plan-demo.md. Ne pas marquer cette recette globale Done sur la seule matrice simulée.
+
+
+## Clôture du correctif serveur et recette humaine, 12 novembre
+Le blocage serveur décrit au checkpoint précédent est résolu par la spec-inscription-arriere-plan-demo.md (done), activée dans Google version14 et vérifiée réellement : réservation durable avant réponse, courriels autonomes après fermeture, reprise sans doublon. Sofiane valide ensuite la rapidité, le refus du doublon actif et la réception des courriels après environ une minute. La démo est fusionnée par Sofiane et publiée sur Vercel ; voir docs/project/acceptance/vercel-demo-2026-11-12.md. Cette validation ne clôt pas la recette client ni les huit réserves connues de contraste. Aucun nouveau test ou changement de code lors de cette mise à jour documentaire.

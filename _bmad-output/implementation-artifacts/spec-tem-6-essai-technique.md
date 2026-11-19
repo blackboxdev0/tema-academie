@@ -110,3 +110,7 @@ Regroupements : B1/E1 ; B4/E2. Autres racines distinctes conservées. Correctifs
 - `cd app && npm run verify` : logique/contrats/build et E2E locaux verts.
 - Computer Use : enregistrer le candidat dans le projet TEST, examiner les autorisations, déployer la version TEST autorisée puis essayer le transport A et inspecter le Sheet/boîtes/agendas disponibles.
 - Empreinte SHA-256 des sources si aucun commit ; bilan des ET et remontée des dépendances externes sans faux succès.
+
+
+## Réconciliation Linear du 12 novembre 2026
+TEM-6 est clos sur GO explicite de Sofiane : prototype/bilan acceptés et intégrés, décision de poursuivre déjà suivie de la V1. Les 4 PASS et 8 NON VÉRIFIÉ historiques sont inchangés. ET-01/03/05/06/07/08/09/11 ont été répartis dans les stories ; les limites de supports et la consolidation restante sont suivies dans TEM-27, les réserves d’accessibilité dans TEM-25. Cette clôture ne vaut pas réussite rétroactive de tous les scénarios ni remise client.

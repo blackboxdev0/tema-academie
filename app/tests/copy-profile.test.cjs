@@ -51,7 +51,7 @@ test('COPY static build explicitly labels its TEST reference backend without cha
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tema-copy-build-profile-')); t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
   const app = path.join(dir, 'app'), scripts = path.join(app, 'scripts'); fs.mkdirSync(scripts, { recursive: true }); fs.mkdirSync(path.join(dir, 'config'));
   fs.writeFileSync(path.join(dir, 'config/project.json'), JSON.stringify(project));
-  for (const file of ['build.cjs', 'local-profile.cjs']) fs.copyFileSync(path.resolve(__dirname, '../scripts', file), path.join(scripts, file));
+  for (const file of ['build.cjs', 'local-profile.cjs', 'production-target.cjs']) fs.copyFileSync(path.resolve(__dirname, '../scripts', file), path.join(scripts, file));
   fs.mkdirSync(path.join(app, 'web')); fs.writeFileSync(path.join(app, 'web/index.html'), '<!doctype html>');
   fs.mkdirSync(path.join(app, 'apps-script'));
   for (const file of ['engine.js', 'google.js', 'catalogue.js', 'appsscript.json']) fs.copyFileSync(path.resolve(__dirname, '../apps-script', file), path.join(app, 'apps-script', file));

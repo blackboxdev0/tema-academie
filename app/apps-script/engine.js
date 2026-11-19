@@ -99,7 +99,7 @@ var TemaTrial = (function () {
   function dataView(data, deps) {
     if (!data || !Array.isArray(data.formations) || !Array.isArray(data.sessions) || !Array.isArray(data.registrations) || !plain(data.params)) throw fault('CONFIG');
     var p = data.params;
-    if (!email(p.courriel_contact) || !email(p.courriel_avis_tema) || !url(p.politique_url) || !nonempty(p.politique_version) || !Array.isArray(p.softwares) || !p.softwares.length) throw fault('CONFIG');
+    if (!email(p.courriel_contact) || !email(p.courriel_avis_tema) || !(url(p.politique_url) || deps.localPolicy === true && p.politique_url === '#politique') || !nonempty(p.politique_version) || !Array.isArray(p.softwares) || !p.softwares.length) throw fault('CONFIG');
     var softwareIds = Object.create(null), labels = Object.create(null);
     p.softwares.forEach(function (s) {
       if (!plain(s) || !/^[A-Z0-9]+$/.test(s.id || '') || !nonempty(s.label) || softwareIds[s.id] || labels[s.label]) throw fault('CONFIG');
@@ -261,8 +261,13 @@ var TemaTrial = (function () {
           // Deadline guards only a new claim; once claimed, finish without resetting it.
           if (deps.canStartMail && !deps.canStartMail()) return null;
           var to = channel === 'participant' ? row.courriel : view.params.courriel_avis_tema;
-          var budgetError = deps.reserveMail(id, channel, to);
-          if (budgetError) { patch[prefix + 'etat'] = 'BLOCKED'; patch[prefix + 'error_code'] = budgetError; deps.store.patch(id, patch); deps.store.flush(); return null; }
+          var budgetError = deps.reserveMail(id, channel, to, data.registrations);
+          if (budgetError) {
+            // Renewable production limits defer only an unclaimed attempt.
+            // COPY keeps its historical closed campaign budget semantics.
+            patch[prefix + 'etat'] = deps.deferMailBudget && deps.deferMailBudget(budgetError) ? 'PENDING' : 'BLOCKED';
+            patch[prefix + 'error_code'] = budgetError; deps.store.patch(id, patch); deps.store.flush(); return null;
+          }
           patch[prefix + 'etat'] = 'SENDING'; patch[prefix + 'attempt_id'] = deps.uuid(); patch[prefix + 'attempt_at'] = iso(deps.now());
           deps.store.patch(id, patch); deps.store.flush();
           return { row: Object.assign({}, row, patch), params: view.params, to: to };

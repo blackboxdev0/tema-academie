@@ -127,11 +127,11 @@ var TemaSheetPrototype = (function () {
     });
     return { formations: f, sessions: s, lists: lists, notes: notes };
   }
-  function applyDiff(sheet, before, after) {
+  function applyDiff(sheet, before, after, skipColumn) {
     var conflict = false;
     after.forEach(function (row, i) {
       row.forEach(function (v, j) {
-        if (v !== before[i][j]) {
+        if (j !== skipColumn && v !== before[i][j]) {
           var cell = sheet.getRange(i + 1, j + 1);
           // Ne pas écraser une saisie intervenue pendant le calcul Google.
           if (cell.getValue() === before[i][j]) { if (typeof TemaCopy !== 'undefined') TemaCopy.dirty(true); cell.setValue(v); }
@@ -159,6 +159,7 @@ var TemaSheetPrototype = (function () {
     }
   }
   function confirmedCounts(book) {
+    if (typeof TemaHeaders !== 'undefined') return TemaCopy.confirmedCounts();
     var sheet = book.getSheetByName('Inscriptions'), result = Object.create(null);
     if (!sheet || sheet.getLastRow() < 2) return result;
     var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
@@ -207,7 +208,7 @@ var TemaSheetPrototype = (function () {
       }
     });
   }
-  function sync(book, event) {
+  function sync(book, event, headersVerified) {
     if (!book || book.getId() !== TARGET) return false;
     if (typeof TemaCopy !== 'undefined') {
       TemaCopy.guard(book);
@@ -217,6 +218,8 @@ var TemaSheetPrototype = (function () {
     var lock = LockService.getScriptLock();
     if (!lock.tryLock(5000)) { book.toast('Une autre mise à jour est en cours. Réessayez votre modification.', 'Tema', 7); return false; }
     try {
+      var production = typeof TemaHeaders !== 'undefined';
+      if (production && headersVerified !== true) TemaHeaders.repairLocked(book);
       var fs = book.getSheetByName('Formations'), ss = book.getSheetByName('Disponibilités');
       if (!fs || !ss) throw new Error('Conservez les onglets Formations et Disponibilités.');
       if (typeof TemaCopy !== 'undefined') TemaCopy.assertAdministrativeLayout(book);
@@ -230,13 +233,14 @@ var TemaSheetPrototype = (function () {
       };
       var result = plan(f, s, event, deps);
       var conflict = applyDiff(fs, f, result.formations);
-      conflict = applyDiff(ss, s, result.sessions) || conflict;
+      conflict = applyDiff(ss, s, result.sessions, production ? 9 : undefined) || conflict;
       if (conflict) {
         f = read(fs, 13); s = read(ss, 12);
         result = plan(f, s, event, deps);
-        applyDiff(fs, f, result.formations); applyDiff(ss, s, result.sessions);
+        applyDiff(fs, f, result.formations); applyDiff(ss, s, result.sessions, production ? 9 : undefined);
       }
       SpreadsheetApp.flush();
+      if (production) TemaCopy.nativeCounters(book);
       var expected = typeof TemaCopy !== 'undefined' ? TemaCopy.adminFingerprint(book, result, { confirmed: deps.confirmed, now: plannedAt }) : null;
       if (typeof TemaCopy === 'undefined') {
         refreshLists(ss, result.sessions, result.lists); refreshNotes(book, result.notes);
@@ -283,15 +287,23 @@ function onOpen(e) {
 function onEdit(e) {
   if (!e || !e.source || e.source.getId() !== TemaSheetPrototype.target || !e.range) return;
   if (typeof TemaCopy !== 'undefined') TemaCopy.guard(e.source);
+  // The production simple trigger has LIMITED auth. Only the existing owner
+  // installable handler may call Sheets v4 or update protected native state.
+  if (typeof TemaHeaders !== 'undefined' && !e.triggerUid) {
+    if (['Formations', 'Disponibilités', 'Inscriptions'].indexOf(e.range.getSheet().getName()) >= 0) TemaCopy.dirty(true);
+    return;
+  }
+  if (typeof TemaNativeForm !== 'undefined' && TemaNativeForm.edited(e)) return;
   if (typeof TemaRegistrationView !== 'undefined' && TemaRegistrationView.edited(e)) return;
   var name = e.range.getSheet().getName();
   if (['Formations', 'Disponibilités', 'Inscriptions'].indexOf(name) < 0) return;
   // La saisie humaine existe déjà, même si un écrivain tient le ScriptLock.
   if (typeof TemaCopy !== 'undefined') TemaCopy.dirty(true);
   try {
+    if (typeof TemaHeaders !== 'undefined') TemaHeaders.repair(e.source);
     if (typeof TemaCopy !== 'undefined' && name === 'Inscriptions') {
       TemaCopy.markCountersPending();
-    } else if (TemaSheetPrototype.sync(e.source, { sheet: name, first: e.range.getRow(), last: e.range.getLastRow() }) !== true) return;
+    } else if (TemaSheetPrototype.sync(e.source, { sheet: name, first: e.range.getRow(), last: e.range.getLastRow() }, typeof TemaHeaders !== 'undefined') !== true) return;
   }
   catch (err) { e.source.toast(String(err.message), 'Prototype : actualisation interrompue', 10); throw err; }
   if (typeof TemaRegistrationView !== 'undefined') TemaRegistrationView.refresh(e.source, false);

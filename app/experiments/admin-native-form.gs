@@ -184,6 +184,18 @@ var TemaNativeForm = (function () {
 })();
 
 function installerSaisieNativeTema() { return TemaNativeForm.install(SpreadsheetApp.getActiveSpreadsheet()); }
-function traiterSaisieFormationTema(e) { return TemaNativeForm.edited(e); }
+function traiterSaisieFormationTema(e) { return typeof TemaHeaders !== 'undefined' ? onEdit(e) : TemaNativeForm.edited(e); }
 function enregistrerSaisieNativeTema() { return TemaNativeForm.submit(SpreadsheetApp.getActiveSpreadsheet()); }
+function installerEditionSaisieProductionTema() {
+  ScriptApp.requireAllScopes(ScriptApp.AuthMode.FULL);
+  if (typeof TemaHeaders === 'undefined') throw new Error('Installation réservée à la préparation de production.');
+  TemaCopy.guard(); if (!TemaCopy.isOwner()) throw TemaTrial.fault('PRIVATE_CONFIG');
+  return TemaCopy.lock(function () {
+    var id = TemaCopy.target.spreadsheet;
+    var matches = ScriptApp.getProjectTriggers().filter(function (t) { return t.getHandlerFunction() === 'traiterSaisieFormationTema' && t.getEventType() === ScriptApp.EventType.ON_EDIT && t.getTriggerSourceId() === id; });
+    if (!matches.length) ScriptApp.newTrigger('traiterSaisieFormationTema').forSpreadsheet(id).onEdit().create();
+    matches.slice(1).forEach(function (t) { ScriptApp.deleteTrigger(t); });
+    return { handler: 'traiterSaisieFormationTema', spreadsheetId: id, count: 1 };
+  });
+}
 if (typeof module !== 'undefined') module.exports = TemaNativeForm;

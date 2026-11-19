@@ -47,3 +47,7 @@
 - source_spec: `_bmad-output/implementation-artifacts/spec-inscription-arriere-plan-demo.md`
   summary: Budget réel du simple onEdit en latence Google (medium, non vérifié).
   evidence: Le harness ne mesure pas les services Google ; observer durée des déclencheurs après activation, marqueurs pending et minute conservés.
+
+- source_spec: `_bmad-output/implementation-artifacts/spec-plafond-courriels-production.md`
+  summary: Refus Google entre la vérification du quota et l’envoi.
+  evidence: Un autre script du compte peut consommer le dernier destinataire entre les appels. Un refus simulé après réservation conserve le statut d’échec du transport existant. Une reprise sélective exige un refus Google dont la non-transmission est certaine.
