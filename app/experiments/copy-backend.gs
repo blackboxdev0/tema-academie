@@ -208,6 +208,7 @@ var TemaCopy = (function () {
     table(values, 'Inscriptions'); return { values: values, headers: values[0] };
   }
   function counters(b) {
+    if (typeof TemaHeaders !== 'undefined') { SpreadsheetApp.flush(); return nativeCounters(b); }
     guard(b);
     // The API must observe any preceding native insertion/status change.
     SpreadsheetApp.flush();
@@ -215,21 +216,55 @@ var TemaCopy = (function () {
     data.registrations.forEach(function (r) { if (r.statut === 'confirmee') count[r.id_cohorte] = (count[r.id_cohorte] || 0) + 1; });
     data.sessions.forEach(function (s) { if (Number.isSafeInteger(s.places_max) && s.places_max > 0) sheet.getRange(s._sheetRow, s._columns.places_restantes + 1).setValue(Math.max(0, s.places_max - (count[s.id_cohorte] || 0))); });
   }
-  // Caller owns ScriptLock. Native services also work from the bound simple onEdit.
-  function nativeCounters(b, cohort) {
+  function countConfirmed(registrations) {
+    var count = Object.create(null);
+    registrations.forEach(function (r) { if (r.statut === 'confirmee') count[r.id_cohorte] = (count[r.id_cohorte] || 0) + 1; });
+    return count;
+  }
+  function confirmedCounts() {
+    return countConfirmed(table(registrationLayout().values, 'Inscriptions'));
+  }
+  function registrationStatus(id) {
+    var rows = table(registrationLayout().values, 'Inscriptions').filter(function (row) { return row.id_inscription === id; });
+    if (rows.length !== 1) throw TemaTrial.fault('CONFIG');
+    return rows[0].statut;
+  }
+  function counterSnapshot(ranges) {
+    var response = Sheets.Spreadsheets.Values.batchGet(TARGET.spreadsheet, { ranges: ranges, valueRenderOption: 'UNFORMATTED_VALUE', dateTimeRenderOption: 'SERIAL_NUMBER' });
+    if (!response.valueRanges || response.valueRanges.length !== ranges.length || response.valueRanges.some(function (range) { return !Array.isArray(range.values); })) throw TemaTrial.fault('CONFIG');
+    return response.valueRanges.map(function (range) { return range.values; });
+  }
+  // Caller owns ScriptLock. The COPY simple onEdit can only use native services.
+  function nativeCounters(b, cohort, cancelledId) {
     guard(b); var sourceVersion = version(), alreadyPending = props().getProperty('COPY_NATIVE_COUNTERS_PENDING') === '1'; props().setProperty('COPY_NATIVE_COUNTERS_PENDING', '1');
     var sessionSheet = b.getSheetByName('Disponibilités'), registration = b.getSheetByName('Inscriptions');
     if (!sessionSheet || !registration) throw TemaTrial.fault('CONFIG');
-    var sessions = sessionSheet.getDataRange().getValues(), registrations = table(registration.getDataRange().getValues(), 'Inscriptions'), count = Object.create(null);
-    registrations.forEach(function (r) { if (r.statut === 'confirmee') count[r.id_cohorte] = (count[r.id_cohorte] || 0) + 1; });
+    var production = typeof TemaHeaders !== 'undefined', sources = production ? counterSnapshot(["'Disponibilités'", "'Inscriptions'"]) : [sessionSheet.getDataRange().getValues(), registration.getDataRange().getValues()];
+    var sessions = sources[0], registrations = table(sources[1], 'Inscriptions'), count = countConfirmed(registrations), writes = [];
+    var cancelledCohort, cancellationResult;
+    if (production && cancelledId !== undefined) {
+      var cancelled = registrations.filter(function (row) { return row.id_inscription === cancelledId; });
+      if (cancelled.length !== 1 || cancelled[0].statut !== 'annulee' || cohort !== undefined && cancelled[0].id_cohorte !== cohort) throw TemaTrial.fault('CONFIG');
+      cancelledCohort = cancelled[0].id_cohorte;
+      cancellationResult = 'historical';
+    }
     sections(sessions, 'Disponibilités').forEach(function (section) {
       var changes = [];
       for (var r = section.header; r < section.end; r++) {
         var row = sessions[r], id = text(row[section.columns.id_cohorte]), capacity = row[section.columns.places_max];
-        if (id && (cohort === undefined || id === cohort) && Number.isSafeInteger(capacity) && capacity > 0) {
-          var remaining = Math.max(0, capacity - (count[id] || 0));
-          if (row[section.columns.places_restantes] !== remaining) changes.push({ row: r + 1, value: remaining });
+        var validCapacity = id && Number.isSafeInteger(capacity) && capacity > 0;
+        if (id && id === cancelledCohort) cancellationResult = validCapacity ? 'verified' : 'invalid';
+        // An empty row can retain a derived value after a structural human edit.
+        // Clear that value from the fresh snapshot, without changing source fields.
+        if ((cohort === undefined || id === cohort) && (validCapacity || production)) {
+          var remaining = validCapacity ? Math.max(0, capacity - (count[id] || 0)) : '';
+          var stored = row[section.columns.places_restantes];
+          if ((stored === undefined ? '' : stored) !== remaining) changes.push({ row: r + 1, value: remaining, id: id, capacity: capacity });
         }
+      }
+      if (production) {
+        changes.forEach(function (change) { writes.push({ row: change.row, value: change.value, id: change.id, idColumn: section.columns.id_cohorte, column: section.columns.places_restantes, capacity: change.capacity, capacityColumn: section.columns.places_max }); });
+        return;
       }
       // Group adjacent changed counters only; never overwrite intervening source cells.
       for (var i = 0; i < changes.length;) {
@@ -238,9 +273,23 @@ var TemaCopy = (function () {
         sessionSheet.getRange(start, section.columns.places_restantes + 1, values.length, 1).setValues(values);
       }
     });
-    SpreadsheetApp.flush();
+    if (production && writes.length) {
+      var sheetId = sessionSheet.getSheetId();
+      Sheets.Spreadsheets.batchUpdate({ requests: writes.map(function (write) {
+        var cell = write.value === '' ? {} : { userEnteredValue: { numberValue: write.value } };
+        return { updateCells: { start: { sheetId: sheetId, rowIndex: write.row - 1, columnIndex: write.column }, rows: [{ values: [cell] }], fields: 'userEnteredValue' } };
+      }) }, TARGET.spreadsheet);
+      var persisted = counterSnapshot(["'Disponibilités'", "'Inscriptions'"]), latestCount = countConfirmed(table(persisted[1], 'Inscriptions'));
+      if (writes.some(function (write) {
+        var row = persisted[0][write.row - 1], value = row && row[write.column];
+        return !row || text(row[write.idColumn]) !== write.id || row[write.capacityColumn] !== write.capacity ||
+          (latestCount[write.id] || 0) !== (count[write.id] || 0) || (value === undefined ? '' : value) !== write.value;
+      })) throw TemaTrial.fault('CONFIG');
+    }
+    if (!production) SpreadsheetApp.flush();
     // A cohort-only repair must not clear an older pending repair of another cohort.
     if (version() === sourceVersion && (cohort === undefined || !alreadyPending)) props().setProperty('COPY_NATIVE_COUNTERS_PENDING', '0');
+    return cancellationResult;
   }
   function store(options) {
     options = options || {};
@@ -389,8 +438,8 @@ var TemaCopy = (function () {
       sections(entry[1], entry[0]).forEach(function (section) { TemaTrial.HEADERS[entry[0]].forEach(function (key, i) { if (section.columns[key] !== i) throw TemaTrial.fault('CONFIG'); }); });
     });
     var registration = b.getSheetByName('Inscriptions'); if (!registration) throw TemaTrial.fault('CONFIG');
-    var confirmed = planning ? planning.confirmed : Object.create(null), instant = planning ? planning.now : Date.now();
-    if (!planning) table(registration.getDataRange().getValues(), 'Inscriptions').forEach(function (row) { if (row.statut === 'confirmee') confirmed[row.id_cohorte] = (confirmed[row.id_cohorte] || 0) + 1; });
+    var confirmed = planning ? planning.confirmed : typeof TemaHeaders !== 'undefined' ? confirmedCounts() : countConfirmed(table(registration.getDataRange().getValues(), 'Inscriptions'));
+    var instant = planning ? planning.now : Date.now();
     var bounds = numericTemporalBounds(sessions), formats = bounds.row ? b.getSheetByName('Disponibilités').getRange(1, 1, bounds.row, bounds.column).getNumberFormats() : null;
     var elapsed = [];
     sections(sessions, 'Disponibilités').forEach(function (section) {
@@ -474,7 +523,7 @@ var TemaCopy = (function () {
       return { environment: 'COPY', trigger: 'reconcilierCopieTema', minutes: 1, count: 1 };
     });
   }
-  return { target: TARGET, guard: guard, book: book, lock: lock, dirty: dirty, version: version, table: table, sections: sections, temporal: temporal, nativeRead: nativeRead, assertAdministrativeLayout: assertAdministrativeLayout, grouped: grouped, store: store, counters: counters, nativeCounters: nativeCounters, reserveMail: reserveMail, dependencies: dependencies, isOwner: isOwner, sourceHash: sourceHash, adminFingerprint: adminFingerprint, acknowledgeAdmin: acknowledgeAdmin, markCountersPending: markCountersPending, acknowledge: acknowledge, asyncConfig: asyncConfig, processPendingMail: processPendingMail, reconcile: reconcile, installTrigger: installTrigger };
+  return { target: TARGET, guard: guard, book: book, lock: lock, dirty: dirty, version: version, table: table, sections: sections, temporal: temporal, nativeRead: nativeRead, assertAdministrativeLayout: assertAdministrativeLayout, grouped: grouped, store: store, counters: counters, nativeCounters: nativeCounters, confirmedCounts: confirmedCounts, registrationStatus: registrationStatus, reserveMail: reserveMail, dependencies: dependencies, isOwner: isOwner, sourceHash: sourceHash, adminFingerprint: adminFingerprint, acknowledgeAdmin: acknowledgeAdmin, markCountersPending: markCountersPending, acknowledge: acknowledge, asyncConfig: asyncConfig, processPendingMail: processPendingMail, reconcile: reconcile, installTrigger: installTrigger };
 })();
 function copyJson_(value) { return ContentService.createTextOutput(JSON.stringify(value)).setMimeType(ContentService.MimeType.JSON); }
 function doGet() {

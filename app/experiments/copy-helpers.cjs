@@ -149,7 +149,8 @@ function harness(options = {}) {
         } else if (request.updateCells) {
           const u = request.updateCells, name = Object.keys(sheets).find(name => sheets[name].getSheetId() === u.start.sheetId);
           assert.equal(u.fields, 'userEnteredValue');
-          tables[name][u.start.rowIndex][u.start.columnIndex] = u.rows[0].values[0].userEnteredValue.stringValue; events.push(['write', name, u.start.rowIndex + 1, u.start.columnIndex + 1]);
+          const value = u.rows[0].values[0].userEnteredValue;
+          tables[name][u.start.rowIndex][u.start.columnIndex] = value?.numberValue ?? value?.stringValue ?? ''; events.push(['write', name, u.start.rowIndex + 1, u.start.columnIndex + 1]);
         } else assert.fail('Unsupported provider mutation');
       }
       return { replies };

@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 10-30-2026 15:16
-last_updated: 11-18-2026
+last_updated: 11-19-2026
 project: Tema Académie
 # Contre-audit 2026-10-30 : réserves ouvertes dans acceptance/independent-audit-2026-10-30.md.
 # Correctifs déployés TEST8 et contrôlés ; Safari lecture/formulaire et Apple import/export vérifiés. Recette finale en cours ; UX différée.
@@ -39,6 +39,7 @@ project: Tema Académie
 # Epics1 à3 et stories1.1 à4.2 done ; epic4 reste in-progress à cause de4.3.
 # Epic5 ouvert pour accessibilité/CI, recette et remise ; aucune réserve de contraste effacée.
 #18novembre : candidat production privé préparé/testé ; TEM-28 réouvert In Progress, remise/publication en attente.17Done/5Review/2InProgress relus dans Linear ; voir acceptance/production-preparation-2026-11-18.md.
+# 19 novembre : recette Google production raccordée au site local. Restitution automatique après annulation vérifiée. TEM-28 reste ouvert pour la remise et la publication.
 # Preuves historiques : docs/project/acceptance/vercel-demo-2026-11-12.md et processing-demo-2026-11-12.md.
 project_key: NOKEY
 tracking_system: file-system

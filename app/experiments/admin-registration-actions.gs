@@ -26,7 +26,7 @@ var TemaRegistrationActions = (function () {
   function edited(event) {
     var range = event.range, sheet = range.getSheet();
     if (range.getLastRow() < 15 || range.getLastColumn() < 2 || range.getColumn() > 6) return false;
-    var book = event.source, committed = false, countersPending = false, message = '', failure = null;
+    var book = event.source, committed = false, countersPending = false, counterResult, message = '', failure = null;
     try {
       TemaCopy.guard(book);
       if (!TemaCopy.isOwner()) throw new Error('Seul le propriétaire du classeur peut annuler une inscription.');
@@ -47,6 +47,8 @@ var TemaRegistrationActions = (function () {
             var latest = source(book, meta.id);
             if (latest.status === 'annulee') { message = 'Cette inscription est déjà annulée. Aucune place supplémentaire libérée.'; return; }
             if (fingerprint(latest) !== meta.fingerprint || fingerprint(before) !== fingerprint(latest)) stale();
+            var production = typeof TemaHeaders !== 'undefined';
+            if (production) TemaCopy.markCountersPending();
             TemaCopy.dirty();
             var writeError = null;
             try {
@@ -55,10 +57,10 @@ var TemaRegistrationActions = (function () {
             } catch (error) { writeError = error; }
             // A write/flush can fail after recording. Resolve the durable fact by stable ID.
             var recorded;
-            try { recorded = source(book, meta.id).status === 'annulee'; } catch (_) { throw new Error('Résultat de l’écriture incertain. Vérifiez la source et actualisez le suivi avant toute reprise.'); }
+            try { recorded = (production ? TemaCopy.registrationStatus(meta.id) : source(book, meta.id).status) === 'annulee'; } catch (_) { throw new Error('Résultat de l’écriture incertain. Vérifiez la source et actualisez le suivi avant toute reprise.'); }
             if (!recorded) throw writeError || new Error('L’annulation n’a pas été enregistrée. Réessayez après actualisation.');
             committed = true;
-            try { TemaCopy.nativeCounters(book, latest.get('id_cohorte')); } catch (_) { countersPending = true; }
+            try { counterResult = TemaCopy.nativeCounters(book, production ? undefined : latest.get('id_cohorte'), meta.id); } catch (_) { countersPending = true; }
           });
         } else message = 'Annulation abandonnée : réservation conservée.';
       }
@@ -66,7 +68,13 @@ var TemaRegistrationActions = (function () {
     // Never hold ScriptLock while refresh acquires UserLock then ScriptLock in acknowledge.
     var refreshed = false;
     try { refreshed = TemaRegistrationView.refresh(book, false); } catch (_) { /* Report recording independently from projection. */ }
-    if (committed) message = 'Annulation enregistrée.' + (countersPending || !refreshed ? ' Actualisation des places et du suivi à reprendre depuis le menu.' : ' Places disponibles recalculées et suivi actualisé.');
+    if (committed) {
+      message = 'Annulation enregistrée.';
+      if (countersPending || !refreshed) message += ' Actualisation des places et du suivi à reprendre depuis le menu.';
+      else if (counterResult === 'historical') message += ' Inscription historique, session absente des disponibilités.';
+      else if (counterResult === 'invalid') message += ' Renseignez une capacité valide pour cette session.';
+      else message += ' Places disponibles recalculées et suivi actualisé.';
+    }
     else if (failure) message = failure.message;
     if (!refreshed && !committed) message += ' Le statut saisi dans la vue ne prouve aucune annulation ; utilisez Actualiser le suivi.';
     book.toast(message, 'Suivi des inscriptions', 10);

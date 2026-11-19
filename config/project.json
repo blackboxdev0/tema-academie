@@ -556,6 +556,7 @@
       "final_controls_verified": true,
       "publication_go_received": false,
       "git_checkpoint_20261119": {
+        "phase": "before_connected_recipe",
         "branch": "feat/production-candidate-20261118",
         "commit_push_explicitly_requested": true,
         "branch_url": "https://github.com/blackboxdev0/tema-academie/tree/feat/production-candidate-20261118",
@@ -572,6 +573,44 @@
         "production_endpoint_available": false,
         "merge_and_production_activation_not_authorized": true
       }
+    },
+    "production_connected_recipe": {
+      "date": "2026-11-19",
+      "report": "docs/project/acceptance/production-connected-2026-11-19.md",
+      "spec": "_bmad-output/implementation-artifacts/spec-recette-production-connectee.md",
+      "google_deployment_version": 1,
+      "google_access": "anyone",
+      "production_endpoint_available": true,
+      "local_preview_port": 4187,
+      "actual_mail_received": 2,
+      "cancelled_replay_verified": true,
+      "remaining_places_after_manual_refresh": 1,
+      "automatic_counter_persistence_verified": false,
+      "final_export_business_integrity_verified": true,
+      "effective_mail_limit_after_tests": 0,
+      "worker_paused": true,
+      "trigger_cadence_hours": 12,
+      "public_vercel_backend": "COPY",
+      "publication_go_received": false
+    },
+    "production_cancellation_followup": {
+      "date": "2026-11-19",
+      "spec": "_bmad-output/implementation-artifacts/spec-restauration-place-production.md",
+      "report": "docs/project/acceptance/production-connected-2026-11-19.md",
+      "vercel_preparation": "docs/project/acceptance/vercel-production-preparation-2026-11-19.md",
+      "native_cancellation_verified": true,
+      "places_before": 0,
+      "places_after": 1,
+      "places_after_maintenance": 1,
+      "manual_refresh_used": false,
+      "new_emails_sent": 0,
+      "business_export_integrity_verified": true,
+      "google_head_corrected_and_verified": true,
+      "public_google_version": 1,
+      "vercel_build_tested_locally": true,
+      "experiment_tests_passed": 409,
+      "standard_tests_passed": 132,
+      "publication_go_received": false
     }
   },
   "delivery": {

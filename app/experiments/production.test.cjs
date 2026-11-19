@@ -23,6 +23,90 @@ function patch(h, id, fields) { h.copy.lock(() => { h.copy.store().patch(id, fie
 function capture(h) { h.context.TemaHeaders.capture(h.book); h.events.length = 0; }
 function changedCell(h, name = 'Disponibilités', row = 7, col = 10, value = 2) { h.tables[name][row - 1][col - 1] = value; }
 
+test('production cancellation persists a released place even when native maintenance sees an old confirmation', () => {
+  const h = setup({ view: true }); h.loadAdmin(); capture(h);
+  assert.equal(h.service.register(h.command()).code, 'RECORDED');
+  assert.equal(h.copy.reconcile(), true);
+  assert.equal(h.tables['Disponibilités'][1][9], 0);
+  const view = h.tables['Suivi des inscriptions'];
+  const row = view.findIndex(r => r[3] === 'participant@example.invalid') + 1;
+  assert.ok(row >= 15);
+  const bookBefore = structuredClone(h.tables.Inscriptions);
+  const source = h.sheets.Inscriptions, originalDataRange = source.getDataRange;
+  let staleRead = true;
+  source.getDataRange = () => {
+    const range = originalDataRange();
+    if (staleRead && h.tables.Inscriptions[1][6] === 'annulee') {
+      staleRead = false;
+      range.getValues = () => structuredClone(bookBefore);
+    }
+    return range;
+  };
+  h.context.SpreadsheetApp.getUi = () => ({ ButtonSet: { YES_NO: 'YES_NO' }, Button: { YES: 'YES' }, alert: () => 'YES' });
+  view[row - 1][4] = 'Annulée';
+  const edit = { source: h.book, range: h.sheets['Suivi des inscriptions'].getRange(row, 5), value: 'Annulée', oldValue: 'Confirmée' };
+  h.context.onEdit(edit);
+  assert.equal(rows(h)[0].statut, 'confirmee');
+  h.events.length = 0;
+  h.context.traiterSaisieFormationTema({ ...edit, triggerUid: 'installed-owner-edit' });
+  assert.equal(rows(h)[0].statut, 'annulee');
+  assert.equal(h.tables['Disponibilités'][1][9], 1);
+  assert.ok(h.events.some(([kind]) => kind === 'api-update'));
+  const originalRange = source.getRange;
+  source.getRange = (...args) => {
+    const range = originalRange(...args);
+    if (args[0] === 2 && args[1] === 7) range.getValues = () => [['confirmee']];
+    return range;
+  };
+  h.properties.PRODUCTION_ADMIN_MAINTENANCE_PENDING = '1';
+  assert.equal(h.copy.reconcile(), true);
+  assert.equal(h.tables['Disponibilités'][1][9], 1);
+  bookBefore[1][6] = 'annulee';
+  assert.deepEqual(h.tables.Inscriptions, bookBefore);
+  assert.equal(h.messages.length, 0);
+});
+
+test('production does not acknowledge a counter write that the next provider read cannot confirm', () => {
+  const h = setup({ view: true }); h.loadAdmin(); capture(h);
+  assert.equal(h.service.register(h.command()).code, 'RECORDED');
+  h.copy.lock(() => h.copy.nativeCounters(h.book));
+  assert.equal(h.tables['Disponibilités'][1][9], 0);
+  const id = rows(h)[0].id_inscription;
+  patch(h, id, { statut: 'annulee' });
+  const update = h.context.Sheets.Spreadsheets.batchUpdate;
+  h.context.Sheets.Spreadsheets.batchUpdate = () => ({ replies: [{}] });
+  assert.throws(() => h.copy.lock(() => h.copy.nativeCounters(h.book, 'C-COPY-FIXTURE-1', id)), /CONFIG/);
+  assert.equal(h.properties.PRODUCTION_NATIVE_COUNTERS_PENDING, '1');
+  assert.equal(h.tables['Disponibilités'][1][9], 0);
+  h.context.Sheets.Spreadsheets.batchUpdate = update;
+  assert.equal(h.context.reconcilierProductionTema(), true);
+  assert.equal(h.tables['Disponibilités'][1][9], 1);
+  assert.equal(h.properties.PRODUCTION_NATIVE_COUNTERS_PENDING, '0');
+  assert.equal(h.messages.length, 0);
+});
+
+for (const change of ['capacity', 'row']) test('production retries the counter if the ' + change + ' changed during the provider write', () => {
+  const h = setup(), sessionRows = h.tables['Disponibilités'];
+  assert.equal(h.service.register(h.command()).code, 'RECORDED');
+  h.copy.lock(() => h.copy.nativeCounters(h.book));
+  patch(h, rows(h)[0].id_inscription, { statut: 'annulee' });
+  const api = h.context.Sheets.Spreadsheets, update = api.batchUpdate;
+  api.batchUpdate = (body, id) => {
+    if (change === 'capacity') sessionRows[1][5] = 3;
+    else sessionRows.splice(1, 0, Array(12).fill(''));
+    return update(body, id);
+  };
+  assert.throws(() => h.copy.lock(() => h.copy.nativeCounters(h.book)), /CONFIG/);
+  assert.equal(h.properties.PRODUCTION_NATIVE_COUNTERS_PENDING, '1');
+  api.batchUpdate = update;
+  h.copy.lock(() => h.copy.nativeCounters(h.book));
+  if (change === 'row') {
+    assert.equal(sessionRows[1][9], '');
+    assert.equal(sessionRows[2][9], 1);
+  } else assert.equal(sessionRows[1][9], 3);
+  assert.equal(h.properties.PRODUCTION_NATIVE_COUNTERS_PENDING, '0');
+});
+
 test('production refuses every historical target and cannot acquire an unverified endpoint', () => {
   assert.equal(validateTarget(newTarget).apiUrl, '');
   for (const field of ['spreadsheetId', 'scriptId']) for (const id of [target.spreadsheet, target.script, 'short', newTarget[field === 'scriptId' ? 'spreadsheetId' : 'scriptId']]) assert.throws(() => validateTarget({ ...newTarget, [field]: id }));

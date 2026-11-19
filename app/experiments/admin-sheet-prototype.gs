@@ -127,11 +127,11 @@ var TemaSheetPrototype = (function () {
     });
     return { formations: f, sessions: s, lists: lists, notes: notes };
   }
-  function applyDiff(sheet, before, after) {
+  function applyDiff(sheet, before, after, skipColumn) {
     var conflict = false;
     after.forEach(function (row, i) {
       row.forEach(function (v, j) {
-        if (v !== before[i][j]) {
+        if (j !== skipColumn && v !== before[i][j]) {
           var cell = sheet.getRange(i + 1, j + 1);
           // Ne pas écraser une saisie intervenue pendant le calcul Google.
           if (cell.getValue() === before[i][j]) { if (typeof TemaCopy !== 'undefined') TemaCopy.dirty(true); cell.setValue(v); }
@@ -159,6 +159,7 @@ var TemaSheetPrototype = (function () {
     }
   }
   function confirmedCounts(book) {
+    if (typeof TemaHeaders !== 'undefined') return TemaCopy.confirmedCounts();
     var sheet = book.getSheetByName('Inscriptions'), result = Object.create(null);
     if (!sheet || sheet.getLastRow() < 2) return result;
     var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
@@ -217,7 +218,8 @@ var TemaSheetPrototype = (function () {
     var lock = LockService.getScriptLock();
     if (!lock.tryLock(5000)) { book.toast('Une autre mise à jour est en cours. Réessayez votre modification.', 'Tema', 7); return false; }
     try {
-      if (typeof TemaHeaders !== 'undefined' && headersVerified !== true) TemaHeaders.repairLocked(book);
+      var production = typeof TemaHeaders !== 'undefined';
+      if (production && headersVerified !== true) TemaHeaders.repairLocked(book);
       var fs = book.getSheetByName('Formations'), ss = book.getSheetByName('Disponibilités');
       if (!fs || !ss) throw new Error('Conservez les onglets Formations et Disponibilités.');
       if (typeof TemaCopy !== 'undefined') TemaCopy.assertAdministrativeLayout(book);
@@ -231,13 +233,14 @@ var TemaSheetPrototype = (function () {
       };
       var result = plan(f, s, event, deps);
       var conflict = applyDiff(fs, f, result.formations);
-      conflict = applyDiff(ss, s, result.sessions) || conflict;
+      conflict = applyDiff(ss, s, result.sessions, production ? 9 : undefined) || conflict;
       if (conflict) {
         f = read(fs, 13); s = read(ss, 12);
         result = plan(f, s, event, deps);
-        applyDiff(fs, f, result.formations); applyDiff(ss, s, result.sessions);
+        applyDiff(fs, f, result.formations); applyDiff(ss, s, result.sessions, production ? 9 : undefined);
       }
       SpreadsheetApp.flush();
+      if (production) TemaCopy.nativeCounters(book);
       var expected = typeof TemaCopy !== 'undefined' ? TemaCopy.adminFingerprint(book, result, { confirmed: deps.confirmed, now: plannedAt }) : null;
       if (typeof TemaCopy === 'undefined') {
         refreshLists(ss, result.sessions, result.lists); refreshNotes(book, result.notes);
