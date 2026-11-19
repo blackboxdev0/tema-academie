@@ -42,6 +42,12 @@ Jamais : fusion/main, production, Vercel/FTP, achats, destinataire supplémentai
 
 </frozen-after-approval>
 
+## Livraison de la version de recette du 19 novembre 2026
+
+Sur autorisation distincte de Sofiane, la [PR 2](https://github.com/blackboxdev0/tema-academie/pull/2) a été fusionnée dans `main` au commit `9836ea2`. La version publique sur Vercel utilise « Production (préparation) » via Apps Script v2. La vérification anonyme a couvert le catalogue, les sessions et l’ouverture du formulaire. La CI sur `main` a reproduit les huit écarts de contraste connus, avec 332 scénarios réussis. Le rose d’origine est conservé.
+
+Le statut `in-review` reflète la recette et la remise encore ouvertes. Les autres validations attendues figurent dans le [registre Linear](../../docs/project/planning/linear-v1.json). Les preuves et le retour arrière figurent dans le [rapport de mise en ligne](../../docs/project/acceptance/vercel-production-preparation-2026-11-19.md). Le périmètre TEST approuvé dans l’intention ci-dessus reste un jalon historique.
+
 ## Code Map
 
 - `app/apps-script/engine.js` : admission, projection, administration et courriels partagés à étendre.

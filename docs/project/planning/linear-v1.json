@@ -1,9 +1,9 @@
 {
   "prepared_on": "2026-10-26",
-  "status": "owner_accepted_demo_merged_published_reconciled_client_handover_open",
+  "status": "production_candidate_live_client_recipe_and_handover_open",
   "team_id": "b6fe00a9-ac52-42c1-a3ef-d08b3dbd2f8f",
   "project_id": "e6d24474-be36-4ae8-a735-5d002be86579",
-  "branch": "feat/production-candidate-20261118",
+  "branch": "main",
   "epics": [
     {
       "epic": 1,
@@ -260,11 +260,12 @@
     }
   ],
   "architecture_alignment_on": "2026-10-28",
-  "verified_on": "2026-11-18",
+  "verified_on": "2026-11-19",
   "project_status": "In Progress",
   "checkpoint": {
-    "code_commit": "8cbe9e044c7c661ea1085d8a0c10e82b11d6b453",
-    "report": "docs/project/acceptance/production-preparation-2026-11-18.md",
+    "code_commit": "9836ea214477a2cd231a81fa1c918aeafd1d304e",
+    "pull_request": "https://github.com/blackboxdev0/tema-academie/pull/2",
+    "report": "docs/project/acceptance/vercel-production-preparation-2026-11-19.md",
     "done_issues": 17,
     "review_issues": 5,
     "in_progress_issues": [
@@ -281,12 +282,12 @@
       "TEM-28"
     ],
     "scope": "TEM-5_to_TEM-28",
-    "owner_acceptance": "modified_demo_journey_accepted",
+    "owner_acceptance": "vercel_release_approved_with_known_contrast_exceptions",
     "client_acceptance": "pending",
-    "google_deployment_version": 14,
+    "google_deployment_version": 2,
     "ci": "failure_known_contrast_reserves_preserved",
     "linear_readback_verified": true,
-    "production_preparation": "private_candidate_verified_uncommitted_not_published"
+    "production_preparation": "published_on_vercel_and_verified_anonymously"
   },
   "previous_checkpoint_20261030": {
     "code_commit": "096772d03772012752dcc1b7948004318b3e3ad8",
@@ -328,7 +329,7 @@
     "TEM-25": "Review",
     "TEM-26": "Review",
     "TEM-27": "In Progress",
-    "TEM-28": "Review"
+    "TEM-28": "In Progress"
   },
   "previous_checkpoint_20261112": {
     "code_commit": "8cbe9e044c7c661ea1085d8a0c10e82b11d6b453",

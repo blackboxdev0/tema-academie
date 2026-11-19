@@ -1,6 +1,16 @@
 # Préparation de la mise en ligne Tema sur Vercel
 
-Le [site public](https://project-w1j1x.vercel.app/) sert la démo. Le [projet Vercel](https://vercel.com/blackboxsaas-projects/tema-academie) suit `main`, avec un build réglé pour COPY. Le code du candidat reste associé à la [PR de préparation](https://github.com/blackboxdev0/tema-academie/pull/2). Cette procédure prépare le changement de cible vers le nouveau classeur Google.
+## Mise en ligne vérifiée le 19 novembre
+
+Sofiane a autorisé la bascule et la fusion si les vérifications retrouvaient uniquement les huit écarts de contraste connus. Les deux exécutions du candidat ont terminé avec les mêmes huit écarts et 332 scénarios navigateur réussis chacune. La [PR 2](https://github.com/blackboxdev0/tema-academie/pull/2) a été fusionnée dans `main` au commit `9836ea2` à 16 h 18, heure de Montréal. Le [déploiement Vercel Production](https://vercel.com/blackboxsaas-projects/tema-academie/HqpYey9mJUXVjJc9zDmLHTvZM1cM) est prêt.
+
+La [CI après fusion sur `main`](https://github.com/blackboxdev0/tema-academie/actions/runs/44617505889) a confirmé 332 réussites sur 340 et les mêmes huit écarts de contraste. Le projet Linear reste en cours et la remise sur le sous-domaine de Tema attend la fin de la recette.
+
+Le [site public](https://project-w1j1x.vercel.app/) utilise le nouveau classeur via la version Google 2 sur l’URL Web App existante. La vérification anonyme retrouve 24 formations, quatre sessions réservables et la politique de production. La fiche et l’ouverture du formulaire ont été testées dans le navigateur. La feuille de style servie correspond au code validé, rose d’origine compris. Aucune inscription de contrôle n’a été soumise sur le site public.
+
+Vercel limite la commande du projet à 256 caractères. La commande sauvegardée appelle `TEMA_BUILD` en Production, et le script validé charge `TEMA_PRODUCTION_PROFILE_JSON` pour contrôler le classeur et produire `app/dist/web`. Ces deux variables sont limitées à Production. L’ancien build demeure le chemin par défaut des autres branches et l’aperçu de la PR garde sa configuration dédiée. La commande précédente, la référence du déploiement de repli et les preuves sont conservées hors dépôt dans le dossier privé `release-20261119`.
+
+Les sections suivantes conservent la préparation et la procédure utilisée pour la bascule.
 
 ## Réglages préparés
 
