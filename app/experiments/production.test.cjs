@@ -211,11 +211,85 @@ test('production rolling budget is bounded at80, exact24h renews, and Google quo
   assert.equal(reserve(h, 'I-one-available'), null); assert.equal(reserve(h, 'I-one-available'), 'ATTEMPT_RESERVED');
 });
 
+test('production can record 100 attempts and preserves its legacy journal when changing the ceiling', () => {
+  const h = setup();
+  for (let i = 0; i < 80; i++) assert.equal(reserve(h, `I-budget-${i}`), null);
+  const legacy = JSON.parse(h.properties.PRODUCTION_MAIL_BUDGET_JSON);
+  h.properties.PRODUCTION_MAIL_LIMITS_JSON = JSON.stringify({ ...LIMITS, recipients: 100, quota_reserve: 0 });
+  for (let i = 80; i < 100; i++) assert.equal(reserve(h, `I-budget-${i}`), null);
+  const raw = h.properties.PRODUCTION_MAIL_BUDGET_JSON;
+  const compact = JSON.parse(raw);
+  assert.equal(compact.version, 2);
+  assert.equal(compact.attempts.length, 100);
+  assert.deepEqual(compact.attempts.slice(0, 80), legacy.attempts.map(({ at, key }) => [at, key]));
+  assert.ok(Buffer.byteLength(raw) < 9 * 1024);
+  assert.equal(reserve(h, 'I-budget-0'), 'ATTEMPT_RESERVED');
+  assert.equal(reserve(h, 'I-budget-100'), 'MAIL_LIMIT');
+  h.properties.PRODUCTION_MAIL_LIMITS_JSON = JSON.stringify(LIMITS);
+  assert.equal(reserve(h, 'I-after-ceiling-reduction'), 'MAIL_LIMIT');
+  assert.equal(h.properties.PRODUCTION_MAIL_BUDGET_JSON, raw);
+  h.properties.PRODUCTION_MAIL_LIMITS_JSON = JSON.stringify({ ...LIMITS, recipients: 100, quota_reserve: 0 });
+  h.state.now += 86400000 - 1;
+  assert.equal(reserve(h, 'I-next'), 'MAIL_LIMIT');
+  h.state.now++;
+  assert.equal(reserve(h, 'I-next'), null);
+  assert.equal(JSON.parse(h.properties.PRODUCTION_MAIL_BUDGET_JSON).attempts.length, 1);
+});
+
+test('the production worker sends the 100th attempt and waits for the rolling budget to reopen', () => {
+  const h = setup({ quota: 100, properties: { PRODUCTION_MAIL_LIMITS_JSON: JSON.stringify({ ...LIMITS, recipients: 100, quota_reserve: 0 }) } });
+  for (let i = 0; i < 99; i++) assert.equal(reserve(h, `I-budget-${i}`), null);
+  const command = h.command();
+  assert.equal(h.service.register(command).code, 'RECORDED');
+  h.copy.processPendingMail();
+  const first = rows(h)[0];
+  assert.equal(first.mail_participant_etat, 'SENT');
+  assert.equal(first.mail_tema_etat, 'PENDING');
+  assert.equal(first.mail_tema_error_code, 'MAIL_LIMIT');
+  assert.equal(h.messages.length, 1);
+  h.state.now += 86400000;
+  h.copy.processPendingMail();
+  h.copy.processPendingMail();
+  assert.equal(rows(h)[0].mail_tema_etat, 'SENT');
+  assert.equal(rows(h)[0].mail_participant_attempt_id, first.mail_participant_attempt_id);
+  assert.equal(h.service.submit(command).code, 'REPLAY');
+  assert.equal(h.messages.length, 2);
+});
+
+test('full-capacity production uses the last available Google recipient and defers the other mail without duplicates', () => {
+  const h = setup({ quota: 1, properties: { PRODUCTION_MAIL_LIMITS_JSON: JSON.stringify({ ...LIMITS, recipients: 100, quota_reserve: 0 }) } });
+  const active = [{ mail_participant_etat: 'SENDING', mail_participant_attempt_at: new Date(h.state.now).toISOString() }];
+  assert.equal(reserve(h, 'I-inflight', 'participant', active), 'MAIL_QUOTA');
+  const c = h.command();
+  assert.equal(h.service.register(c).code, 'RECORDED');
+  h.copy.processPendingMail();
+  assert.equal(rows(h)[0].mail_participant_etat, 'SENT');
+  assert.equal(rows(h)[0].mail_tema_etat, 'PENDING');
+  assert.equal(h.messages.length, 1);
+  h.state.quota = 1;
+  h.copy.processPendingMail();
+  h.copy.processPendingMail();
+  assert.equal(rows(h)[0].mail_tema_etat, 'SENT');
+  assert.equal(h.service.submit(c).code, 'REPLAY');
+  assert.equal(h.messages.length, 2);
+});
+
 for (const raw of ['invalid', '{}', JSON.stringify({ version: 1, last_at_ms: Date.parse('2099-01-01T00:00Z'), attempts: [] }), JSON.stringify({ version: 1, last_at_ms: Date.parse('2026-11-04T15:00Z'), attempts: Array(81).fill({ at: 1, key: 'a'.repeat(64) }) })]) test('corrupt production journal is never reset: ' + raw.slice(0, 50), () => {
   const h = setup(); h.properties.PRODUCTION_MAIL_BUDGET_JSON = raw; assert.equal(reserve(h, 'I-test'), 'BUDGET_CONFIG'); assert.equal(h.properties.PRODUCTION_MAIL_BUDGET_JSON, raw);
 });
 
-for (const raw of ['invalid', '{}', '{"version":1,"recipients":81,"window_ms":86400000,"quota_reserve":5}', JSON.stringify({ ...LIMITS, quota_reserve: 4 }), JSON.stringify({ ...LIMITS, window_ms: 3600000 })]) test('malformed/unbounded production limits fail closed without resetting budget: ' + raw, () => {
+test('production rejects malformed, duplicate or unbounded compact attempts without touching the journal', () => {
+  const h = setup({ properties: { PRODUCTION_MAIL_LIMITS_JSON: JSON.stringify({ ...LIMITS, recipients: 100, quota_reserve: 0 }) } });
+  const attempt = [h.state.now, 'a'.repeat(64)];
+  for (const attempts of [[[...attempt, null]], [attempt, attempt], Array.from({ length: 101 }, (_, i) => [h.state.now, i.toString(16).padStart(64, '0')])]) {
+    const raw = JSON.stringify({ version: 2, last_at_ms: h.state.now, attempts });
+    h.properties.PRODUCTION_MAIL_BUDGET_JSON = raw;
+    assert.equal(reserve(h, 'I-test'), 'BUDGET_CONFIG');
+    assert.equal(h.properties.PRODUCTION_MAIL_BUDGET_JSON, raw);
+  }
+});
+
+for (const raw of ['invalid', '{}', JSON.stringify({ ...LIMITS, recipients: 101, quota_reserve: 0 }), JSON.stringify({ ...LIMITS, recipients: 100 }), JSON.stringify({ ...LIMITS, quota_reserve: 0 }), JSON.stringify({ ...LIMITS, quota_reserve: 4 }), JSON.stringify({ ...LIMITS, window_ms: 3600000 })]) test('malformed/unbounded production limits fail closed without resetting budget: ' + raw, () => {
   const h = setup({ properties: { PRODUCTION_MAIL_LIMITS_JSON: raw } }); h.properties.PRODUCTION_MAIL_BUDGET_JSON = 'unchanged';
   assert.equal(reserve(h, 'I-test'), 'BUDGET_CONFIG'); assert.equal(h.properties.PRODUCTION_MAIL_BUDGET_JSON, 'unchanged'); assert.equal(h.messages.length, 0);
 });

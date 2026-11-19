@@ -1,7 +1,7 @@
 /* Durable, bounded rolling budget. Caller must own the admission ScriptLock. */
 var TemaProductionMail = (function () {
   'use strict';
-  var WINDOW = 86400000, MAX = 80, RESERVE = 5, EXECUTION_LIFETIME = 10 * 60000;
+  var WINDOW = 86400000, MAX = 100, LEGACY_MAX = 80, RESERVE = 5, EXECUTION_LIFETIME = 10 * 60000;
   function deferred(code) { return ['MAIL_LIMIT', 'MAIL_QUOTA', 'MAIL_PAUSED'].indexOf(code) >= 0; }
   function workerIdle() {
     // A fresh control snapshot per invocation: no business data or persistent
@@ -25,13 +25,19 @@ var TemaProductionMail = (function () {
       var properties = PropertiesService.getScriptProperties(), raw = properties.getProperty('PRODUCTION_MAIL_LIMITS_JSON');
       if (raw === null) return 'MAIL_PAUSED';
       var limits = JSON.parse(raw);
-      if (!limits || limits.version !== 1 || Object.keys(limits).sort().join(',') !== 'quota_reserve,recipients,version,window_ms' || !Number.isSafeInteger(limits.recipients) || limits.recipients < 0 || limits.recipients > MAX || limits.window_ms !== WINDOW || limits.quota_reserve !== RESERVE) return 'BUDGET_CONFIG';
+      if (!limits || limits.version !== 1 || Object.keys(limits).sort().join(',') !== 'quota_reserve,recipients,version,window_ms' || !Number.isSafeInteger(limits.recipients) || limits.recipients < 0 || limits.recipients > MAX || limits.window_ms !== WINDOW) return 'BUDGET_CONFIG';
+      if (limits.quota_reserve !== (limits.recipients === MAX ? 0 : RESERVE)) return 'BUDGET_CONFIG';
       if (limits.recipients === 0) return 'MAIL_PAUSED';
       var now = Date.now(), saved = properties.getProperty('PRODUCTION_MAIL_BUDGET_JSON');
       var state = saved === null ? { version: 1, last_at_ms: now, attempts: [] } : JSON.parse(saved);
-      if (!state || state.version !== 1 || Object.keys(state).sort().join(',') !== 'attempts,last_at_ms,version' || !Number.isSafeInteger(state.last_at_ms) || state.last_at_ms > now || state.last_at_ms < 1 || !Array.isArray(state.attempts) || state.attempts.length > MAX) return 'BUDGET_CONFIG';
+      if (!state || [1, 2].indexOf(state.version) < 0 || Object.keys(state).sort().join(',') !== 'attempts,last_at_ms,version' || !Number.isSafeInteger(state.last_at_ms) || state.last_at_ms > now || state.last_at_ms < 1 || !Array.isArray(state.attempts) || state.attempts.length > (state.version === 1 ? LEGACY_MAX : MAX)) return 'BUDGET_CONFIG';
+      if (state.version === 2) {
+        state.attempts = state.attempts.map(function (a) {
+          return Array.isArray(a) && a.length === 2 ? { at: a[0], key: a[1] } : null;
+        });
+      }
       var keys = Object.create(null);
-      if (state.attempts.some(function (a) { if (!a || Object.keys(a).sort().join(',') !== 'at,key' || !/^[a-f0-9]{64}$/.test(a.key || '') || keys[a.key] || !Number.isSafeInteger(a.at) || a.at < 1 || a.at > state.last_at_ms) return true; keys[a.key] = true; return false; })) return 'BUDGET_CONFIG';
+      if (state.attempts.some(function (a) { if (!a || Object.keys(a).sort().join(',') !== 'at,key' || typeof a.key !== 'string' || !/^[a-f0-9]{64}$/.test(a.key) || keys[a.key] || !Number.isSafeInteger(a.at) || a.at < 1 || a.at > state.last_at_ms) return true; keys[a.key] = true; return false; })) return 'BUDGET_CONFIG';
       var key = TemaCopy.dependencies().hash(id + ':' + channel);
       // A reservation without its row claim is ambiguous and must not be retried.
       if (keys[key]) return 'ATTEMPT_RESERVED';
@@ -51,8 +57,11 @@ var TemaProductionMail = (function () {
           return row['mail_' + channel + '_etat'] === 'SENDING' && Number.isFinite(at) && at <= now && now - at < EXECUTION_LIFETIME;
         }).length;
       }, 0);
-      if (quota - inflight <= RESERVE) return 'MAIL_QUOTA';
+      if (quota - inflight <= limits.quota_reserve) return 'MAIL_QUOTA';
       state.attempts.push({ key: key, at: now }); state.last_at_ms = now;
+      // Above 80 attempts, omit the repeated field names to fit the 9 KB property limit.
+      state.version = state.attempts.length > LEGACY_MAX ? 2 : 1;
+      if (state.version === 2) state.attempts = state.attempts.map(function (a) { return [a.at, a.key]; });
       properties.setProperty('PRODUCTION_MAIL_BUDGET_JSON', JSON.stringify(state));
       return null;
     } catch (_) { return 'BUDGET_CONFIG'; }
