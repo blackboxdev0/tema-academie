@@ -1,6 +1,6 @@
 # Contexte du projet — Tema Académie
 
-**19 novembre, cible de production confirmée.** Sofiane utilise uniquement « Production (préparation) » et désigne ce même classeur pour les écritures de production. L’envoi automatique y est actif en continu. Le déclencheur planifié de la démo a été supprimé sur confirmation. Le site public Vercel sert encore la démo. [État et preuve](acceptance/production-connected-2026-11-19.md).
+**19 novembre, cible de production publiée.** Le site public Vercel lit « Production (préparation) », le seul classeur utilisé par Sofiane et la cible d’écriture de production. Les vérifications liées à la publication et les huit écarts de contraste acceptés figurent dans le rapport Vercel. L’envoi automatique y est actif chaque minute. Le déclencheur planifié de la démo a été supprimé sur confirmation. [Mise en ligne](acceptance/vercel-production-preparation-2026-11-19.md) · [Recette Google](acceptance/production-connected-2026-11-19.md).
 
 **19 novembre, restitution de place en production.** L’éditeur Google de préparation vérifie les statuts et les compteurs par Sheets v4. Annulation native et persistance après maintenance vérifiées. Le build de préparation Vercel utilise un profil attesté qui doit viser le nouveau Sheet et son script. [Recette](acceptance/production-connected-2026-11-19.md) · [Préparation Vercel](acceptance/vercel-production-preparation-2026-11-19.md).
 

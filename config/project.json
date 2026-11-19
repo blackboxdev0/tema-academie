@@ -611,6 +611,26 @@
       "experiment_tests_passed": 409,
       "standard_tests_passed": 132,
       "publication_go_received": false
+    },
+    "vercel_release_20261119": {
+      "status": "live_verified_client_recipe_open",
+      "date": "2026-11-19",
+      "report": "docs/project/acceptance/vercel-production-preparation-2026-11-19.md",
+      "branch": "main",
+      "merge_commit": "9836ea214477a2cd231a81fa1c918aeafd1d304e",
+      "pull_request": "https://github.com/blackboxdev0/tema-academie/pull/2",
+      "deployment": "https://vercel.com/blackboxsaas-projects/tema-academie/HqpYey9mJUXVjJc9zDmLHTvZM1cM",
+      "public_site": "https://project-w1j1x.vercel.app/",
+      "google_deployment_version": 2,
+      "worker_interval_minutes": 1,
+      "rolling_24h_recipient_maximum": 100,
+      "main_ci": "https://github.com/blackboxdev0/tema-academie/actions/runs/44617505889",
+      "main_browser_tests_passed": 332,
+      "main_known_contrast_failures": 8,
+      "publication_go_received": true,
+      "public_form_opened": true,
+      "public_registration_submitted_during_release_check": false,
+      "client_acceptance": "pending"
     }
   },
   "delivery": {
@@ -618,7 +638,7 @@
     "procedure": "docs/project/guide-google.md",
     "demo_and_client_testing": {
       "target": "Vercel",
-      "status": "technical_trial_only_not_client_delivery",
+      "status": "production_candidate_public_client_recipe_open",
       "approved_on": "2026-10-25",
       "blocks_on_final_ftp_details": false
     },

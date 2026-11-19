@@ -39,7 +39,9 @@ project: Tema Académie
 # Epics1 à3 et stories1.1 à4.2 done ; epic4 reste in-progress à cause de4.3.
 # Epic5 ouvert pour accessibilité/CI, recette et remise ; aucune réserve de contraste effacée.
 #18novembre : candidat production privé préparé/testé ; TEM-28 réouvert In Progress, remise/publication en attente.17Done/5Review/2InProgress relus dans Linear ; voir acceptance/production-preparation-2026-11-18.md.
-# 19 novembre : recette Google production raccordée au site local. Restitution automatique après annulation vérifiée. TEM-28 reste ouvert pour la remise et la publication.
+# 19 novembre : site de recette public sur main (9836ea2), PR 2 fusionnée, Vercel raccordé au classeur de production via Google v2.
+# Linear relu : 17 Done, 5 Review, 2 In Progress. TEM-27 attend la recette Tema et TEM-28 la remise et le point sur le sous-domaine.
+# CI de main : 332 scénarios réussis et les huit écarts de contraste connus. Confidentialité, accessibilité et CI restent ouvertes.
 # Preuves historiques : docs/project/acceptance/vercel-demo-2026-11-12.md et processing-demo-2026-11-12.md.
 project_key: NOKEY
 tracking_system: file-system
