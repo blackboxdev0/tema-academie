@@ -42,7 +42,7 @@ Le profil complet et le résultat de l’essai restent dans le dossier privé du
 
 Le build de préparation a réussi dans un checkout temporaire avec le profil actuellement attesté. La sortie `app/dist/web` contient exclusivement les fichiers publics. La configuration générée correspond octet pour octet à l’aperçu relié au nouveau Sheet. Un profil absent et un profil lié à un autre Sheet ont été refusés avant toute sortie publique. Les réglages Vercel et la version Google publique attendent le GO.
 
-Le push du correctif sur la PR 2 est autorisé. `vercel.json` reporte les aperçus automatiques de la seule branche `feat/production-candidate-20261118` jusqu’à la prochaine décision de livraison. [Configuration des branches Vercel](https://vercel.com/docs/project-configuration/git-configuration)
+Sofiane a autorisé la réactivation de l’aperçu de la PR 2. Vercel réserve `TEMA_PREVIEW_PROFILE_JSON` à la branche `feat/production-candidate-20261118`. `vercel.mjs` choisit le build raccordé seulement pour cet aperçu. Les réglages de build existants s’appliquent sur les autres branches et en production. Le profil passe la validation du nouveau Sheet et du script avant le build. [Configuration des branches Vercel](https://vercel.com/docs/project-configuration/git-configuration) · [Variables d’environnement](https://vercel.com/docs/environment-variables)
 
 ## Ordre de mise en service au GO
 
