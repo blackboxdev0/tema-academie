@@ -275,11 +275,12 @@ var TemaCopy = (function () {
   }
   function demoAdmissions() {
     var mode = TemaCopyConfig.read().admissions_mode;
-    if (mode !== 'restricted' && mode !== 'demo') throw TemaTrial.fault('PRIVATE_CONFIG');
-    return mode === 'demo';
+    if (mode !== 'restricted' && mode !== 'demo' && !(mode === 'production' && typeof TemaProductionMail !== 'undefined')) throw TemaTrial.fault('PRIVATE_CONFIG');
+    return mode === 'demo' || mode === 'production';
   }
-  function reserveMail(id, channel, to) {
+  function reserveMail(id, channel, to, registrations) {
     guard();
+    if (typeof TemaProductionMail !== 'undefined') return TemaProductionMail.reserve(id, channel, to, registrations);
     try {
       var limits = JSON.parse(props().getProperty('COPY_MAIL_LIMITS_JSON') || '{"registrations":0,"recipients":0}');
       if (!limits || !Number.isSafeInteger(limits.registrations) || !Number.isSafeInteger(limits.recipients) || limits.registrations < 0 || limits.recipients < 0) return 'BUDGET_CONFIG';
@@ -305,6 +306,8 @@ var TemaCopy = (function () {
   function dependencies(options) {
     return {
       mailLogo: true, privateSheetUrl: 'https://docs.google.com/spreadsheets/d/' + TARGET.spreadsheet + '/edit', guard: guard, store: store(options), suppressCancelledMail: true, withLock: lock, reserveMail: reserveMail,
+      deferMailBudget: typeof TemaProductionMail === 'undefined' ? null : TemaProductionMail.deferred,
+      localPolicy: typeof TemaProductionMail !== 'undefined',
       allowNewRegistration: function (command) { return demoAdmissions() || allowed().indexOf(command.courriel) >= 0; },
       consumeNewCommand: function (hash, now) { var saved = props().getProperty('COPY_RATE_BUDGET_JSON'), decision = TemaTrial.nextRateBudget(saved === null ? null : JSON.parse(saved), hash, now); if (decision.allowed) props().setProperty('COPY_RATE_BUDGET_JSON', JSON.stringify(decision.state)); return decision.allowed; },
       now: function () { return Date.now(); }, uuid: function () { return Utilities.getUuid(); },
@@ -319,7 +322,7 @@ var TemaCopy = (function () {
   function asyncConfig() {
     guard();
     var raw = props().getProperty('COPY_ASYNC_MAIL_JSON');
-    if (raw === null) return null;
+    if (raw === null) { if (typeof TemaProductionMail !== 'undefined') throw TemaTrial.fault('PRIVATE_CONFIG'); return null; }
     try {
       var config = JSON.parse(raw), cursorRaw = props().getProperty('COPY_ASYNC_MAIL_CURSOR'), cursor = cursorRaw === null ? 0 : Number(cursorRaw);
       if (!config || config.version !== 1 || Object.keys(config).sort().join(',') !== 'activated_at_ms,recovery_ids,version' ||
@@ -337,12 +340,28 @@ var TemaCopy = (function () {
     var selected = lock(function () {
       var config = asyncConfig();
       if (!config) return [];
+      var production = typeof TemaProductionMail !== 'undefined', observedVersion, activationKey, emptyKey = 'COPY_MAIL_EMPTY_QUEUE_JSON';
+      if (production) {
+        observedVersion = version(); activationKey = dependencies().hash(JSON.stringify([config.activated_at_ms, config.recovery_ids]));
+        var idle, now = Date.now();
+        try { idle = JSON.parse(props().getProperty(emptyKey)); } catch (_) { idle = null; }
+        if (idle && idle.version === 1 && Object.keys(idle).sort().join(',') === 'activation_key,next_audit_ms,source_version,version' && idle.source_version === observedVersion && idle.activation_key === activationKey && Number.isSafeInteger(idle.next_audit_ms) && idle.next_audit_ms > now && idle.next_audit_ms <= now + 300000 && props().getProperty('COPY_VIEW_VERSION') === observedVersion && props().getProperty('COPY_ADMIN_MAINTENANCE_PENDING') !== '1' && props().getProperty('COPY_NATIVE_COUNTERS_PENDING') !== '1') return [];
+      }
       var rows = table(registrationLayout(registrationSheet()).values, 'Inscriptions').filter(function (row) {
         var at = Object.prototype.toString.call(row.horodatage) === '[object Date]' ? row.horodatage.getTime() : Date.parse(row.horodatage);
         return (Number.isFinite(at) && at >= config.activated_at_ms || config.recovery_ids.indexOf(row.id_inscription) >= 0) &&
           ['confirmee', 'annulee'].indexOf(row.statut) >= 0 && (row.mail_participant_etat === 'PENDING' || row.mail_tema_etat === 'PENDING');
       });
-      if (!rows.length) return [];
+      if (!rows.length) {
+        // This acknowledgement is made only after the real scan, under the
+        // admission lock, with a final version check for human edits.
+        if (production) {
+          if (version() === observedVersion) props().setProperty(emptyKey, JSON.stringify({ version: 1, source_version: observedVersion, activation_key: activationKey, next_audit_ms: started + 300000 }));
+          else props().deleteProperty(emptyKey);
+        }
+        return [];
+      }
+      if (production) props().deleteProperty(emptyKey);
       var start = config.cursor % rows.length, result = [];
       for (var i = 0; i < Math.min(3, rows.length); i++) result.push({ id: rows[(start + i) % rows.length].id_inscription, cursor: (start + i + 1) % rows.length });
       return result;
@@ -419,7 +438,7 @@ var TemaCopy = (function () {
     lock(function () { if (version() === v) dirty(true); });
     return false;
   }
-  function reconcile() {
+  function reconcile(headersVerified) {
     guard();
     var observedVersion = version(), clean = props().getProperty('COPY_ADMIN_MAINTENANCE_PENDING') !== '1' && props().getProperty('COPY_NATIVE_COUNTERS_PENDING') !== '1' && props().getProperty('COPY_VIEW_VERSION') === observedVersion, now = Date.now();
     var next = Number(props().getProperty('COPY_VIEW_NEXT_CHANGE_AT') || 0);
@@ -431,12 +450,15 @@ var TemaCopy = (function () {
       // A missed native registration edit did not set the pending flag.
       if (!unchanged) markCountersPending();
     }
+    // A source audit or the mail poll may reveal work after the quiet worker
+    // skipped its header audit. Restore the fresh boundary before parsing.
+    if (typeof TemaHeaders !== 'undefined' && headersVerified !== true) { TemaHeaders.repair(b); headersVerified = true; }
     // Retrying already pending work must not invalidate an in-flight owner render.
     // Only a clean checkpoint invalidated by source audit/time creates a version.
     if (clean) lock(function () { if (version() === observedVersion) dirty(true); });
     pendingNotice();
     if (typeof TemaSheetPrototype !== 'undefined' && (props().getProperty('COPY_ADMIN_MAINTENANCE_PENDING') === '1' || adminFingerprint(b) !== props().getProperty('COPY_ADMIN_SOURCE_HASH'))) {
-      if (TemaSheetPrototype.sync(b, null) !== true) return false;
+      if (TemaSheetPrototype.sync(b, null, headersVerified === true) !== true) return false;
     }
     if (props().getProperty('COPY_NATIVE_COUNTERS_PENDING') === '1') lock(function () { nativeCounters(b); });
     if (typeof TemaRegistrationView !== 'undefined') return TemaRegistrationView.refresh(b, false, true);
@@ -455,7 +477,10 @@ var TemaCopy = (function () {
   return { target: TARGET, guard: guard, book: book, lock: lock, dirty: dirty, version: version, table: table, sections: sections, temporal: temporal, nativeRead: nativeRead, assertAdministrativeLayout: assertAdministrativeLayout, grouped: grouped, store: store, counters: counters, nativeCounters: nativeCounters, reserveMail: reserveMail, dependencies: dependencies, isOwner: isOwner, sourceHash: sourceHash, adminFingerprint: adminFingerprint, acknowledgeAdmin: acknowledgeAdmin, markCountersPending: markCountersPending, acknowledge: acknowledge, asyncConfig: asyncConfig, processPendingMail: processPendingMail, reconcile: reconcile, installTrigger: installTrigger };
 })();
 function copyJson_(value) { return ContentService.createTextOutput(JSON.stringify(value)).setMimeType(ContentService.MimeType.JSON); }
-function doGet() { return copyJson_(TemaCopy.grouped()); }
+function doGet() {
+  try { if (typeof TemaHeaders !== 'undefined') TemaHeaders.repair(TemaCopy.book()); return copyJson_(TemaCopy.grouped()); }
+  catch (_) { return copyJson_({ schema_version: 1, code: 'UNAVAILABLE' }); }
+}
 function copyPostDiagnostic_(phase, code) {
   var allowed = ['RECORDED', 'REPLAY', 'BUSY', 'UNAVAILABLE', 'INVALID', 'RETRY_CONFLICT', 'CONSENT_REQUIRED', 'POLICY_CHANGED', 'NOT_FOUND', 'CLOSED', 'SESSION_CHANGED', 'DUPLICATE', 'FULL'];
   console.log(JSON.stringify({ phase: phase, code: allowed.indexOf(code) >= 0 ? code : 'UNAVAILABLE' }));
@@ -468,16 +493,19 @@ function doPost(e) {
     command = TemaTrial.decodeForm(e.parameter);
   } catch (err) { var rejected = err.code === 'ENVIRONMENT' ? 'UNAVAILABLE' : 'INVALID'; copyPostDiagnostic_('copy_post_decode', rejected); return copyJson_(TemaTrial.envelope(rejected, null)); }
   try {
+    if (typeof TemaHeaders !== 'undefined') TemaHeaders.repair(TemaCopy.book());
     var async = TemaCopy.asyncConfig(), service = TemaTrial.createService(TemaCopy.dependencies(async ? { deferDerived: true } : undefined));
     var receipt = async ? service.register(command) : service.submit(command);
     copyPostDiagnostic_('copy_post_admission', receipt.code); return copyJson_(receipt);
   } catch (_) { copyPostDiagnostic_('copy_post_config', 'UNAVAILABLE'); return copyJson_(TemaTrial.envelope('UNAVAILABLE', command)); }
 }
 function reconcilierCopieTema() {
+  if (typeof TemaProductionMail !== 'undefined' && TemaProductionMail.workerIdle()) return true;
+  var headersVerified = typeof TemaHeaders !== 'undefined' && TemaHeaders.repairForWorker();
   // Always precedes projection shortcuts/failures; mail uses its own atomic claims.
   try { TemaCopy.processPendingMail(); }
   catch (error) { console.log(JSON.stringify({ phase: 'copy_pending_mail', code: error && ['PRIVATE_CONFIG', 'BUSY', 'ENVIRONMENT', 'CONFIG'].indexOf(error.code) >= 0 ? error.code : 'UNAVAILABLE' })); }
-  return TemaCopy.reconcile();
+  return TemaCopy.reconcile(headersVerified);
 }
 function installerActualisationCopieTema() { return TemaCopy.installTrigger(); }
 function autoriserCopieTema() {

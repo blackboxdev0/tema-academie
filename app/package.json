@@ -9,8 +9,11 @@
   "scripts": {
     "test": "node --test tests/*.test.cjs",
     "test:copy": "node --test experiments/*.test.cjs",
+    "test:production": "node --test experiments/production.test.cjs",
+    "build:production": "node experiments/build-production-backend.cjs",
     "build": "node scripts/build.cjs",
     "serve": "node scripts/serve.cjs",
+    "preview:production": "node scripts/serve.cjs --production",
     "test:e2e": "playwright test",
     "test:browsers": "TEMA_BROWSER_MATRIX=all playwright test",
     "test:a11y": "playwright test tests/browser/accessibility.spec.cjs",

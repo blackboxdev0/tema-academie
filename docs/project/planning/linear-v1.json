@@ -3,7 +3,7 @@
   "status": "owner_accepted_demo_merged_published_reconciled_client_handover_open",
   "team_id": "b6fe00a9-ac52-42c1-a3ef-d08b3dbd2f8f",
   "project_id": "e6d24474-be36-4ae8-a735-5d002be86579",
-  "branch": "main",
+  "branch": "feat/production-candidate-20261118",
   "epics": [
     {
       "epic": 1,
@@ -252,7 +252,7 @@
       "uuid": "62ea0d91-8e01-440e-82b5-5c78c8d0978c",
       "url": "https://linear.app/tema-academie/issue/TEM-28/54-remettre-le-candidat-le-guide-et-les-elements-de-publication",
       "title": "5.4 — Remettre le candidat, le guide et les éléments de publication",
-      "status": "Review",
+      "status": "In Progress",
       "parent": "TEM-11",
       "depends_on": [
         "TEM-27"
@@ -260,15 +260,16 @@
     }
   ],
   "architecture_alignment_on": "2026-10-28",
-  "verified_on": "2026-11-12",
+  "verified_on": "2026-11-18",
   "project_status": "In Progress",
   "checkpoint": {
     "code_commit": "8cbe9e044c7c661ea1085d8a0c10e82b11d6b453",
-    "report": "docs/project/acceptance/etat-projet-2026-11-12.md",
+    "report": "docs/project/acceptance/production-preparation-2026-11-18.md",
     "done_issues": 17,
-    "review_issues": 6,
+    "review_issues": 5,
     "in_progress_issues": [
-      "TEM-27"
+      "TEM-27",
+      "TEM-28"
     ],
     "open_issues": [
       "TEM-10",
@@ -284,7 +285,8 @@
     "client_acceptance": "pending",
     "google_deployment_version": 14,
     "ci": "failure_known_contrast_reserves_preserved",
-    "linear_readback_verified": true
+    "linear_readback_verified": true,
+    "production_preparation": "private_candidate_verified_uncommitted_not_published"
   },
   "previous_checkpoint_20261030": {
     "code_commit": "096772d03772012752dcc1b7948004318b3e3ad8",
@@ -327,5 +329,29 @@
     "TEM-26": "Review",
     "TEM-27": "In Progress",
     "TEM-28": "Review"
+  },
+  "previous_checkpoint_20261112": {
+    "code_commit": "8cbe9e044c7c661ea1085d8a0c10e82b11d6b453",
+    "report": "docs/project/acceptance/etat-projet-2026-11-12.md",
+    "done_issues": 17,
+    "review_issues": 6,
+    "in_progress_issues": [
+      "TEM-27"
+    ],
+    "open_issues": [
+      "TEM-10",
+      "TEM-11",
+      "TEM-24",
+      "TEM-25",
+      "TEM-26",
+      "TEM-27",
+      "TEM-28"
+    ],
+    "scope": "TEM-5_to_TEM-28",
+    "owner_acceptance": "modified_demo_journey_accepted",
+    "client_acceptance": "pending",
+    "google_deployment_version": 14,
+    "ci": "failure_known_contrast_reserves_preserved",
+    "linear_readback_verified": true
   }
 }

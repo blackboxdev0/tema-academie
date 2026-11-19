@@ -78,7 +78,8 @@
   }
 
   // Projection explicite : aucun champ de formulaire ou reçu ne rejoint le cache.
-  var cacheKey = 'tema-public-v2:' + config.apiUrl;
+  var production = config.environment === 'PRODUCTION';
+  var cacheKey = production ? 'tema-public-production-v1:' + config.policyVersion + ':' + config.apiUrl : 'tema-public-v2:' + config.apiUrl;
   function publicCopy(data) {
     function pick(row, keys) { var out = {}; keys.split(' ').forEach(function (key) { out[key] = row[key]; }); return out; }
     return { schema_version: 1, timezone: 'America/Toronto',
@@ -117,11 +118,11 @@
     try {
       var response = await fetch(config.apiUrl, { cache: 'no-store', credentials: 'omit', redirect: 'follow', signal: controller.signal });
       var data = await response.json();
-      if (!response.ok || !data || data.schema_version !== 1 || data.timezone !== 'America/Toronto' || !Array.isArray(data.formations) || !Array.isArray(data.sessions) || !data.policy || !/^https:\/\//.test(data.policy.url) || !data.contact || !/^[^\s@]+@[^\s@]+$/.test(data.contact.courriel)) throw new Error('UNAVAILABLE');
+      if (!response.ok || !data || data.schema_version !== 1 || data.timezone !== 'America/Toronto' || !Array.isArray(data.formations) || !Array.isArray(data.sessions) || !data.policy || !(production ? data.policy.url === '#politique' && data.policy.version === config.policyVersion : /^https:\/\//.test(data.policy.url)) || !data.contact || !/^[^\s@]+@[^\s@]+$/.test(data.contact.courriel)) throw new Error('UNAVAILABLE');
       catalogue = data; previewOnly = false; lastReadFailed = false; savePublicCache(data);
-      var localDraft = /(^|\.)example\.invalid$/i.test(new URL(data.policy.url).hostname);
+      var localDraft = production || /(^|\.)example\.invalid$/i.test(new URL(data.policy.url).hostname);
       ['policy', 'footer-policy'].forEach(function (id) { var a = $(id); a.href = localDraft ? '#politique' : data.policy.url; if (localDraft) { a.removeAttribute('target'); a.removeAttribute('rel'); } else { a.target = '_blank'; a.rel = 'noopener noreferrer'; } });
-      $('privacy-version').textContent = 'Version proposée TEST : ' + data.policy.version + '. À valider par Tema avant ouverture.'; $('policy-version').textContent = 'Version ' + data.policy.version; $('footer-policy').hidden = false; document.querySelectorAll('.contact-link, .contact-address').forEach(function (a) { a.href = 'mailto:' + data.contact.courriel; if (a.classList.contains('contact-address')) a.textContent = data.contact.courriel; a.hidden = false; }); $('contact').href = 'mailto:' + data.contact.courriel; $('contact').hidden = false;
+      $('privacy-version').textContent = production ? 'Version ' + data.policy.version : 'Version proposée TEST : ' + data.policy.version + '. À valider par Tema avant ouverture.'; $('policy-version').textContent = 'Version ' + data.policy.version; $('footer-policy').hidden = false; document.querySelectorAll('.contact-link, .contact-address').forEach(function (a) { a.href = 'mailto:' + data.contact.courriel; if (a.classList.contains('contact-address')) a.textContent = data.contact.courriel; a.hidden = false; }); $('contact').href = 'mailto:' + data.contact.courriel; $('contact').hidden = false;
       return data;
     } finally { clearTimeout(timer); }
   }
@@ -230,6 +231,7 @@
     dates.append(layout); surface.append(dates);
   }
   function applyRoute(force) {
+    if (!catalogue && production) { if (location.hash === '#politique') { show('privacy'); focusPage('privacy-title'); } else show('catalogue'); return; }
     if (!catalogue) return;
     // The skip link targets the current view without rebuilding it or moving
     // away from an unresolved registration. Keyboard focus must follow it.
@@ -275,7 +277,7 @@
       $('catalogue-notice').hidden = !!catalogue && previewOnly;
       if (draftNeedsValidation && selected) preserveFocus(function () { formAvailability(selected.session, 'Disponibilité à vérifier'); });
       if (!catalogue) $('catalogue-notice').querySelector('p').textContent = 'Le catalogue est temporairement indisponible. Réessayez dans un instant.';
-      $('catalogue-status').textContent = config.apiUrl ? 'Les dates sont indisponibles. Réessayez dans un instant.' : 'Le service TEST n’est pas encore configuré.';
+      $('catalogue-status').textContent = config.apiUrl ? 'Les dates sont indisponibles. Réessayez dans un instant.' : production ? 'Les dates sont momentanément indisponibles. Contactez Tema.' : 'Le service TEST n’est pas encore configuré.';
     }
   }
   function formAvailability(s, label) { $('form-availability').hidden = false; $('form-availability').replaceChildren(node('p', label), badge(s), node('p', 'La saisie du formulaire ne réserve pas de place.')); }
@@ -402,7 +404,7 @@
   }); });
   $('privacy-back').addEventListener('click', function () {
     history.replaceState(null, '', privacyReturn.route); show(privacyReturn.view);
-    if (privacyReturn.view === 'catalogue') renderCatalogue();
+    if (privacyReturn.view === 'catalogue' && catalogue) renderCatalogue();
     var focus = $(privacyReturn.focus); if (focus) focus.focus({ preventScroll: true });
     scrollToDestination(0, privacyReturn.scroll);
   });
@@ -413,5 +415,6 @@
   window.addEventListener('hashchange', applyRoute);
   var cached = readPublicCache();
   if (cached) { try { catalogue = cached; previewOnly = true; renderCatalogue(); applyRoute(); initialRouteApplied = true; } catch (_) { catalogue = null; previewOnly = false; $('formations').replaceChildren(); } }
+  if (production && !catalogue && location.hash === '#politique') applyRoute();
   refresh();
 }());
