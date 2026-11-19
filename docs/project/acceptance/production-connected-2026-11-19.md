@@ -2,6 +2,16 @@
 
 Le 19 novembre 2026, Sofiane a autorisé la version Google en accès « Anyone », le raccordement local et une recette limitée à deux courriels reçus dans la boîte Tema. Le candidat est celui du commit `822a362`, sur la [PR 2](https://github.com/blackboxdev0/tema-academie/pull/2).
 
+## Activation de l’envoi continu
+
+Le 19 novembre, Sofiane a confirmé que « Production (préparation) » est le seul classeur qu’il utilise et qu’il recevra les inscriptions en production. Les envois automatiques ont d’abord été activés toutes les cinq minutes, avec un plafond de 80 destinataires sur 24 heures glissantes et une réserve Google de 5. Les sept en-têtes ont été contrôlés et le journal d’envoi a été conservé.
+
+Le passage planifié de 15 h 28, heure de Montréal, a traité les deux messages de l’inscription d’essai en attente. La confirmation participant et l’avis Tema ont été retrouvés dans la boîte Tema et apparaissent comme envoyés dans le suivi. L’export après traitement confirme que l’autre inscription et le catalogue sont inchangés.
+
+Sur confirmation de Sofiane, Google a supprimé le seul déclencheur planifié de la démo (`reconcilierCopieTema`). La liste affiche encore le déclencheur d’édition. Le site public Vercel sert toujours la démo, dont la file d’envoi ne bénéficie donc plus de ce traitement planifié.
+
+Sofiane a ensuite autorisé le plafond de 100 destinataires. À 15 h 44, heure de Montréal, Google a confirmé ce plafond, l’envoi actif et le journal préservé. Les propriétés de script et le code installé ont été relus après sauvegarde. Le quota réel Google reste contrôlé avant toute réservation d’envoi. La fenêtre de 24 heures commence à la réservation de la tentative. Les 127 tests de production et 415 tests d’intégration locale des scripts passent. La saturation et la reprise ont été simulées. Aucun courriel supplémentaire n’a été envoyé pour mesurer cette limite.
+
 ## Contre-essai de l’annulation
 
 Le même jour, Sofiane a demandé de corriger la restitution automatique avant publication. La version de départ a réussi un nouvel essai natif. Cela n’efface pas le retour à zéro constaté lors du premier essai. Le correctif utilise la même lecture Sheets v4 pour compter les confirmations et vérifier les écritures dans les deux chemins de gestion. Le test de régression couvre une lecture native périmée, un premier calcul non confirmé, un déplacement de ligne et une modification simultanée de capacité.
@@ -36,4 +46,12 @@ Cette commande relance l’aperçu du build raccordé depuis la racine du dépô
 PORT=4187 npm --prefix app run preview:production -- ~/.config/tema-academie/production-candidate-20261118/activation-20261119/connected-web
 ```
 
-Le site public Vercel utilise COPY. Le contre-essai ci-dessus clôt le contrôle de restitution pour ce candidat. TEM-28 garde la remise et la publication ouvertes. Sur GO de mise en service, le passage de l’aperçu au build Vercel s’accompagne de la reprise du déclencheur minute, du contrôle des en-têtes, du retrait de la pause et du réglage du plafond. Le budget quotidien réel des déclencheurs partagé avec la démo reste à mesurer. Les autres réserves figurent dans le [bilan du 18 novembre](production-preparation-2026-11-18.md).
+Le site public Vercel utilise COPY. Le contre-essai ci-dessus clôt le contrôle de restitution pour ce candidat. TEM-28 garde la remise et la publication ouvertes. Sur GO de mise en service, vérifier les en-têtes et l’état du traitement automatique avant le raccordement du site public. Les autres réserves figurent dans le [bilan du 18 novembre](production-preparation-2026-11-18.md).
+
+## Cadence pour la recette client
+
+Sofiane a demandé une prise en charge plus rapide des courriels pour la recette du 19 novembre. L’intervalle d’une minute a été sauvegardé puis relu sur le seul déclencheur planifié de « Production (préparation) ». L’édition propriétaire, le plafond de 100 et la configuration Vercel restent en place. Le chemin léger au repos et les vérifications à échéance de cinq minutes se font dans la même fonction. Le temps total d’exécution du compte reste à mesurer sur une journée représentative.
+
+Deux exécutions planifiées ont démarré à 16 h 00 min 54 s et à 16 h 01 min 54 s, heure de Montréal. Google les a marquées terminées en 2,286 s et 1,905 s. Ce contrôle valide la cadence, sans nouvel essai d’envoi.
+
+L’API Google de production a répondu sans connexion avec 24 formations et 4 sessions réservables. L’aperçu Vercel de la PR 2 redirigeait vers la connexion Vercel depuis un accès anonyme. Le site public sert encore la démo.

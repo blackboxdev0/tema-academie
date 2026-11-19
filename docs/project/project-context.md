@@ -1,5 +1,7 @@
 # Contexte du projet — Tema Académie
 
+**19 novembre, cible de production confirmée.** Sofiane utilise uniquement « Production (préparation) » et désigne ce même classeur pour les écritures de production. L’envoi automatique y est actif en continu. Le déclencheur planifié de la démo a été supprimé sur confirmation. Le site public Vercel sert encore la démo. [État et preuve](acceptance/production-connected-2026-11-19.md).
+
 **19 novembre, restitution de place en production.** L’éditeur Google de préparation vérifie les statuts et les compteurs par Sheets v4. Annulation native et persistance après maintenance vérifiées. Le build de préparation Vercel utilise un profil attesté qui doit viser le nouveau Sheet et son script. [Recette](acceptance/production-connected-2026-11-19.md) · [Préparation Vercel](acceptance/vercel-production-preparation-2026-11-19.md).
 
 **19 novembre, raccordement Google de production.** L’API Google v1 est accessible anonymement et sert l’aperçu local. Le site Vercel utilise la configuration COPY. L’ouverture des envois était limitée à une réservation fictive et deux courriels vers Tema. Après la recette le classeur contient 24 formations, sans session ni inscription, et les envois reviennent en pause. [Rapport de recette](acceptance/production-connected-2026-11-19.md).
