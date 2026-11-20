@@ -29,7 +29,7 @@
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 # - Retrospective appends its action items to action_items; the status view surfaces open ones
 generated: 10-30-2026 15:16
-last_updated: 11-19-2026
+last_updated: 11-20-2026
 project: Tema Académie
 # Contre-audit 2026-10-30 : réserves ouvertes dans acceptance/independent-audit-2026-10-30.md.
 # Correctifs déployés TEST8 et contrôlés ; Safari lecture/formulaire et Apple import/export vérifiés. Recette finale en cours ; UX différée.
@@ -42,6 +42,7 @@ project: Tema Académie
 # 19 novembre : site de recette public sur main (9836ea2), PR 2 fusionnée, Vercel raccordé au classeur de production via Google v2.
 # Linear relu : 17 Done, 5 Review, 2 In Progress. TEM-27 attend la recette Tema et TEM-28 la remise et le point sur le sous-domaine.
 # CI de main : 332 scénarios réussis et les huit écarts de contraste connus. Confidentialité, accessibilité et CI restent ouvertes.
+# 20 novembre : Sofiane confirme ses essais sur le site public, inscription, courriels reçus et place rendue après annulation. La recette de l’équipe Tema reste ouverte dans TEM-27.
 # Preuves historiques : docs/project/acceptance/vercel-demo-2026-11-12.md et processing-demo-2026-11-12.md.
 project_key: NOKEY
 tracking_system: file-system

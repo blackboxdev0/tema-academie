@@ -260,7 +260,7 @@
     }
   ],
   "architecture_alignment_on": "2026-10-28",
-  "verified_on": "2026-11-19",
+  "verified_on": "2026-11-20",
   "project_status": "In Progress",
   "checkpoint": {
     "code_commit": "9836ea214477a2cd231a81fa1c918aeafd1d304e",
@@ -282,7 +282,7 @@
       "TEM-28"
     ],
     "scope": "TEM-5_to_TEM-28",
-    "owner_acceptance": "vercel_release_approved_with_known_contrast_exceptions",
+    "owner_acceptance": "vercel_release_approved_and_public_registration_mail_cancellation_confirmed",
     "client_acceptance": "pending",
     "google_deployment_version": 2,
     "ci": "failure_known_contrast_reserves_preserved",
