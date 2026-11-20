@@ -1,5 +1,7 @@
 # Reprise du projet
 
+**20 novembre, essais de Sofiane réussis sur le site public.** Sofiane confirme l’inscription, la réception des courriels et le retour de la place après annulation. La recette de l’équipe Tema reste ouverte. [Résultat](acceptance/vercel-production-preparation-2026-11-19.md) · [TEM-27](https://linear.app/tema-academie/issue/TEM-27/53-recetter-la-solution-complete-et-ses-invitations-de-bout-en-bout).
+
 **19 novembre, site public raccordé au nouveau classeur.** Sur accord de Sofiane, les deux vérifications GitHub ont donné les mêmes huit écarts de contraste connus et 332 scénarios navigateur réussis chacune. La PR 2 a été fusionnée sur `main` au commit `9836ea2`. Vercel Production sert le nouveau classeur via Google version 2. Catalogue, quatre sessions réservables et formulaire vérifiés en accès anonyme. La recette client reste ouverte. [Site public](https://project-w1j1x.vercel.app/) · [Preuves et récupération](acceptance/vercel-production-preparation-2026-11-19.md).
 
 **19 novembre, envoi continu du classeur de production.** Sofiane confirme que « Production (préparation) » est le seul classeur utilisé et la cible d’écriture en production. Pour la recette client, Google exécute le traitement planifié chaque minute, avec un plafond de 100 destinataires sur 24 heures glissantes et le contrôle du quota réel Google. Le déclencheur planifié de l’ancienne démo a été supprimé sur confirmation. Son déclencheur d’édition reste en place. [Recette et activation](acceptance/production-connected-2026-11-19.md).
