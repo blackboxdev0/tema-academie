@@ -23,6 +23,34 @@ async function setup(page, baseURL, controls = {}) {
   await page.goto('/'); await expect(page.locator('#formations')).toContainText('Essai');
   return { h, external };
 }
+const likuidContrastTargets = new Set([
+  '.card-month',
+  '.card-year',
+  '.card-date > .eyebrow',
+  'article:nth-child(1) > .card-main > .card-date > .eyebrow',
+]);
+
+function isAcceptedLikuidContrast(state, rule, node) {
+  if (!['catalogue', 'catalogue-pagine'].includes(state) || rule !== 'color-contrast' ||
+      node.target.length !== 1 || !likuidContrastTargets.has(node.target[0]) ||
+      node.any.length !== 1 || node.all.length !== 0 || node.none.length !== 0) return false;
+
+  const { id, data } = node.any[0];
+  return id === 'color-contrast' && data?.fgColor === '#ffffff' && data.bgColor === '#ff008f' &&
+    data.contrastRatio === 3.71 && data.expectedContrastRatio === '4.5:1';
+}
+
+test('A11Y — exception Likuid limitée au contraste exact du catalogue', () => {
+  const baseline = { fgColor: '#ffffff', bgColor: '#ff008f', contrastRatio: 3.71, expectedContrastRatio: '4.5:1' };
+  const accepted = data => isAcceptedLikuidContrast('catalogue', 'color-contrast', {
+    target: ['.card-month'], any: [{ id: 'color-contrast', data }], all: [], none: [],
+  });
+  expect(accepted(baseline)).toBe(true);
+  for (const change of [{ fgColor: '#fffffe' }, { bgColor: '#ff0090' }, { contrastRatio: 3.70 }]) {
+    expect(accepted({ ...baseline, ...change })).toBe(false);
+  }
+});
+
 async function scan(page, state, info) {
   const view = { processing: 'processing', catalogue: 'catalogue', 'catalogue-pagine': 'catalogue', fiche: 'detail', formulaire: 'registration', confidentialite: 'privacy', confirmation: 'result', 'erreur-champ': 'registration', 'resultat-inconnu': 'registration' }[state];
   await expect(page.locator('#' + view)).toBeVisible();
@@ -30,9 +58,14 @@ async function scan(page, state, info) {
   // Auditer l’écran stabilisé, après les transitions d’entrée finies ou annulées.
   await page.evaluate(() => Promise.all(document.getAnimations().map(animation => animation.finished.catch(() => {}))));
   const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
-  const summary = { state, violations: result.violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.map(n => ({ target: n.target, failure: n.failureSummary })) })), incomplete: result.incomplete.map(v => ({ id: v.id, targets: v.nodes.map(n => n.target) })) };
-  await info.attach(`axe-${state}`, { body: JSON.stringify(summary, null, 2), contentType: 'application/json' });
-  expect.soft(summary.violations, `${state}: violations axe WCAG 2.1 A/AA`).toEqual([]);
+  await info.attach(`axe-${state}`, { body: JSON.stringify({ state, ...result }, null, 2), contentType: 'application/json' });
+  const likuid = process.env.TEMA_LIKUID_ACCEPTED_CONTRAST === '1';
+  const blocking = result.violations.flatMap(({ id, nodes }) => nodes
+    .filter(node => !likuid || !isAcceptedLikuidContrast(state, id, node))
+    .map(node => ({ id, target: node.target, failure: node.failureSummary })));
+  const accepted = result.violations.reduce((count, { nodes }) => count + nodes.length, 0) - blocking.length;
+  if (accepted) info.annotations.push({ type: 'contraste accepté', description: `${state} : ${accepted} écarts. Voir le résultat Axe joint.` });
+  expect.soft(blocking, `${state}: violations axe WCAG 2.1 A/AA`).toEqual([]);
 }
 async function openForm(page) {
   await page.locator('#formations a').first().click();

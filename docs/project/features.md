@@ -1,5 +1,7 @@
 # Fonctionnalités du projet
 
+**24 novembre, mise en ligne chez Likuid.** Le site répond en HTTPS sur [academie.temasolutions.ca](https://academie.temasolutions.ca/) et charge 24 formations depuis Google Production. Le workflow de publication depuis `main` est en revue. [Déploiement et reprise](acceptance/likuid-deployment.md).
+
 **19 novembre, V1 publique pour la recette Tema.** Le site Vercel sert le nouveau classeur de production et la version Google 2. Catalogue, quatre séances réservables et formulaire vérifiés en accès anonyme. Les courriels sont pris en charge chaque minute. La recette, la remise et les validations de confidentialité et d’accessibilité restent suivies dans Linear. [Rapport de mise en ligne](acceptance/vercel-production-preparation-2026-11-19.md) · [Registre Linear](planning/linear-v1.json).
 
 **19 novembre, annulation et capacité.** La place revient automatiquement après l’annulation native dans le nouveau classeur et reste comptée après maintenance. La commande de build Vercel liée au nouveau Sheet a été vérifiée localement. [Recette](acceptance/production-connected-2026-11-19.md).
